@@ -36,6 +36,11 @@
         <p class="disclaimer">儀表數值為依季節設定的示意判讀，不是量化指標；更新季節判讀請改 assets/data.js 的 seasons。</p>
       </div>
     </div>
+    <div class="card reveal" style="margin-top:18px">
+      <span class="kicker">Method</span>
+      <h3 style="font-family:var(--serif);font-size:1.3rem;font-weight:900;margin:6px 0">估價師每個月怎麼看一般因素</h3>
+      <p style="font-size:.95rem;color:var(--ink-2)" id="macroMethod"></p>
+    </div>
   </div>
 </section>
 
@@ -71,6 +76,7 @@
     $("#verdictText").textContent = S.verdict;
     setTimeout(() => setGauges(S.gauges), 50);
   });
+  $("#macroMethod").textContent = D.macroMethod || "";
   VI.reveal();
 })();
 </script>

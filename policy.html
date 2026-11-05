@@ -14,7 +14,7 @@
   <div class="container">
     <span class="kicker">Policy Climate</span>
     <h1>政策時間軸</h1>
-    <p>把近年影響不動產價格的政策一字排開。按「播放」讓事件依時間一個個亮起，每一條都附「對估價的影響」。不評論政策好壞，只說它怎麼改變價格形成的方式。</p>
+    <p>把近年影響不動產價格的政策一字排開，2025 年起的事件來自估價師每月追蹤的一般因素分析。按「播放」讓事件依時間一個個亮起，每一條都附「對估價的影響」。不評論政策好壞，只說它怎麼改變價格形成的方式。</p>
     <div class="layer-badge" style="--c:var(--c-policy)"><i></i>LAYER 01 · 一般因素</div>
   </div>
 </section>
@@ -40,7 +40,7 @@
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
-  const catColor = { "信用管制":"var(--c-policy)", "稅制":"#b5452e", "交易限制":"#8a5a2b", "住宅政策":"var(--c-market)", "資訊透明":"var(--c-intl)", "利率":"var(--c-intl)", "追蹤中":"var(--ink-3)" };
+  const catColor = { "信用管制":"var(--c-policy)", "稅制":"#b5452e", "交易限制":"#8a5a2b", "住宅政策":"var(--c-market)", "資訊透明":"var(--c-intl)", "利率":"var(--c-intl)", "國際":"#2a6f97", "都更危老":"var(--c-ind)", "其他":"var(--ink-3)", "追蹤中":"var(--ink-3)" };
   const P = D.policies;
   const years = [...new Set(P.map(p => p.when.slice(0,4)))];
   $("#tlYears").innerHTML = years.map(y => `<span>${y}</span>`).join("");

@@ -308,7 +308,7 @@ renderer.domElement.addEventListener('pointerup', e => {
   for (const h of hits) {
     let o = h.object, layer = null, person = null;
     while (o) { if (o.userData.person) person = o; if (o.userData.layer) { layer = o.userData.layer; break; } o = o.parent; }
-    if (person) { VI.toast('🙂 ' + D.facts[(person.userData.fact + Math.floor(Math.random() * 3)) % D.facts.length], 3200); person.userData.jump = 1; return; }
+    if (person) { const facts = D.facts.concat(window.KN ? window.KN.facts : []); VI.toast('🙂 ' + facts[Math.floor(Math.random() * facts.length)], 3200); person.userData.jump = 1; return; }
     if (layer) { API.select(layer, true); return; }
     if (h.object === sea) { API.select(null); return; }
   }

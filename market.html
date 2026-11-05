@@ -56,6 +56,10 @@
       </div>
     </div>
 
+    <div class="section-head reveal" style="margin-top:56px"><div><h2>估價師的季度判讀</h2><p>每一季估價師都要說明市場有沒有變動，這是 2026 年各季的判讀摘要。</p></div></div>
+    <div class="num-list reveal" id="qnotes" style="--c:var(--c-market)"></div>
+    <p class="source reveal" id="qcaveat"></p>
+
     <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>估價師在「市場潮位」這一層會看的東西，以及它們怎麼進到估價報告。</p></div></div>
     <div class="intl-grid" id="items"></div>
   </div>
@@ -136,6 +140,9 @@
     ].map(([b,t,c])=>`<div><b class="${c||""}">${b}</b><span>${t}</span></div>`).join("");
   })();
 
+  /* 季度判讀 */
+  $("#qnotes").innerHTML = (M.quarterNotes || []).map(n => `<div class="card"><b>${n.q}</b><p>${n.s}</p></div>`).join("");
+  $("#qcaveat").textContent = M.quarterNoteCaveat || "";
   /* 觀測項目 */
   const L = D.layers.find(l => l.id === "market");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">MARKET TIDE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");

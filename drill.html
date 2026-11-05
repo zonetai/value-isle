@@ -14,12 +14,13 @@
   <div class="container">
     <span class="kicker">Appraiser's Quiz</span>
     <h1>估價小測 ＋ 估價師辭典</h1>
-    <p>五題小測驗，練一下估價師的直覺；旁邊是常被問到的名詞。答題紀錄會留在你的瀏覽器裡。</p>
+    <p>題目來自估價師的審查、都更審議與買房諮詢經驗。選一個主題練直覺，旁邊是常被問到的名詞。答題紀錄會留在你的瀏覽器裡。</p>
   </div>
 </section>
 
 <section class="section" style="padding-top:28px">
   <div class="container">
+    <div class="note-filters" id="cats"></div>
     <div class="quiz">
       <div class="card q-card" id="quizCard"></div>
       <div>
@@ -31,23 +32,30 @@
 </section>
 
 <script src="assets/data.js"></script>
+<script src="assets/knowledge.js"></script>
 <script src="assets/common.js"></script>
 <script>
 (function(){
-  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
-  let qi = 0, answered = false;
-  const record = JSON.parse(localStorage.getItem("vi-quiz") || "[]");
+  const D = window.DATA, K = window.KN, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  const ALL = D.quiz.map(q => ({ ...q, cat:"估價基礎" })).concat(K.quiz);
+  const cats = ["全部", ...new Set(ALL.map(q => q.cat))];
+  let cat = "全部", qi = 0, answered = false;
+  const record = JSON.parse(localStorage.getItem("vi-quiz2") || "{}");
+  const key = q => q.q;
+  function pool(){ return ALL.filter(q => cat === "全部" || q.cat === cat); }
+  function renderCats(){ $("#cats").innerHTML = cats.map(c => `<button class="chip ${c===cat?"on":""}" data-c="${c}">${c}<small style="margin-left:4px;color:var(--ink-3)">${c==="全部"?ALL.length:ALL.filter(q=>q.cat===c).length}</small></button>`).join(""); $$("#cats .chip").forEach(b => b.onclick = () => { cat = b.dataset.c; qi = 0; renderCats(); render(); }); }
   function render(){
-    const q = D.quiz[qi]; const c = $("#quizCard");
-    const score = record.filter(x => x === true).length;
-    c.innerHTML = `<div class="q-inner"><span class="qn">Q ${qi+1} / ${D.quiz.length}</span><h3>${q.q}</h3><div class="q-opts">${q.opts.map((o,i) => `<button data-i="${i}">${o}</button>`).join("")}</div><div class="q-exp" id="qExp">${q.exp}</div>
-      <div class="q-foot"><div><span class="score">答對 ${score} / ${D.quiz.length}</span><div class="score-ring">${D.quiz.map((_,i) => `<i class="${record[i]===true?"ok":record[i]===false?"no":""}"></i>`).join("")}</div></div><button class="btn ghost sm" id="qNext">${qi===D.quiz.length-1?"重新開始":"下一題 →"}</button></div></div>`;
-    answered = false;
-    if (record[qi] !== undefined) { answered = true; $$(".q-opts button")[q.a].classList.add("right"); $("#qExp").classList.add("show"); }
-    $$(".q-opts button").forEach(b => b.onclick = () => { if (answered) return; answered = true; const i = +b.dataset.i; if (i === q.a) { b.classList.add("right"); record[qi] = true; VI.toast("答對了！"); } else { b.classList.add("wrong"); $$(".q-opts button")[q.a].classList.add("right"); record[qi] = false; } localStorage.setItem("vi-quiz", JSON.stringify(record)); $("#qExp").classList.add("show"); $(".score").textContent = `答對 ${record.filter(x=>x===true).length} / ${D.quiz.length}`; $$(".score-ring i")[qi].className = record[qi] ? "ok" : "no"; });
-    $("#qNext").onclick = () => { if (qi === D.quiz.length - 1) { qi = 0; record.length = 0; localStorage.removeItem("vi-quiz"); } else qi++; render(); };
+    const P = pool(), q = P[qi], c = $("#quizCard");
+    const score = P.filter(x => record[key(x)] === true).length, tried = P.filter(x => record[key(x)] !== undefined).length;
+    c.innerHTML = `<div class="q-inner"><span class="qn">${q.cat} · Q ${qi+1} / ${P.length}</span><h3>${q.q}</h3><div class="q-opts">${q.opts.map((o,i) => `<button data-i="${i}">${o}</button>`).join("")}</div><div class="q-exp" id="qExp">${q.exp}</div>
+      <div class="q-foot"><div><span class="score">答對 ${score} / 已答 ${tried}</span><div class="score-ring">${P.map(x => `<i class="${record[key(x)]===true?"ok":record[key(x)]===false?"no":""}"></i>`).join("")}</div></div><div style="display:flex;gap:6px"><button class="btn ghost sm" id="qPrev" ${qi===0?"disabled":""}>←</button><button class="btn ghost sm" id="qNext">${qi===P.length-1?"重新開始":"下一題 →"}</button></div></div></div>`;
+    answered = record[key(q)] !== undefined;
+    if (answered) { $$(".q-opts button")[q.a].classList.add("right"); $("#qExp").classList.add("show"); }
+    $$(".q-opts button").forEach(b => b.onclick = () => { if (answered) return; answered = true; const i = +b.dataset.i; if (i === q.a) { b.classList.add("right"); record[key(q)] = true; VI.toast("答對了！"); } else { b.classList.add("wrong"); $$(".q-opts button")[q.a].classList.add("right"); record[key(q)] = false; } localStorage.setItem("vi-quiz2", JSON.stringify(record)); $("#qExp").classList.add("show"); $(".score").textContent = `答對 ${P.filter(x => record[key(x)] === true).length} / 已答 ${P.filter(x => record[key(x)] !== undefined).length}`; $$(".score-ring i")[qi].className = record[key(q)] ? "ok" : "no"; });
+    $("#qNext").onclick = () => { if (qi === P.length - 1) { qi = 0; P.forEach(x => delete record[key(x)]); localStorage.setItem("vi-quiz2", JSON.stringify(record)); } else qi++; render(); };
+    $("#qPrev").onclick = () => { if (qi > 0) { qi--; render(); } };
   }
-  render();
+  renderCats(); render();
   $("#glossary").innerHTML = D.glossary.map(g => `<details><summary>${g.t}</summary><p>${g.d}</p></details>`).join("");
 })();
 </script>

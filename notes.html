@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>估價師手記｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Appraiser's Notes</span>
+    <h1>估價師手記</h1>
+    <p>估價師寫過的專欄、投書與論文摘要。每一篇都從一件經手的案子或一則新聞起手，用估價的方法拆開來看。點卡片展開三個重點；想看全文請洽原刊物。</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:28px">
+  <div class="container">
+    <div class="note-filters reveal" id="filters"></div>
+    <div class="notes-grid" id="notes"></div>
+    <div class="card reveal" style="margin-top:28px"><span class="kicker">寫法</span><p style="margin:6px 0 0;font-size:.92rem;color:var(--ink-2)" id="style"></p></div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/knowledge.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const D = window.DATA, K = window.KN, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  const layerOf = id => D.layers.find(l => l.id === id);
+  let cat = "全部";
+  function render(){
+    const cats = ["全部", ...D.layers.map(l => l.id)];
+    $("#filters").innerHTML = cats.map(c => `<button class="chip ${c===cat?"on":""}" data-c="${c}">${c==="全部"?"全部":`<span class="dot" style="color:${layerOf(c).hex}"></span>${layerOf(c).name}`}</button>`).join("");
+    $$("#filters .chip").forEach(b => b.onclick = () => { cat = b.dataset.c; render(); });
+    const list = K.articles.filter(a => cat === "全部" || a.layer === cat);
+    $("#notes").innerHTML = list.map((a,i) => `<div class="card note-card reveal in" style="--c:${layerOf(a.layer).hex};animation:popin .4s ease ${i*60}ms both" data-id="${a.id}">
+      <div class="meta"><span class="tag ${layerOf(a.layer).cls}">${layerOf(a.layer).name}</span><span>${a.date}</span><span>${a.venue}</span></div>
+      <h3>${a.title}</h3>
+      <div class="quote">${a.quote}</div>
+      <p>${a.summary}</p>
+      <div class="takes">${a.takeaways.map(t => `<span>${t}</span>`).join("")}</div>
+      <div class="aud">適合：${a.audience}　<span style="color:var(--c)">點卡片展開重點 ›</span></div></div>`).join("");
+    $$(".note-card").forEach(c => c.onclick = () => c.classList.toggle("open"));
+  }
+  render();
+  $("#style").textContent = K.authorStyle;
+  VI.reveal();
+})();
+</script>
+</body>
+</html>

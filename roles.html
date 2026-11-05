@@ -46,7 +46,8 @@
     if (on !== null) {
       const r = D.roles[on];
       det.classList.add("open");
-      det.innerHTML = `<div><span class="kicker">${r.ico} ${r.t} 的看價路線</span><ol class="route">${r.steps.map((s,i) => `<li data-n="${i+1}">${s}</li>`).join("")}</ol><div style="margin-top:10px;font-size:.84rem;color:var(--ink-3)">${r.svc}</div><div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${r.layers.map(id => `<a class="chip" href="${layerOf(id).page}">${layerOf(id).n} ${layerOf(id).name} →</a>`).join("")}</div></div><div class="role-mini">${mini()}</div>`;
+      const deep = { 0:["buyer.html","買方看價路線"], 1:["buyer.html","開價判讀與急售訊號"], 2:["report.html","估價報告怎麼看"], 3:["renewal.html","都更地主指南"], 4:["renewal.html","都更地主指南"], 5:["report.html","法院鑑定 vs 一般估價"] }[on];
+      det.innerHTML = `<div><span class="kicker">${r.ico} ${r.t} 的看價路線</span><ol class="route">${r.steps.map((s,i) => `<li data-n="${i+1}">${s}</li>`).join("")}</ol><div style="margin-top:10px;font-size:.84rem;color:var(--ink-3)">${r.svc}</div><div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${deep?`<a class="btn sm" href="${deep[0]}">深入：${deep[1]} →</a>`:""}${r.layers.map(id => `<a class="chip" href="${layerOf(id).page}">${layerOf(id).n} ${layerOf(id).name} →</a>`).join("")}</div></div><div class="role-mini">${mini()}</div>`;
       // 依序亮起該身分關心的層次
       r.layers.forEach((id, i) => setTimeout(() => det.querySelector(`.zone[data-z="${id}"]`)?.classList.add("on"), 200 + i * 350));
     } else det.classList.remove("open");
