@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>政策時間軸｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Policy Climate</span>
+    <h1>政策時間軸</h1>
+    <p>把近年影響不動產價格的政策一字排開。按「播放」讓事件依時間一個個亮起，每一條都附「對估價的影響」。不評論政策好壞，只說它怎麼改變價格形成的方式。</p>
+    <div class="layer-badge" style="--c:var(--c-policy)"><i></i>LAYER 01 · 一般因素</div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:28px">
+  <div class="container">
+    <div class="tl-player reveal">
+      <button class="btn sm" id="tlPlay">▶ 播放</button>
+      <button class="btn ghost sm" id="tlReset">⏮ 全部顯示</button>
+      <div style="flex:1;min-width:220px"><div class="track"><i id="tlFill"></i><div class="knob" id="tlKnob" style="left:0"></div></div><div class="years" id="tlYears"></div></div>
+      <div class="now" id="tlNow">全部</div>
+    </div>
+    <div class="tl-filters" id="tlFilters"></div>
+    <div class="timeline" id="timeline"></div>
+
+    <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>除了時間軸上的事件，估價師在「政策氣候」這一層還持續盯著這些。</p></div></div>
+    <div class="intl-grid" id="items"></div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  const catColor = { "信用管制":"var(--c-policy)", "稅制":"#b5452e", "交易限制":"#8a5a2b", "住宅政策":"var(--c-market)", "資訊透明":"var(--c-intl)", "利率":"var(--c-intl)", "追蹤中":"var(--ink-3)" };
+  const P = D.policies;
+  const years = [...new Set(P.map(p => p.when.slice(0,4)))];
+  $("#tlYears").innerHTML = years.map(y => `<span>${y}</span>`).join("");
+  let tlCat = "全部";
+  function render(){
+    const cats = ["全部", ...new Set(P.map(p => p.cat))];
+    $("#tlFilters").innerHTML = cats.map(c => `<button class="chip ${c===tlCat?"on":""}" data-cat="${c}">${c!=="全部"?`<span class="dot" style="color:${catColor[c]||'var(--ink)'}"></span>`:""}${c}</button>`).join("");
+    $$("#tlFilters .chip").forEach(b => b.onclick = () => { tlCat = b.dataset.cat; stop(); render(); });
+    $("#timeline").innerHTML = P.map((p,i) => `<div class="tl-item reveal ${p.future?"future":""} ${tlCat!=="全部"&&p.cat!==tlCat?"hide":""}" data-i="${i}" style="--c:${catColor[p.cat]||'var(--ink)'}">
+      <div class="when">${p.when}</div>
+      <div class="card"><span class="tag" style="background:${catColor[p.cat]||'var(--ink)'};color:#fff">${p.cat}</span> <b>${p.t}</b><p>${p.s}</p><div class="impact">${p.i}</div></div></div>`).join("");
+    VI.reveal();
+  }
+  /* 播放器：依序點亮 */
+  let timer = null, idx = -1;
+  function stop(){ clearInterval(timer); timer = null; $("#tlPlay").textContent = "▶ 播放"; }
+  function showAll(){ stop(); idx = -1; $$(".tl-item").forEach(e => e.classList.remove("dim","lit")); $("#tlFill").style.width = "0"; $("#tlKnob").style.left = "0"; $("#tlNow").textContent = "全部"; }
+  function step(){
+    const items = $$(".tl-item:not(.hide)");
+    idx++;
+    if (idx >= items.length) { stop(); return; }
+    items.forEach((e,i) => { e.classList.toggle("dim", i > idx); e.classList.toggle("lit", i === idx); });
+    const pct = (idx + 1) / items.length * 100;
+    $("#tlFill").style.width = pct + "%"; $("#tlKnob").style.left = pct + "%";
+    $("#tlNow").textContent = items[idx].querySelector(".when").textContent;
+    items[idx].scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+  $("#tlPlay").onclick = () => {
+    if (timer) { stop(); return; }
+    if (idx < 0 || idx >= $$(".tl-item:not(.hide)").length - 1) { idx = -1; $$(".tl-item").forEach(e => e.classList.add("dim")); }
+    $("#tlPlay").textContent = "❚❚ 暫停"; step(); timer = setInterval(step, 1800);
+  };
+  $("#tlReset").onclick = showAll;
+  render();
+
+  const L = D.layers.find(l => l.id === "policy");
+  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">POLICY CLIMATE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  VI.reveal();
+})();
+</script>
+</body>
+</html>

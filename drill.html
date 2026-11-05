@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>估價小測 ＋ 估價師辭典｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Appraiser's Quiz</span>
+    <h1>估價小測 ＋ 估價師辭典</h1>
+    <p>五題小測驗，練一下估價師的直覺；旁邊是常被問到的名詞。答題紀錄會留在你的瀏覽器裡。</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:28px">
+  <div class="container">
+    <div class="quiz">
+      <div class="card q-card" id="quizCard"></div>
+      <div>
+        <div class="section-head" style="margin-bottom:14px"><div><h2 style="font-size:1.3rem">估價師辭典</h2></div></div>
+        <div class="glossary" id="glossary"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  let qi = 0, answered = false;
+  const record = JSON.parse(localStorage.getItem("vi-quiz") || "[]");
+  function render(){
+    const q = D.quiz[qi]; const c = $("#quizCard");
+    const score = record.filter(x => x === true).length;
+    c.innerHTML = `<div class="q-inner"><span class="qn">Q ${qi+1} / ${D.quiz.length}</span><h3>${q.q}</h3><div class="q-opts">${q.opts.map((o,i) => `<button data-i="${i}">${o}</button>`).join("")}</div><div class="q-exp" id="qExp">${q.exp}</div>
+      <div class="q-foot"><div><span class="score">答對 ${score} / ${D.quiz.length}</span><div class="score-ring">${D.quiz.map((_,i) => `<i class="${record[i]===true?"ok":record[i]===false?"no":""}"></i>`).join("")}</div></div><button class="btn ghost sm" id="qNext">${qi===D.quiz.length-1?"重新開始":"下一題 →"}</button></div></div>`;
+    answered = false;
+    if (record[qi] !== undefined) { answered = true; $$(".q-opts button")[q.a].classList.add("right"); $("#qExp").classList.add("show"); }
+    $$(".q-opts button").forEach(b => b.onclick = () => { if (answered) return; answered = true; const i = +b.dataset.i; if (i === q.a) { b.classList.add("right"); record[qi] = true; VI.toast("答對了！"); } else { b.classList.add("wrong"); $$(".q-opts button")[q.a].classList.add("right"); record[qi] = false; } localStorage.setItem("vi-quiz", JSON.stringify(record)); $("#qExp").classList.add("show"); $(".score").textContent = `答對 ${record.filter(x=>x===true).length} / ${D.quiz.length}`; $$(".score-ring i")[qi].className = record[qi] ? "ok" : "no"; });
+    $("#qNext").onclick = () => { if (qi === D.quiz.length - 1) { qi = 0; record.length = 0; localStorage.removeItem("vi-quiz"); } else qi++; render(); };
+  }
+  render();
+  $("#glossary").innerHTML = D.glossary.map(g => `<details><summary>${g.t}</summary><p>${g.d}</p></details>`).join("");
+})();
+</script>
+</body>
+</html>

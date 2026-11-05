@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我是誰：委託人路線｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Who Are You</span>
+    <h1>我是誰：委託人路線</h1>
+    <p>不同身分，關心的層次不一樣。選一個身分，島上會亮起估價師會先替你盯的那幾層，並列出看價的順序與通常對應的估價服務。</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:28px">
+  <div class="container">
+    <div class="role-grid" id="roleGrid"></div>
+    <div class="card role-detail" id="roleDetail"></div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  const layerOf = id => D.layers.find(l => l.id === id);
+  let on = null;
+  const mini = () => `<svg viewBox="0 0 520 260">
+    <rect width="520" height="260" fill="#cfeaf4"/>
+    <g class="zone" data-z="policy"><ellipse cx="120" cy="50" rx="46" ry="16" fill="#fff"/><ellipse cx="150" cy="42" rx="30" ry="18" fill="#fff"/><ellipse cx="380" cy="60" rx="40" ry="14" fill="#fff"/><text x="120" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#c9711a">01 政策氣候</text></g>
+    <g class="zone" data-z="intl"><path d="M20 150 C 80 140, 120 160, 180 150" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="8 8"/><path d="M340 230 C 400 220, 440 240, 500 230" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="8 8"/><rect x="420" y="130" width="60" height="14" rx="3" fill="#3b4a5a"/><rect x="430" y="120" width="12" height="10" fill="#e4572e"/><rect x="446" y="120" width="12" height="10" fill="#f2c14e"/><text x="450" y="166" text-anchor="middle" font-size="12" font-weight="700" fill="#2a6f97">02 國際洋流</text></g>
+    <g class="zone" data-z="market"><rect x="40" y="130" width="22" height="90" rx="5" fill="#fff"/><rect x="44" y="170" width="14" height="46" rx="3" fill="#2b8a6e"/><text x="51" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#2b8a6e">03 市場潮位</text></g>
+    <g class="zone" data-z="ind"><polygon points="160,200 260,230 380,200 360,160 260,140 180,160" fill="#8cc271"/><rect x="235" y="90" width="34" height="80" fill="#e9eef3"/><rect x="275" y="120" width="34" height="50" fill="#f2c9b6"/><rect x="200" y="130" width="30" height="40" fill="#d9c7a6"/><text x="270" y="250" text-anchor="middle" font-size="12" font-weight="700" fill="#7b4fa3">04 個別條件</text></g>
+  </svg>`;
+  function render(){
+    $("#roleGrid").innerHTML = D.roles.map((r,i) => `<div class="card role-card reveal in ${on===i?"on":""}" data-i="${i}" id="r${i}"><div class="ico">${r.ico}</div><h3>${r.t}</h3><p>${r.s}</p><div class="layers">${r.layers.map(id => `<span class="tag ${layerOf(id).cls}">${layerOf(id).name}</span>`).join("")}</div><div class="svc">${r.svc}</div></div>`).join("");
+    $$(".role-card").forEach(c => c.onclick = () => { on = on === +c.dataset.i ? null : +c.dataset.i; render(); if (on !== null) $("#roleDetail").scrollIntoView({ block: "nearest", behavior: "smooth" }); });
+    const det = $("#roleDetail");
+    if (on !== null) {
+      const r = D.roles[on];
+      det.classList.add("open");
+      det.innerHTML = `<div><span class="kicker">${r.ico} ${r.t} 的看價路線</span><ol class="route">${r.steps.map((s,i) => `<li data-n="${i+1}">${s}</li>`).join("")}</ol><div style="margin-top:10px;font-size:.84rem;color:var(--ink-3)">${r.svc}</div><div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${r.layers.map(id => `<a class="chip" href="${layerOf(id).page}">${layerOf(id).n} ${layerOf(id).name} →</a>`).join("")}</div></div><div class="role-mini">${mini()}</div>`;
+      // 依序亮起該身分關心的層次
+      r.layers.forEach((id, i) => setTimeout(() => det.querySelector(`.zone[data-z="${id}"]`)?.classList.add("on"), 200 + i * 350));
+    } else det.classList.remove("open");
+  }
+  render();
+  // 從首頁帶 #r2 這種錨點進來時直接選取
+  const m = location.hash.match(/^#r(\d)$/); if (m) { on = +m[1]; render(); setTimeout(() => $("#roleDetail").scrollIntoView({ block: "center", behavior: "smooth" }), 300); }
+})();
+</script>
+</body>
+</html>

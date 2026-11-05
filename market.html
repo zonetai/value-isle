@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市場潮位｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Market Tide</span>
+    <h1>市場潮位</h1>
+    <p>直接接內政部實價登錄。臺北市 12 個行政區的住宅大樓成交單價，加上 2023 年以來的逐季走勢。潮水漲到哪，一眼看得出來。</p>
+    <div class="layer-badge" style="--c:var(--c-market)"><i></i>LAYER 03 · 區域因素 / 期日修正</div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:36px">
+  <div class="container">
+    <div class="tide-wall">
+      <div class="card tide-vis reveal" id="tideVis">
+        <div class="water" id="water"></div>
+        <div class="ruler" id="ruler"></div>
+        <div class="readout"><small id="tideName">臺北市平均</small><b id="tideVal">—</b><small id="tideSub"></small></div>
+      </div>
+      <div class="card reveal">
+        <span class="kicker">Pick a district</span>
+        <h3 style="margin:6px 0 4px">點一個行政區，看它的潮位</h3>
+        <p style="font-size:.84rem;color:var(--ink-3);margin:0 0 12px">近一年住宅大樓成交單價（萬元/坪）與件數；水位高低以最高區為滿水位。</p>
+        <div class="district-grid" id="districtGrid"></div>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:36px">
+      <div><h2>各區成交單價</h2><p>長條顏色深淺代表件數多寡。</p></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="chip on" data-sort="price">依單價</button><button class="chip" data-sort="count">依件數</button><button class="chip" data-sort="name">依區名</button></div>
+    </div>
+    <div class="charts">
+      <div class="card chart-card reveal">
+        <h3>臺北市各區住宅大樓成交單價</h3>
+        <p class="sub" id="distSub">近一年・房地交易・簡單平均・萬元/坪</p>
+        <svg id="distChart" viewBox="0 0 640 420"></svg>
+        <p class="source" id="distSource"></p>
+      </div>
+      <div class="card chart-card reveal">
+        <h3>全市逐季走勢</h3>
+        <p class="sub">2023 Q1 起・住宅大樓・簡單平均單價（萬元/坪）與件數</p>
+        <svg id="trendChart" viewBox="0 0 420 300"></svg>
+        <div class="legend"><span><i style="background:var(--c-market)"></i>平均單價</span><span><i style="background:#cfe3dc"></i>成交件數（相對）</span></div>
+        <div class="tide-strip" id="tideStrip"></div>
+        <p class="source">件數為該季 ZIP 主檔筆數，季度 ZIP 與旬快照合併計算；2025 Q3 筆數偏低屬資料檔切分方式所致，走勢請看相鄰季度。</p>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>估價師在「市場潮位」這一層會看的東西，以及它們怎麼進到估價報告。</p></div></div>
+    <div class="intl-grid" id="items"></div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, toPing = VI.toPing, fmt = VI.fmt;
+  const M = D.market;
+  const maxP = Math.max(...M.districts.map(x => toPing(x.p)));
+  const all = { d: "臺北市 12 區平均", n: M.districts.reduce((a,x)=>a+x.n,0), p: M.districts.reduce((a,x)=>a+x.p*x.n,0)/M.districts.reduce((a,x)=>a+x.n,0) };
+
+  /* 潮位牆 */
+  const ruler = $("#ruler");
+  [0,25,50,75,100].forEach(pc => { const i = document.createElement("i"); i.style.bottom = pc + "%"; ruler.appendChild(i); const s = document.createElement("span"); s.style.bottom = pc + "%"; s.textContent = Math.round(maxP * pc / 100); ruler.appendChild(s); });
+  function showTide(x){
+    const v = toPing(x.p); const pct = Math.max(8, v / maxP * 100);
+    $("#water").style.height = pct + "%";
+    $("#tideName").textContent = x.d;
+    $("#tideVal").textContent = v + " 萬/坪";
+    $("#tideSub").textContent = `${fmt(x.n)} 件・相對最高區 ${Math.round(v / maxP * 100)}%`;
+    $$("#districtGrid button").forEach(b => b.classList.toggle("on", b.dataset.d === x.d));
+  }
+  $("#districtGrid").innerHTML = [all, ...M.districts].map(x => `<button data-d="${x.d}"><b>${x.d}</b><small>${toPing(x.p)} 萬/坪・${x.n} 件</small></button>`).join("");
+  $$("#districtGrid button").forEach(b => b.onclick = () => showTide(b.dataset.d === all.d ? all : M.districts.find(x => x.d === b.dataset.d)));
+  setTimeout(() => showTide(all), 300);
+
+  /* 各區長條 */
+  let sortMode = "price";
+  function renderDist(animate){
+    const data = [...M.districts];
+    if (sortMode === "price") data.sort((a,b)=>b.p-a.p);
+    if (sortMode === "count") data.sort((a,b)=>b.n-a.n);
+    if (sortMode === "name") data.sort((a,b)=>a.d.localeCompare(b.d,"zh-Hant"));
+    const svg = $("#distChart"); const W=640,H=420,L=70,R=60,T=10,rowH=(H-T-20)/data.length;
+    const max = maxP*1.08, maxN = Math.max(...data.map(x=>x.n));
+    let s = "";
+    data.forEach((x,i)=>{
+      const y=T+i*rowH, v=toPing(x.p), w=(W-L-R)*v/max, alpha=0.45+0.55*(x.n/maxN);
+      s += `<text class="lbl" x="${L-8}" y="${y+rowH*0.62}" text-anchor="end">${x.d}</text>
+        <rect class="bar-rect" data-w="${w}" x="${L}" y="${y+4}" width="${animate?0:w}" height="${rowH-8}" rx="6" fill="var(--c-market)" opacity="${alpha.toFixed(2)}" style="cursor:pointer"><title>${x.d}：${v} 萬/坪，${x.n} 件</title></rect>
+        <text class="val" x="${L+w+6}" y="${y+rowH*0.62}">${v}</text>
+        <text class="ax" x="${W-4}" y="${y+rowH*0.62}" text-anchor="end">${x.n} 件</text>`;
+    });
+    svg.innerHTML = s;
+    if (animate) requestAnimationFrame(() => $$("#distChart .bar-rect").forEach((r,i) => setTimeout(() => r.setAttribute("width", r.dataset.w), i*50)));
+    $$("#distChart .bar-rect").forEach((r,i) => r.onclick = () => showTide(data[i]));
+    $("#distSource").textContent = `資料：內政部不動產交易實價查詢服務系統，期間 ${M.period}，建物型態「住宅大樓」、交易標的含房地、單價>0，依鄉鎮市區簡單平均；顏色深淺代表件數多寡。整理至 ${D.asOf}。`;
+  }
+  $$("[data-sort]").forEach(b => b.onclick = () => { $$("[data-sort]").forEach(x=>x.classList.remove("on")); b.classList.add("on"); sortMode = b.dataset.sort; renderDist(true); });
+  renderDist(true);
+
+  /* 逐季走勢 */
+  (function(){
+    const q = M.quarters, svg = $("#trendChart");
+    const W=420,H=300,L=40,R=10,T=20,B=50, iw=W-L-R, ih=H-T-B;
+    const vals = q.map(x=>toPing(x.p)); const mn=Math.floor(Math.min(...vals)/5)*5-5, mx=Math.ceil(Math.max(...vals)/5)*5+5;
+    const maxN = Math.max(...q.map(x=>x.n));
+    const X=i=>L+iw*i/(q.length-1), Y=v=>T+ih*(1-(v-mn)/(mx-mn));
+    let s="";
+    q.forEach((x,i)=>{ const bh=ih*0.5*x.n/maxN; s+=`<rect x="${X(i)-7}" y="${T+ih-bh}" width="14" height="${bh}" fill="#cfe3dc" rx="2"><title>${x.q}：${x.n} 件</title></rect>`; });
+    for(let v=mn; v<=mx; v+=10) s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#eee"/><text class="ax" x="${L-6}" y="${Y(v)+3}" text-anchor="end">${v}</text>`;
+    const path = vals.map((v,i)=>`${i?"L":"M"}${X(i)} ${Y(v)}`).join(" ");
+    s+=`<path class="trend-line" d="${path}" fill="none" stroke="var(--c-market)" stroke-width="2.5" stroke-linejoin="round"/>`;
+    vals.forEach((v,i)=>{ s+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3.5" fill="#fff" stroke="var(--c-market)" stroke-width="2" style="animation:popin .4s ease both;animation-delay:${0.3+i*0.12}s"><title>${q[i].q}：${v} 萬/坪，${q[i].n} 件</title></circle>`; if(i%2===0||i===q.length-1) s+=`<text class="ax" x="${X(i)}" y="${H-B+16}" text-anchor="middle" transform="rotate(-35 ${X(i)} ${H-B+16})">${q[i].q}</text>`; });
+    svg.innerHTML = s;
+    const last=q[q.length-1], prev=q[q.length-2], yago=q[q.length-5], first=q[0];
+    const pct=(a,b)=>((toPing(a.p)/toPing(b.p)-1)*100).toFixed(1), cls=v=>v>=0?"up":"down", sign=v=>v>=0?"+":"";
+    $("#tideStrip").innerHTML=[
+      [`${toPing(last.p)}`,`${last.q} 萬/坪`],
+      [`${sign(pct(last,prev))}${pct(last,prev)}%`,`較上季`,cls(pct(last,prev))],
+      [`${sign(pct(last,yago))}${pct(last,yago)}%`,`較去年同季`,cls(pct(last,yago))],
+      [`${sign(pct(last,first))}${pct(last,first)}%`,`較 ${first.q}`,cls(pct(last,first))],
+      [`${fmt(last.n)}`,`${last.q} 件數（未滿季）`],
+      [`${fmt(q.reduce((a,x)=>a+x.n,0))}`,`期間總件數`]
+    ].map(([b,t,c])=>`<div><b class="${c||""}">${b}</b><span>${t}</span></div>`).join("");
+  })();
+
+  /* 觀測項目 */
+  const L = D.layers.find(l => l.id === "market");
+  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">MARKET TIDE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  VI.reveal();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>關於本站｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">About</span>
+    <h1>關於價值島</h1>
+    <p>一個由不動產估價師整理的市場觀測站。目的不是報明牌，而是把估價師看價格的方法攤開來：先看海、看天、看潮，最後才拿尺量這塊地。</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:28px">
+  <div class="container about-grid">
+    <div class="card reveal">
+      <h3>整理方式</h3>
+      <p>價格由四層力量決定，對應估價學的一般因素（國際洋流、政策氣候）、區域因素與期日修正（市場潮位）、個別因素（個別條件）。每一個觀測項目都附「對估價的影響」，說明它怎麼進到估價報告，不評價政策好壞。</p>
+      <h3 style="margin-top:18px">資料來源</h3>
+      <ul>
+        <li>市場潮位：內政部地政司不動產交易實價查詢服務系統（政府資料開放授權條款第 1 版）。統計口徑為臺北市住宅大樓、房地交易、單價大於零、依鄉鎮市區簡單平均，未剔除特殊交易，只適合看趨勢。</li>
+        <li>政策時間軸：中央銀行、財政部、內政部、金管會公開新聞稿與法規。</li>
+        <li>國際洋流：聯準會、中央銀行與主要媒體的公開報導。</li>
+      </ul>
+      <h3 style="margin-top:18px">注意事項</h3>
+      <ul>
+        <li>個別條件調整儀的調整率為教學示意，不是任何估價報告採用的數值。</li>
+        <li>估價氣象台的儀表是依「市場季節」設定的示意判讀，不是量化指標。</li>
+        <li>本站內容不構成估價意見、投資或法律建議；個案估價請委託不動產估價師出具報告。</li>
+      </ul>
+    </div>
+    <div>
+      <div class="card reveal">
+        <h3>怎麼更新</h3>
+        <p>所有數字與文字都在 <code>assets/data.js</code>，改完存檔、推上 GitHub 即可，不需要後端。</p>
+        <ul>
+          <li><b>market</b>：各區單價與逐季走勢</li>
+          <li><b>policies</b>：政策時間軸</li>
+          <li><b>intl</b>：國際洋流卡片</li>
+          <li><b>simFactors</b>：調整儀的選項與示意調整率</li>
+          <li><b>seasons / gauges</b>：季節判讀與儀表</li>
+          <li><b>facts / tour</b>：島上居民的小知識與導覽旁白</li>
+        </ul>
+      </div>
+      <div class="card reveal" style="margin-top:14px">
+        <h3>設計與技術</h3>
+        <p>島的隱喻來自估價師的工作本身：價格受一般因素（國際、政策）、區域因素（市場）與個別因素（標的）層層影響，所以把它畫成海、天、潮、島四層。3D 場景以 Three.js 在瀏覽器即時繪製，全部程式生成，沒有外部模型或素材。原始碼公開於 <a href="https://github.com/zonetai/value-isle">GitHub</a>。</p>
+        <p id="brand" style="margin-top:8px"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>document.getElementById("brand").textContent = window.DATA.brand; window.VI.reveal();</script>
+</body>
+</html>

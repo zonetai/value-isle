@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>估價氣象台｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Appraiser's Weather</span>
+    <h1>估價氣象台</h1>
+    <p>四個儀表，對應估價師每天在看的四股力量。選一個「市場季節」，指針、天色與判讀會一起換。</p>
+    <div class="season-picker" id="seasonPicker" style="margin-top:24px"></div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:36px">
+  <div class="container">
+    <div class="board" id="board"></div>
+    <div class="verdict">
+      <div class="card reveal">
+        <span class="kicker">This Season</span>
+        <h3 id="verdictTitle">本季判讀</h3>
+        <p id="verdictText"></p>
+        <div class="flow"><span>國際洋流</span><i>→</i><span>資金成本</span><i>→</i><span>政策氣候</span><i>→</i><span>市場潮位</span><i>→</i><span>個別條件</span><i>→</i><span><b>價格</b></span></div>
+      </div>
+      <div class="card reveal">
+        <span class="kicker">How to read</span>
+        <h3>怎麼讀這四個儀表</h3>
+        <p style="font-size:.92rem">「資金洋流」與「政策氣壓」是一般因素，決定需求曲線的位置；「市場潮位」是區域因素與期日修正，決定比較法案例的水位；「條件分化」提醒估價師這一季要在個別因素上花多少篇幅。四個儀表都偏右時，是最容易做出過度樂觀估值的季節。</p>
+        <p class="disclaimer">儀表數值為依季節設定的示意判讀，不是量化指標；更新季節判讀請改 assets/data.js 的 seasons。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  // 季節選擇器
+  $("#seasonPicker").innerHTML = Object.entries(D.seasons).map(([k,v]) => `<button data-season="${k}"><b>${v.icon} ${v.name}</b><small>${v.verdict.split("。")[0]}。</small></button>`).join("");
+  $$("#seasonPicker button").forEach(b => b.onclick = () => VI.setSeason(b.dataset.season));
+
+  // 儀表
+  const dial = () => `<svg viewBox="0 0 140 140"><path d="M14 70 A56 56 0 0 1 126 70" fill="none" stroke="var(--line)" stroke-width="12" stroke-linecap="round"/><path class="arc" d="M14 70 A56 56 0 0 1 126 70" fill="none" stroke="var(--c)" stroke-width="12" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176" style="transition:stroke-dashoffset 1.2s ease"/><g class="needle"><line x1="70" y1="70" x2="70" y2="22" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="70" r="6" fill="var(--ink)"/></g></svg>`;
+  const board = $("#board");
+  D.gauges.forEach(g => {
+    const el = document.createElement("div"); el.className = "card gauge reveal"; el.style.setProperty("--c", g.color);
+    el.innerHTML = `<div class="ico">${g.ico}</div><h3>${g.name}</h3><span class="state"></span><div class="dial">${dial()}</div><div class="scale"><span>${g.lo}</span><span>${g.hi}</span></div><p>${g.text}</p>`;
+    el.onclick = () => VI.openDrawer(g.id);
+    board.appendChild(el);
+  });
+  function setGauges(vals){
+    [...board.children].forEach((el, i) => {
+      const v = vals[i], g = D.gauges[i];
+      el.querySelector(".state").textContent = g.states[v < 40 ? 0 : v < 65 ? 1 : 2];
+      el.querySelector(".needle").style.transform = `rotate(${-90 + v * 1.8}deg)`;
+      el.querySelector(".arc").style.strokeDashoffset = 176 - 176 * v / 100;
+    });
+  }
+  VI.onSeason((s, S) => {
+    $$("#seasonPicker button").forEach(b => b.classList.toggle("on", b.dataset.season === s));
+    $("#verdictTitle").textContent = `本季判讀：${S.icon} ${S.name}`;
+    $("#verdictText").textContent = S.verdict;
+    setTimeout(() => setGauges(S.gauges), 50);
+  });
+  VI.reveal();
+})();
+</script>
+</body>
+</html>
