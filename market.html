@@ -6,7 +6,7 @@
 <title>市場潮位｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -21,6 +21,8 @@
 
 <section class="section" style="padding-top:36px">
   <div class="container">
+    <div class="layer-daily" id="layerDaily"></div>
+
     <div class="tide-wall">
       <div class="card tide-vis reveal" id="tideVis">
         <div class="water" id="water"></div>
@@ -65,8 +67,8 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, toPing = VI.toPing, fmt = VI.fmt;
@@ -146,6 +148,7 @@
   /* 觀測項目 */
   const L = D.layers.find(l => l.id === "market");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">MARKET TIDE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  VI.layerDaily("market", "#layerDaily", { title: "市場潮位的最新動態", n: 3 });
   VI.reveal();
 })();
 </script>

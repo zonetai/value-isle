@@ -687,14 +687,28 @@ D.layers.forEach(l => layerCol[l.id] = new THREE.Color(l.hex));
 const ell = (o, a) => [Math.cos(a) * o.rx, Math.sin(a) * o.rz];
 function sail(obj, o, bob) { const [x, z] = ell(o, o.a), [x2, z2] = ell(o, o.a + 0.01 * Math.sign(o.w)); obj.position.set(x, seaY + bob, z); obj.rotation.y = -Math.atan2(z2 - z, x2 - x); }
 
+/* 影格率太低時自動降畫質：先降解析度，再關陰影 */
+const perf = { n: 0, sum: 0, level: 0 };
+function adapt(raw) {
+  if (perf.level >= 2 || document.hidden || raw > 0.5) return;
+  perf.n++; perf.sum += raw;
+  if (perf.n < 50) return;
+  const avg = perf.sum / perf.n; perf.n = 0; perf.sum = 0;
+  if (avg > 0.036) {
+    perf.level++;
+    if (perf.level === 1) { renderer.setPixelRatio(1); resize(); }
+    else { sun.castShadow = false; lampLights.forEach(l => l.visible = false); renderer.setPixelRatio(Math.min(1, window.devicePixelRatio * 0.8)); resize(); }
+  }
+}
+
 function animate() {
   requestAnimationFrame(animate);
-  const rdt = Math.min(clock.getDelta(), 0.05), dt = paused ? 0 : rdt; T += dt; RT += rdt;
+  const raw = clock.getDelta(), rdt = Math.min(raw, 0.1), dt = paused ? 0 : rdt; T += dt; RT += rdt; adapt(raw);
   const k = 1 - Math.exp(-rdt * 1.8);
 
   /* 開場：島從海裡浮上來，鏡頭推近 */
   if (rise < 1) {
-    rise = Math.min(1, rise + rdt / 2.8); const e = easeOut(rise);
+    rise = Math.min(1, rise + Math.min(raw, 0.25) / 2.8); const e = easeOut(rise);
     island.position.y = lerp(-9, 0, e); island.rotation.y = lerp(-0.5, 0, e);
     camera.position.lerpVectors(INTRO, HOME, easeInOut(rise));
     if (rise > 0.35 && !loaded) { loaded = true; loader.classList.add('off'); }

@@ -6,7 +6,7 @@
 <title>每日觀測｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
     <div>
       <span class="kicker">Daily Watch · 燈塔日誌</span>
       <h1>每日觀測</h1>
-      <p>燈塔每天早上掃過海面一圈：國際、政策、市場有什麼新動靜，各附一句「對估價的影響」與原始出處。專題整理近期大事，目前是美國期中選舉與九合一選舉的住宅議題。只整理、不預測，也不評論哪一方好壞。</p>
+      <p>這裡是四層動態的總覽。同樣的內容也會出現在各自的頁面：政策的進「政策」頁並接上時間軸，國際的進「國際」頁，市場與個案的進「市場潮位」與「調整儀」。每則附「對估價的影響」與原始出處；只整理、不預測，也不評論哪一方好壞。</p>
       <div class="daily-meta"><span class="live"><i></i>更新至 <b id="updated">—</b></span><span id="sched"></span><span id="count"></span></div>
     </div>
     <svg class="lh" viewBox="0 0 220 200" aria-hidden="true">
@@ -46,8 +46,8 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
@@ -59,7 +59,9 @@
   VI.loadDaily(DAILY => {
     if (!DAILY) { $("#feed").innerHTML = `<div class="card">今日資料載入失敗，請稍後重新整理。</div>`; return; }
     $("#updated").textContent = DAILY.updated; $("#sched").textContent = DAILY.schedule || ""; $("#count").textContent = `${DAILY.briefs.length} 則快訊・${DAILY.topics.length} 個專題`;
-    let view = location.hash.replace("#", "") || "briefs", cat = "全部";
+    let view = "briefs", cat = "全部";
+    const readHash = () => { const h = location.hash.replace("#", ""); if (h.startsWith("layer-")) { view = "briefs"; cat = h.slice(6); } else view = h || "briefs"; };
+    readHash();
     const tabs = [{ id: "briefs", t: "每日快訊" }, ...DAILY.topics.map(t => ({ id: t.id, t: "專題：" + t.title }))];
 
     function renderTabs(){
@@ -69,7 +71,7 @@
     function renderBriefs(){
       const cats = ["全部", ...D.layers.map(l => l.id)];
       $("#filters").innerHTML = cats.map(c => `<button class="chip ${c===cat?"on":""}" data-c="${c}">${c==="全部"?"全部":`<span class="dot" style="color:${layerOf(c).hex}"></span>${layerOf(c).name}`}</button>`).join("");
-      $$("#filters .chip").forEach(b => b.onclick = () => { cat = b.dataset.c; renderBriefs(); });
+      $$("#filters .chip").forEach(b => b.onclick = () => { cat = b.dataset.c; history.replaceState(null, "", cat === "全部" ? "#briefs" : "#layer-" + cat); renderBriefs(); });
       const list = DAILY.briefs.filter(b => cat === "全部" || b.layer === cat), days = [...new Set(list.map(b => b.d))];
       $("#feed").innerHTML = days.map(d => `<div class="day"><div class="day-head"><b>${fmtDate(d)}</b><span>${d}</span></div>${list.filter(b => b.d === d).map((b, i) => { const L = layerOf(b.layer); return `<article class="card brief" style="--c:${L.hex};animation-delay:${i*50}ms"><div class="meta"><span class="tag ${L.cls}">${L.name}</span>${b.tag?`<span class="tag">${esc(b.tag)}</span>`:""}</div><h3>${esc(b.t)}</h3><p>${esc(b.s)}</p>${b.i?`<div class="impact">${esc(b.i)}</div>`:""}<div class="src">${link(b.src, b.url)}</div></article>`; }).join("")}</div>`).join("") || `<div class="card">這個分類目前沒有快訊。</div>`;
     }
@@ -87,7 +89,7 @@
       if (t) renderTopic(t); else { view = "briefs"; renderBriefs(); }
     }
     render();
-    window.addEventListener("hashchange", () => { view = location.hash.replace("#", "") || "briefs"; render(); window.scrollTo({ top: 0 }); });
+    window.addEventListener("hashchange", () => { readHash(); render(); });
   });
 })();
 </script>

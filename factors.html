@@ -6,7 +6,7 @@
 <title>個別條件調整儀｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -67,13 +67,15 @@
       </div>
     </div>
 
+    <div class="layer-daily" id="layerDaily" style="margin-top:56px"></div>
+
     <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>估價師量這塊地時會看的八件事。</p></div></div>
     <div class="intl-grid" id="items"></div>
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, toPing = VI.toPing;
@@ -134,6 +136,7 @@
 
   const L = D.layers.find(l => l.id === "ind");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">INDIVIDUAL FACTORS</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  VI.layerDaily("ind", "#layerDaily", { title: "個案層級的最新動態", desc: "都更案、重大建設動工、嫌惡設施或災害事件等，有估價意義的個案新聞。", n: 3 });
   VI.reveal();
 })();
 </script>

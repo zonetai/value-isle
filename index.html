@@ -7,7 +7,7 @@
 <meta name="description" content="一塊地的價格，從四層看起：國際洋流、政策氣候、市場潮位、個別條件。由不動產估價師整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -114,9 +114,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/knowledge.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/knowledge.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -124,7 +124,7 @@
   $("#indexSub").textContent = `${D.layers.length} 個層次 ／ ${allItems.length} 個觀測項目 ／ 每項附「對估價的影響」`;
 
   /* 索引 */
-  let openLayer = null;
+  let openLayer = null; const newCount = {};
   function renderIndex(filter = "") {
     const q = filter.trim().toLowerCase();
     const list = $("#layerList"); list.innerHTML = "";
@@ -135,7 +135,7 @@
       row.className = "layer-row" + (openLayer === l.id ? " on" : "");
       row.style.setProperty("--c", l.color);
       const g = D.gauges.find(x => x.id === l.id);
-      row.innerHTML = `<span class="n">${g ? g.ico : "•"}</span><span class="t">${l.name}<small>${l.desc.split("。")[0]}</small></span><span class="cnt">${items.length} 項</span>`;
+      row.innerHTML = `<span class="n">${g ? g.ico : "•"}</span><span class="t">${l.name}<small>${newCount[l.id] ? `<em>近期 ${newCount[l.id]} 則動態</em>・` : ""}${l.desc.split("。")[0]}</small></span><span class="cnt">${items.length} 項</span>`;
       row.onclick = () => { window.ISLAND ? ISLAND.select(l.id) : toggle(l.id); };
       list.appendChild(row);
       if (openLayer === l.id || q) items.forEach((i, idx) => {
@@ -178,6 +178,8 @@
   /* 身分 */
   $("#heroRoles").innerHTML = "你的身分：" + D.roles.map((r, i) => `<a class="chip" href="roles.html#r${i}">${r.ico} ${r.t}</a>`).join("");
 
+  VI.dailyCounts(c => { Object.keys(c).forEach(k => newCount[k] = c[k].n); renderIndex($("#searchInput").value); });
+
   /* 底部跑馬燈：每日觀測最新幾則 */
   VI.loadDaily(DAILY => {
     if (!DAILY || !DAILY.briefs.length) return;
@@ -191,6 +193,6 @@
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=3"></script>
+<script type="module" src="assets/island.js?v=5"></script>
 </body>
 </html>

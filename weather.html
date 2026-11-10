@@ -6,7 +6,7 @@
 <title>估價氣象台｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -22,6 +22,7 @@
 <section class="section" style="padding-top:36px">
   <div class="container">
     <div class="board" id="board"></div>
+    <div class="daily-strip" id="dailyStrip"></div>
     <div class="verdict">
       <div class="card reveal">
         <span class="kicker">This Season</span>
@@ -44,8 +45,8 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -77,6 +78,10 @@
     setTimeout(() => setGauges(S.gauges), 50);
   });
   $("#macroMethod").textContent = D.macroMethod || "";
+  VI.dailyCounts((c, DAILY) => {
+    const order = ["intl", "policy", "market", "ind"];
+    $("#dailyStrip").innerHTML = `<div class="ds-head"><i class="ld-live"></i>最新觀測 · 更新至 ${DAILY.updated}</div>` + order.map(id => { const L = D.layers.find(l => l.id === id), x = c[id]; return `<a class="card" href="${L.page}#layerDaily" style="--c:${L.hex}"><span class="tag ${L.cls}">${L.name}</span><b>${x.latest ? VI.esc(x.latest.t) : "近期沒有新動態"}</b><small>${x.latest ? x.latest.d.slice(5).replace("-", "/") + "・共 " + x.n + " 則" : ""}</small></a>`; }).join("");
+  });
   VI.reveal();
 })();
 </script>

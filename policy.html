@@ -6,7 +6,7 @@
 <title>政策時間軸｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -21,6 +21,9 @@
 
 <section class="section" style="padding-top:28px">
   <div class="container">
+    <div class="layer-daily" id="layerDaily"></div>
+
+    <div class="section-head" style="margin-top:8px"><div><h2>政策時間軸</h2><p>從 2020 年的信用管制一路排到最近幾天的動態；標「近期動態」的事件來自每日觀測，附原文連結。</p></div></div>
     <div class="tl-player reveal">
       <button class="btn sm" id="tlPlay">▶ 播放</button>
       <button class="btn ghost sm" id="tlReset">⏮ 全部顯示</button>
@@ -35,13 +38,13 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
-  const catColor = { "信用管制":"var(--c-policy)", "稅制":"#b5452e", "交易限制":"#8a5a2b", "住宅政策":"var(--c-market)", "資訊透明":"var(--c-intl)", "利率":"var(--c-intl)", "國際":"#2a6f97", "都更危老":"var(--c-ind)", "其他":"var(--ink-3)", "追蹤中":"var(--ink-3)" };
-  const P = D.policies;
+  const catColor = { "信用管制":"var(--c-policy)", "稅制":"#b5452e", "交易限制":"#8a5a2b", "住宅政策":"var(--c-market)", "資訊透明":"var(--c-intl)", "利率":"var(--c-intl)", "國際":"#2a6f97", "都更危老":"var(--c-ind)", "其他":"var(--ink-3)", "近期動態":"var(--accent)", "追蹤中":"var(--ink-3)" };
+  let P = D.policies;
   const years = [...new Set(P.map(p => p.when.slice(0,4)))];
   $("#tlYears").innerHTML = years.map(y => `<span>${y}</span>`).join("");
   let tlCat = "全部";
@@ -51,7 +54,7 @@
     $$("#tlFilters .chip").forEach(b => b.onclick = () => { tlCat = b.dataset.cat; stop(); render(); });
     $("#timeline").innerHTML = P.map((p,i) => `<div class="tl-item reveal ${p.future?"future":""} ${tlCat!=="全部"&&p.cat!==tlCat?"hide":""}" data-i="${i}" style="--c:${catColor[p.cat]||'var(--ink)'}">
       <div class="when">${p.when}</div>
-      <div class="card"><span class="tag" style="background:${catColor[p.cat]||'var(--ink)'};color:#fff">${p.cat}</span> <b>${p.t}</b><p>${p.s}</p><div class="impact">${p.i}</div></div></div>`).join("");
+      <div class="card"><span class="tag" style="background:${catColor[p.cat]||'var(--ink)'};color:#fff">${p.cat}</span> <b>${p.t}</b><p>${p.s}</p><div class="impact">${p.i}</div>${p.url?`<div class="src"><a href="${p.url}" target="_blank" rel="noopener">${p.src} ↗</a></div>`:""}</div></div>`).join("");
     VI.reveal();
   }
   /* 播放器：依序點亮 */
@@ -75,6 +78,15 @@
   };
   $("#tlReset").onclick = showAll;
   render();
+  /* 把每日觀測裡屬於政策層的動態接在時間軸後面 */
+  VI.loadDaily(DAILY => {
+    if (!DAILY) return;
+    const recent = DAILY.briefs.filter(b => b.layer === "policy").slice(0, 12).reverse().map(b => ({ when: b.d, cat: "近期動態", t: b.t, s: b.s, i: b.i || "", src: b.src, url: b.url }));
+    if (!recent.length) return;
+    P = [...D.policies.filter(p => !p.future), ...recent, ...D.policies.filter(p => p.future)];
+    render();
+  });
+  VI.layerDaily("policy", "#layerDaily", { title: "政策氣候的最新動態" });
 
   const L = D.layers.find(l => l.id === "policy");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">POLICY CLIMATE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");

@@ -69,6 +69,13 @@
       <div class="goto"><a class="btn" href="${l.page}">進入「${l.name}」頁 →</a></div>`;
     drawer.classList.add("open");
     p.querySelector(".close").onclick = VI.closeDrawer;
+    VI.loadDaily(DAILY => {
+      if (!DAILY || !drawer.classList.contains("open")) return;
+      const news = DAILY.briefs.filter(b => b.layer === layerId).slice(0, 3); if (!news.length) return;
+      const box = document.createElement("div"); box.className = "dr-news";
+      box.innerHTML = `<div class="dr-news-head"><span><i class="ld-live"></i>最新動態</span><a href="daily.html#layer-${layerId}">全部 →</a></div>` + news.map(b => `<a href="${VI.esc(b.url)}" target="_blank" rel="noopener"><span class="date">${b.d.slice(5).replace("-", "/")}</span><span><b>${VI.esc(b.t)}</b><small>${VI.esc(b.i || b.s)}</small></span></a>`).join("");
+      const items = p.querySelector(".items"); if (items) p.insertBefore(box, items);
+    });
     if(focusTitle){ const el = [...p.querySelectorAll(".items .card")].find(c => c.querySelector("b").textContent === focusTitle); el && setTimeout(() => el.scrollIntoView({block:"center",behavior:"smooth"}), 120); }
   };
   VI.closeDrawer = () => drawer.classList.remove("open");
@@ -93,6 +100,26 @@
     s.onload = () => cb(window.DAILY); s.onerror = () => cb(null);
     document.head.appendChild(s);
   };
+
+  /* ---------- 各層頁面內嵌的「最新動態」（資料來自每日觀測） ---------- */
+  const srcLink = (src, url) => url ? `<a href="${VI.esc(url)}" target="_blank" rel="noopener">${VI.esc(src)} ↗</a>` : VI.esc(src || "");
+  const md = d => d.slice(5).replace("-", "/");
+  VI.layerDaily = (layerId, sel, opts = {}) => VI.loadDaily(DAILY => {
+    const el = $(sel), L = D.layers.find(l => l.id === layerId); if (!el || !L) return;
+    if (!DAILY) { el.style.display = "none"; return; }
+    const items = DAILY.briefs.filter(b => b.layer === layerId).slice(0, opts.n || 4), topics = DAILY.topics.filter(t => t.layer === layerId);
+    if (!items.length && !topics.length) { el.style.display = "none"; return; }
+    el.style.setProperty("--c", L.hex);
+    el.innerHTML = `<div class="ld-head"><div><span class="kicker"><i class="ld-live"></i>最新動態 · 更新至 ${DAILY.updated}</span><h2>${opts.title || L.name + "的最新動態"}</h2><p>${opts.desc || "每天早上自動整理，每則附出處與對估價的影響。"}</p></div><a class="btn ghost sm" href="daily.html#layer-${layerId}">看這一層全部動態 →</a></div>
+      ${topics.map(t => `<a class="card ld-topic" href="daily.html#${t.id}"><span class="tag ${L.cls}">專題</span><div><b>${VI.esc(t.title)}</b><small>${VI.esc(t.status || "")}</small><p>${VI.esc(t.summary || "")}</p></div><span class="go">看專題 →</span></a>`).join("")}
+      <div class="ld-grid">${items.map((b, i) => `<article class="card ld-item" style="animation-delay:${i * 60}ms"><div class="meta"><span class="date">${md(b.d)}</span>${b.tag ? `<span class="tag">${VI.esc(b.tag)}</span>` : ""}</div><h3>${VI.esc(b.t)}</h3><p>${VI.esc(b.s)}</p>${b.i ? `<div class="impact">${VI.esc(b.i)}</div>` : ""}<div class="src">${srcLink(b.src, b.url)}</div></article>`).join("")}</div>`;
+  });
+  /* 四層各有幾則新動態（氣象台與首頁索引用） */
+  VI.dailyCounts = cb => VI.loadDaily(DAILY => {
+    if (!DAILY) return; const out = {};
+    D.layers.forEach(l => { const list = DAILY.briefs.filter(b => b.layer === l.id); out[l.id] = { n: list.length, latest: list[0] || null }; });
+    cb(out, DAILY);
+  });
 
   /* ---------- 初始化季節（不彈提示） ---------- */
   document.body.dataset.season = VI.getSeason();

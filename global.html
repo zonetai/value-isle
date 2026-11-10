@@ -6,7 +6,7 @@
 <title>國際洋流｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -21,6 +21,9 @@
 
 <section class="section" style="padding-top:28px">
   <div class="container">
+    <div class="layer-daily" id="layerDaily"></div>
+
+    <div class="section-head" style="margin-top:8px"><div><h2>洋流怎麼流到臺灣</h2><p>點圖上的來源，會帶到對應的傳導路徑。</p></div></div>
     <div class="currents-map reveal">
       <svg viewBox="0 0 1000 420" id="map"></svg>
     </div>
@@ -31,8 +34,8 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -66,6 +69,7 @@
 
   const L = D.layers.find(l => l.id === "intl");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">GLOBAL CURRENTS</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  VI.layerDaily("intl", "#layerDaily", { title: "國際洋流的最新動態" });
   VI.reveal();
 })();
 </script>
