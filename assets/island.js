@@ -1,6 +1,6 @@
 /* ============================================================
    價值島 — 3D 島嶼場景 v2（Three.js，全部程式生成）
-   天空＝政策氣候、外海＝國際洋流、岸邊＝市場潮位、島上＝個別條件
+   天空＝政策氣候、外海＝國際海象、岸邊＝市場潮位、島上＝個別條件
    季節同時決定光線：復甦清晨、擴張正午、盤整黃昏、收縮夜晚
    ============================================================ */
 import * as THREE from 'three';
@@ -456,7 +456,7 @@ function makeBoat(c) { const g = new THREE.Group(); g.add(box(0.9, 0.2, 0.36, c,
 const boats = [[-11.4, 6.4, 0x2a6f97, 0.6], [-12.7, 2.0, 0xc0392b, -1.2]].map(([x, z, c, r]) => { const g = makeBoat(c); g.userData = { layer: 'market', ph: rand() * 6, r }; g.position.set(x, -4, z); g.rotation.y = r; scene.add(g); return g; });
 
 /* ============================================================
-   02 國際洋流：貨櫃輪、油輪、帆船、客機、洋流箭頭
+   02 國際海象：貨櫃輪、油輪、帆船、客機、海流箭頭
    ============================================================ */
 curLayer = 'intl';
 const zoneIntl = grp('intl'); scene.add(zoneIntl);
@@ -578,7 +578,7 @@ function makePin(text, num, layer, parent, pos, cls = '') {
   const o = new CSS2DObject(el); o.position.copy(pos); parent.add(o); return el;
 }
 makePin('政策氣候', '01', 'policy', balloon, new THREE.Vector3(0, 1.45, 0));
-makePin('國際洋流', '02', 'intl', ship, new THREE.Vector3(-0.4, 2.7, 0));
+makePin('國際海象', '02', 'intl', ship, new THREE.Vector3(-0.4, 2.7, 0));
 makePin('市場潮位', '03', 'market', gaugeG, new THREE.Vector3(0, 3.9, 0));
 makePin('個別條件', '04', 'ind', tower, new THREE.Vector3(0, 7.1, 0));
 makePin('每日觀測', '↗', null, lighthouse, new THREE.Vector3(0, 3.5, 0), 'link').onclick = () => { location.href = 'daily.html'; };
@@ -753,7 +753,7 @@ function animate() {
     f.position.set(u.base[0] + Math.cos(u.ang) * u.u * 1.7, seaY - 0.15 + Math.sin(u.u * Math.PI) * 1.15, u.base[1] + Math.sin(u.ang) * u.u * 1.7); f.rotation.set(0, -u.ang, (0.5 - u.u) * 2.4);
   });
 
-  /* 國際洋流 */
+  /* 國際海象 */
   SHIP.a += SHIP.w * dt; TANK.a += TANK.w * dt;
   sail(ship, SHIP, lerp(-4, Math.sin(T * 1.2) * 0.06, seaRise)); ship.rotation.z = Math.sin(T * 0.9) * 0.025;
   sail(tanker, TANK, lerp(-4, Math.sin(T * 1.0 + 2) * 0.05, seaRise));

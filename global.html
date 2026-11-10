@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>國際洋流｜價值島</title>
+<title>國際海象｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=7">
+<link rel="stylesheet" href="assets/style.css?v=8">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
     <span class="kicker">Global Currents</span>
-    <h1>國際洋流</h1>
+    <h1>國際海象</h1>
     <p>國際局勢不會直接出現在估價報告裡，但會透過資金成本、匯率、出口、營建成本與預期，一路流到估價師手上的參數。下面的傳導圖把這條路畫出來，卡片則逐一說明每股力量。</p>
     <div class="layer-badge" style="--c:var(--c-intl)"><i></i>LAYER 02 · 一般因素</div>
   </div>
@@ -23,20 +23,20 @@
   <div class="container">
     <div class="layer-daily" id="layerDaily"></div>
 
-    <div class="section-head" style="margin-top:8px"><div><h2>洋流怎麼流到一塊地的價格</h2><p>由左到右四站：外部力量、傳導管道、估價參數、價格。滑過任一格會亮起它的上下游，點一下可以固定，點空白處回到全貌；每個來源下方那行字是每日觀測抓到的最新消息。</p></div></div>
+    <div class="section-head" style="margin-top:8px"><div><h2>國際情勢怎麼傳到一塊地的價格</h2><p>由左到右四站：外部力量、傳導管道、估價參數、價格。滑過任一格會亮起它的上下游，點一下可以固定，點空白處回到全貌；每個來源下方那行字是每日觀測抓到的最新消息。</p></div></div>
     <div class="flowmap reveal" id="flowmap"></div>
     <div class="card flow-info" id="flowInfo"></div>
 
     <div class="section-head reveal" style="margin-top:36px"><div><h2>每股力量的傳導路徑</h2><p>滑過卡片，路徑會一步步亮起。</p></div></div>
     <div class="intl-grid" id="intlGrid"></div>
 
-    <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>估價師在「國際洋流」這一層會看的指標。</p></div></div>
+    <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>估價師在「國際海象」這一層會看的指標。</p></div></div>
     <div class="intl-grid" id="items"></div>
   </div>
 </section>
 
-<script src="assets/data.js?v=7"></script>
-<script src="assets/common.js?v=7"></script>
+<script src="assets/data.js?v=8"></script>
+<script src="assets/common.js?v=8"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
@@ -66,7 +66,7 @@
   const pathOf = l => { const [x1, x2] = X[l.st], dx = (x2 - x1) * 0.5; return `M${x1} ${l.y1} C ${x1 + dx} ${l.y1}, ${x2 - dx} ${l.y2}, ${x2} ${l.y2}`; };
   const cut = (s, n) => s.length > n ? s.slice(0, n) + "…" : s;
 
-  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="國際洋流傳導圖">
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="國際海象傳導圖">
     <defs><linearGradient id="fbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2fafd"/><stop offset="1" stop-color="#dcf0f6"/></linearGradient>
     <radialGradient id="fglow" cx="50%" cy="50%"><stop offset="0" stop-color="#8fd1e6" stop-opacity=".75"/><stop offset="1" stop-color="#8fd1e6" stop-opacity="0"/></radialGradient></defs>
     <rect width="${W}" height="${H}" rx="14" fill="url(#fbg)"/>`;
@@ -161,7 +161,7 @@
 
   const L = D.layers.find(l => l.id === "intl");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">GLOBAL CURRENTS</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
-  VI.layerDaily("intl", "#layerDaily", { title: "國際洋流的最新動態" });
+  VI.layerDaily("intl", "#layerDaily", { title: "國際海象的最新動態" });
   VI.reveal();
 })();
 </script>

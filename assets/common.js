@@ -28,7 +28,7 @@
   const nav = document.createElement("nav");
   nav.className = "nav";
   nav.innerHTML = `<div class="container">
-    <a class="brand" href="index.html"><span class="logo"></span><span><b>價值島</b><small>估價師的市場觀測站</small></span></a>
+    <a class="brand" href="index.html"><span class="logo"></span><span><b>價值島</b><small>中泰不動產智庫・市場觀測站</small></span></a>
     <button class="nav-toggle" aria-label="選單">☰</button>
     <div class="nav-links">${D.pages.map(p => `<a href="${p.href}" class="${p.href===here?"on":""}">${p.label}</a>`).join("")}</div>
     <div class="season" title="切換市場季節：天色、潮位與判讀都會跟著變">
@@ -42,7 +42,7 @@
   const foot = document.createElement("footer");
   foot.innerHTML = `<div class="container">
     <div><b>價值島 Value Isle</b>
-      <p style="margin:0 0 8px">由不動產估價師整理的市場觀測站。市場行情、政策動態、國際局勢、個別條件，四層一起看。本站內容為一般性資訊整理，不構成估價意見、投資或法律建議；個案估價請委託不動產估價師出具報告。</p>
+      <p style="margin:0 0 8px">由中泰不動產智庫整理的市場觀測站。市場行情、政策動態、國際局勢、個別條件，四層一起看。本站內容為一般性資訊整理，不構成估價意見、投資或法律建議；個案估價請委託不動產估價師出具報告。</p>
       <p style="margin:0">${VI.esc(D.brand)}</p></div>
     <div><b>資料來源</b><ul>
       <li>內政部地政司 不動產交易實價查詢服務系統（政府資料開放授權條款第 1 版）</li>

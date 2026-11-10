@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>價值島｜估價師的市場觀測站</title>
-<meta name="description" content="一塊地的價格，從四層看起：國際洋流、政策氣候、市場潮位、個別條件。由不動產估價師整理的互動式觀測站。">
+<title>價值島｜中泰不動產智庫的市場觀測站</title>
+<meta name="description" content="一塊地的價格，從四層看起：國際海象、政策氣候、市場潮位、個別條件。中泰不動產智庫整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=7">
+<link rel="stylesheet" href="assets/style.css?v=8">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -34,7 +34,7 @@
 
   <div class="scene-tools">
     <button data-tool="labels" class="on"><span>🏷️</span>標示</button>
-    <button data-tool="currents" class="on"><span>〰️</span>洋流</button>
+    <button data-tool="currents" class="on"><span>〰️</span>海流</button>
     <button data-tool="pause"><span>⏸</span>暫停</button>
     <button data-tool="bird"><span>🛰️</span>俯視</button>
     <button data-tool="home"><span>🏝️</span>全景</button>
@@ -43,9 +43,9 @@
 
   <!-- 左：介紹 -->
   <div class="hero-panel left">
-    <span class="kicker">Value Isle · 估價師的觀測站</span>
+    <span class="kicker">Value Isle · 中泰不動產智庫</span>
     <h1>一塊地的價格，<br>從四層看起。</h1>
-    <p class="lede">估價師看價格，不只看成交。外海的國際洋流、天上的政策氣候、岸邊的市場潮位，最後才落到島上這塊地本身的條件。拖動旋轉島嶼，點任一層的標示，或點島上走動的人聽一句估價小知識。</p>
+    <p class="lede">估價師看價格，不只看成交。外海的國際海象、天上的政策氣候、岸邊的市場潮位，最後才落到島上這塊地本身的條件。拖動旋轉島嶼，點任一層的標示，或點島上走動的人聽一句估價小知識。</p>
     <div class="layer-meter" id="layerMeter"></div>
     <div class="note" id="seasonNote"></div>
     <div class="cta">
@@ -93,7 +93,7 @@
         <span class="kicker">This Season</span>
         <h3 id="verdictTitle">本季判讀</h3>
         <p id="verdictText"></p>
-        <div class="flow"><span>國際洋流</span><i>→</i><span>資金成本</span><i>→</i><span>政策氣候</span><i>→</i><span>市場潮位</span><i>→</i><span>個別條件</span><i>→</i><span><b>價格</b></span></div>
+        <div class="flow"><span>國際海象</span><i>→</i><span>資金成本</span><i>→</i><span>政策氣候</span><i>→</i><span>市場潮位</span><i>→</i><span>個別條件</span><i>→</i><span><b>價格</b></span></div>
       </div>
       <div class="card">
         <span class="kicker">How to read</span>
@@ -105,9 +105,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=7"></script>
-<script src="assets/knowledge.js?v=7"></script>
-<script src="assets/common.js?v=7"></script>
+<script src="assets/data.js?v=8"></script>
+<script src="assets/knowledge.js?v=8"></script>
+<script src="assets/common.js?v=8"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -184,6 +184,6 @@
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=7"></script>
+<script type="module" src="assets/island.js?v=8"></script>
 </body>
 </html>

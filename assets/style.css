@@ -318,7 +318,7 @@ body[data-season="autumn"] .island-hero{background:linear-gradient(180deg,#f0d2b
 .tl-item.future .card{border-style:dashed;background:transparent}
 
 /* ============================================================
-   國際洋流
+   國際海象
    ============================================================ */
 .currents-map{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin-bottom:22px;overflow:hidden}
 .currents-map svg{width:100%;height:auto;display:block}
@@ -682,7 +682,7 @@ a.scene-hint b{color:var(--accent);font-size:.74rem}
 .layer-row .t small em{font-style:normal;color:var(--c);font-weight:700}
 
 /* ============================================================
-   國際洋流傳導圖
+   國際海象傳導圖
    ============================================================ */
 .flowmap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin-bottom:14px;overflow-x:auto}
 .flowmap svg{display:block;width:100%;min-width:900px;height:auto}
