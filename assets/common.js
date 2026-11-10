@@ -85,6 +85,15 @@
   };
   window.addEventListener("DOMContentLoaded", VI.reveal);
 
+  /* ---------- 每日觀測資料（每小時換一次網址，避開快取） ---------- */
+  VI.loadDaily = cb => {
+    if (window.DAILY) { cb(window.DAILY); return; }
+    const s = document.createElement("script");
+    s.src = "assets/daily.js?t=" + new Date().toISOString().slice(0, 13);
+    s.onload = () => cb(window.DAILY); s.onerror = () => cb(null);
+    document.head.appendChild(s);
+  };
+
   /* ---------- 初始化季節（不彈提示） ---------- */
   document.body.dataset.season = VI.getSeason();
   window.addEventListener("DOMContentLoaded", () => VI.setSeason(VI.getSeason(), true));

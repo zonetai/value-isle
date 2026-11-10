@@ -7,7 +7,7 @@
 <meta name="description" content="一塊地的價格，從四層看起：國際洋流、政策氣候、市場潮位、個別條件。由不動產估價師整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=3">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -71,7 +71,7 @@
     <div class="ctl"><button data-t="prev">⏮</button><button data-t="next">⏭</button><button data-t="exit">離開 ✕</button></div>
   </div>
 
-  <div class="scene-hint">拖曳旋轉 ・ 滾輪縮放 ・ 點標示看細節 ・ 點路人聽小知識</div>
+  <a class="scene-hint" id="ticker" href="daily.html"><span class="tk-hint">拖曳旋轉 ・ 滾輪縮放 ・ 點標示看細節 ・ 點路人聽小知識</span></a>
 </header>
 
 <!-- ================= 四層概覽 ================= -->
@@ -114,9 +114,9 @@
   </div>
 </section>
 
-<script src="assets/data.js"></script>
-<script src="assets/knowledge.js"></script>
-<script src="assets/common.js"></script>
+<script src="assets/data.js?v=3"></script>
+<script src="assets/knowledge.js?v=3"></script>
+<script src="assets/common.js?v=3"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -178,11 +178,19 @@
   /* 身分 */
   $("#heroRoles").innerHTML = "你的身分：" + D.roles.map((r, i) => `<a class="chip" href="roles.html#r${i}">${r.ico} ${r.t}</a>`).join("");
 
+  /* 底部跑馬燈：每日觀測最新幾則 */
+  VI.loadDaily(DAILY => {
+    if (!DAILY || !DAILY.briefs.length) return;
+    const items = DAILY.briefs.slice(0, 6), el = $("#ticker"); let i = -1;
+    const show = () => { i = (i + 1) % items.length; const b = items[i], L = D.layers.find(l => l.id === b.layer) || D.layers[0]; el.innerHTML = `<span class="tk-live"></span><b>每日觀測</b><span class="tk-date">${b.d.slice(5).replace("-", "/")}</span><span class="tk-dot" style="background:${L.hex}"></span><span class="tk-text">${VI.esc(b.t)}</span><span class="tk-go">→</span>`; el.classList.remove("tk-in"); void el.offsetWidth; el.classList.add("tk-in"); };
+    setTimeout(() => { show(); setInterval(show, 5200); }, 6500);
+  });
+
   /* 四層卡 */
   $("#layerCards").innerHTML = D.layers.map(l => `<a class="card layer-card reveal" href="${l.page}" style="--c:${l.color}"><span class="n">${l.n}</span><h3>${l.name}</h3><p>${l.desc}</p><div class="go">${l.items.length} 個觀測項目 →</div></a>`).join("");
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js"></script>
+<script type="module" src="assets/island.js?v=3"></script>
 </body>
 </html>

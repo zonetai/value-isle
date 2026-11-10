@@ -8,14 +8,15 @@ window.DATA = {
 
   pages: [
     { href: "index.html",   label: "島嶼" },
+    { href: "daily.html",   label: "每日觀測" },
     { href: "weather.html", label: "氣象台" },
     { href: "market.html",  label: "市場潮位" },
     { href: "policy.html",  label: "政策" },
     { href: "global.html",  label: "國際" },
     { href: "factors.html", label: "調整儀" },
-    { href: "report.html",  label: "報告怎麼看" },
-    { href: "renewal.html", label: "都更地主" },
-    { href: "buyer.html",   label: "買方路線" },
+    { href: "report.html",  label: "看報告" },
+    { href: "renewal.html", label: "都更" },
+    { href: "buyer.html",   label: "買方" },
     { href: "notes.html",   label: "手記" },
     { href: "roles.html",   label: "我是誰" },
     { href: "drill.html",   label: "小測" },

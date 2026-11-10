@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日觀測｜價值島</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=3">
+</head>
+<body>
+
+<section class="page-hero daily-hero">
+  <div class="container daily-hero-grid">
+    <div>
+      <span class="kicker">Daily Watch · 燈塔日誌</span>
+      <h1>每日觀測</h1>
+      <p>燈塔每天早上掃過海面一圈：國際、政策、市場有什麼新動靜，各附一句「對估價的影響」與原始出處。專題整理近期大事，目前是美國期中選舉與九合一選舉的住宅議題。只整理、不預測，也不評論哪一方好壞。</p>
+      <div class="daily-meta"><span class="live"><i></i>更新至 <b id="updated">—</b></span><span id="sched"></span><span id="count"></span></div>
+    </div>
+    <svg class="lh" viewBox="0 0 220 200" aria-hidden="true">
+      <g class="lh-beam"><polygon points="110,62 -40,20 -40,104" fill="#f2c14e" opacity=".35"/><polygon points="110,62 260,20 260,104" fill="#f2c14e" opacity=".2"/></g>
+      <path d="M40 186 Q110 150 180 186 Z" fill="#7fbf63"/>
+      <polygon points="92,176 128,176 121,74 99,74" fill="#faf6ea"/>
+      <polygon points="94.5,150 125.5,150 124,128 96,128" fill="#e4572e"/><polygon points="97.5,104 122.5,104 121.3,86 98.7,86" fill="#e4572e"/>
+      <rect x="95" y="68" width="30" height="6" fill="#3b4a5a"/><rect x="102" y="52" width="16" height="16" fill="#fff1c0"/><polygon points="98,52 122,52 110,38" fill="#3b4a5a"/>
+      <path class="lh-wave" d="M0 190 Q 20 182 40 190 T 80 190 T 120 190 T 160 190 T 200 190 T 240 190" fill="none" stroke="#2f8fb4" stroke-width="3"/>
+    </svg>
+  </div>
+</section>
+
+<section class="section" style="padding-top:28px">
+  <div class="container">
+    <div class="daily-tabs" id="tabs"></div>
+
+    <!-- 快訊 -->
+    <div id="view-briefs">
+      <div class="note-filters" id="filters"></div>
+      <div class="feed" id="feed"></div>
+    </div>
+
+    <!-- 專題 -->
+    <div id="view-topic" style="display:none"></div>
+
+    <p class="disclaimer" style="margin-top:28px">本頁為公開資訊的中立整理，每則附原始出處，內容以出處為準。選舉相關內容依議題列出各方公開主張，不預測選情、不代表任何立場；「對估價的影響」是一般性說明，不構成估價意見或投資建議。發現錯誤請以出處為準並告知更正。</p>
+  </div>
+</section>
+
+<script src="assets/data.js?v=3"></script>
+<script src="assets/common.js?v=3"></script>
+<script>
+(function(){
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
+  const layerOf = id => D.layers.find(l => l.id === id) || D.layers[0];
+  const link = (src, url) => url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(src)} ↗</a>` : esc(src || "");
+  const wk = ["日","一","二","三","四","五","六"];
+  const fmtDate = d => { const t = new Date(d + "T00:00:00"); return `${t.getMonth()+1} 月 ${t.getDate()} 日（${wk[t.getDay()]}）`; };
+
+  VI.loadDaily(DAILY => {
+    if (!DAILY) { $("#feed").innerHTML = `<div class="card">今日資料載入失敗，請稍後重新整理。</div>`; return; }
+    $("#updated").textContent = DAILY.updated; $("#sched").textContent = DAILY.schedule || ""; $("#count").textContent = `${DAILY.briefs.length} 則快訊・${DAILY.topics.length} 個專題`;
+    let view = location.hash.replace("#", "") || "briefs", cat = "全部";
+    const tabs = [{ id: "briefs", t: "每日快訊" }, ...DAILY.topics.map(t => ({ id: t.id, t: "專題：" + t.title }))];
+
+    function renderTabs(){
+      $("#tabs").innerHTML = tabs.map(t => `<button class="${t.id===view?"on":""}" data-v="${t.id}">${t.t}</button>`).join("");
+      $$("#tabs button").forEach(b => b.onclick = () => { view = b.dataset.v; history.replaceState(null, "", "#" + view); render(); });
+    }
+    function renderBriefs(){
+      const cats = ["全部", ...D.layers.map(l => l.id)];
+      $("#filters").innerHTML = cats.map(c => `<button class="chip ${c===cat?"on":""}" data-c="${c}">${c==="全部"?"全部":`<span class="dot" style="color:${layerOf(c).hex}"></span>${layerOf(c).name}`}</button>`).join("");
+      $$("#filters .chip").forEach(b => b.onclick = () => { cat = b.dataset.c; renderBriefs(); });
+      const list = DAILY.briefs.filter(b => cat === "全部" || b.layer === cat), days = [...new Set(list.map(b => b.d))];
+      $("#feed").innerHTML = days.map(d => `<div class="day"><div class="day-head"><b>${fmtDate(d)}</b><span>${d}</span></div>${list.filter(b => b.d === d).map((b, i) => { const L = layerOf(b.layer); return `<article class="card brief" style="--c:${L.hex};animation-delay:${i*50}ms"><div class="meta"><span class="tag ${L.cls}">${L.name}</span>${b.tag?`<span class="tag">${esc(b.tag)}</span>`:""}</div><h3>${esc(b.t)}</h3><p>${esc(b.s)}</p>${b.i?`<div class="impact">${esc(b.i)}</div>`:""}<div class="src">${link(b.src, b.url)}</div></article>`; }).join("")}</div>`).join("") || `<div class="card">這個分類目前沒有快訊。</div>`;
+    }
+    function renderTopic(t){
+      const L = layerOf(t.layer); let h = `<div class="topic-head card" style="--c:${L.hex}"><div class="meta"><span class="tag ${L.cls}">${L.name}</span><span class="mono">${esc(t.date || "")}</span></div><h2>${esc(t.title)}</h2><div class="status">${esc(t.status || "")}</div><p>${esc(t.summary || "")}</p></div>`;
+      if (t.groups) h += t.groups.map(g => `<div class="tgroup"><h3>${esc(g.name)}</h3><div class="tgrid">${g.items.map(it => `<div class="card titem"><b>${esc(it.t)}</b><p>${esc(it.s)}</p><div class="src">${link(it.src, it.url)}</div></div>`).join("")}</div></div>`).join("");
+      if (t.themes) h += `<div class="themes">${t.themes.map((th, i) => `<details class="card theme" ${i===0?"open":""}><summary><span class="n">${String(i+1).padStart(2,"0")}</span><span><b>${esc(th.t)}</b><small>${esc(th.s)}</small></span></summary><div class="pos">${th.positions.map(p => `<div class="p"><div class="who">${esc(p.who)}</div><div class="say">${esc(p.say)}</div><div class="src">${link(p.src, p.url)}${p.date?`　${esc(p.date)}`:""}</div></div>`).join("")}</div>${th.note?`<div class="tnote">${esc(th.note)}</div>`:""}<div class="impact">${esc(th.i)}</div></details>`).join("")}</div>`;
+      h += `<div class="two-col" style="margin-top:22px"><div class="card"><span class="kicker">估價師怎麼讀</span><p style="margin:8px 0 0;font-size:.95rem;color:var(--ink-2)">${esc(t.appraiser || "")}</p></div><div class="card"><span class="kicker">接下來看什麼</span><div class="bullets" style="margin-top:10px">${(t.watch || []).map(w => `<div>${esc(w)}</div>`).join("")}</div></div></div>`;
+      $("#view-topic").innerHTML = h;
+    }
+    function render(){
+      renderTabs();
+      const t = DAILY.topics.find(x => x.id === view);
+      $("#view-briefs").style.display = t ? "none" : ""; $("#view-topic").style.display = t ? "" : "none";
+      if (t) renderTopic(t); else { view = "briefs"; renderBriefs(); }
+    }
+    render();
+    window.addEventListener("hashchange", () => { view = location.hash.replace("#", "") || "briefs"; render(); window.scrollTo({ top: 0 }); });
+  });
+})();
+</script>
+</body>
+</html>
