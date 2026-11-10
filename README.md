@@ -3,7 +3,7 @@
 一塊地的價格，從四層看起：**國際海象、政策氣候、市場潮位、個別條件**。
 中泰不動產智庫整理的多頁式互動網站，讓一般人用估價師的視角看市場行情、政策動態、國際局勢與個別條件。
 
-線上版：https://zonetai.github.io/value-isle/
+線上版：https://zonetai.com/value-isle （經官網轉接；GitHub Pages 副本 https://zonetai.github.io/value-isle/ 標為不收錄）
 
 ## 頁面
 
