@@ -1,0 +1,28 @@
+{
+  "name": "value-isle",
+  "version": "2.0.0",
+  "private": true,
+  "description": "價值島：中泰不動產智庫的市場觀測站（Next.js，部署在 Vercel，掛在 zonetai.com/value-isle）",
+  "scripts": {
+    "dev": "next dev -p 3301",
+    "build": "next build",
+    "start": "next start -p 3301",
+    "typecheck": "tsc --noEmit",
+    "check:daily": "node --experimental-strip-types --no-warnings scripts/check-daily.mts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.12.3",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "6.0.3"
+  }
+}
