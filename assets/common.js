@@ -66,7 +66,7 @@
       <p style="color:var(--ink-2);margin:0">${l.desc}</p>
       <div class="why"><b>估價師怎麼看：</b>${l.why}</div>
       <div class="items">${l.items.map(i => `<div class="card" ${i.t===focusTitle?'style="border-color:var(--c)"':''}><b>${i.t}</b><p>${i.s}</p><div class="impact">⟶ 對估價的影響：${i.i}</div></div>`).join("")}</div>
-      <div class="goto"><a class="btn" href="${l.page}">進入「${l.name}」頁 →</a></div>`;
+      <div class="goto"><a class="btn" href="${l.page}">${l.page.startsWith("daily.html") ? "看這一層的最新動態" : "進入「" + l.name + "」頁"} →</a></div>`;
     drawer.classList.add("open");
     p.querySelector(".close").onclick = VI.closeDrawer;
     VI.loadDaily(DAILY => {

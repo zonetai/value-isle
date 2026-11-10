@@ -7,7 +7,7 @@
 <meta name="description" content="一塊地的價格，從四層看起：國際洋流、政策氣候、市場潮位、個別條件。由不動產估價師整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=5">
+<link rel="stylesheet" href="assets/style.css?v=6">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -50,7 +50,7 @@
     <div class="note" id="seasonNote"></div>
     <div class="cta">
       <button class="btn" id="btnTour">▶ 估價師帶路（約 1 分鐘）</button>
-      <a class="btn ghost" href="factors.html">試算個別條件</a>
+      <a class="btn ghost" href="daily.html">看每日觀測</a>
     </div>
     <div class="roles-row" id="heroRoles">你的身分：</div>
   </div>
@@ -82,15 +82,6 @@
       <a class="btn ghost" href="weather.html">先看今天的估價氣象 →</a>
     </div>
     <div class="layer-cards" id="layerCards"></div>
-    <div class="section-head reveal" style="margin-top:48px">
-      <div><span class="kicker">From Experience</span><h2>估價師的經驗頁</h2><p>從多年審查報告、都更審議、買房諮詢與專欄寫作裡整理出來的四頁。</p></div>
-    </div>
-    <div class="layer-cards">
-      <a class="card layer-card reveal" href="report.html" style="--c:var(--c-ind)"><span class="n">📄</span><h3>估價報告怎麼看</h3><p>報告裡有什麼、最常在哪裡出錯、怎麼用一般人的方法看出來。附一頁找碴遊戲。</p><div class="go">來自報告審查經驗 →</div></a>
-      <a class="card layer-card reveal" href="renewal.html" style="--c:var(--c-policy)"><span class="n">🏘️</span><h3>都更地主指南</h3><p>分回計算器、地主最該看懂的七件事、十二個誤區、八個警訊、五步檢查。</p><div class="go">來自都更審議經驗 →</div></a>
-      <a class="card layer-card reveal" href="buyer.html" style="--c:var(--c-market)"><span class="n">🏠</span><h3>買方看價路線</h3><p>八步打勾路線、開價判讀、急售訊號、仲介話術怎麼回。</p><div class="go">來自買房諮詢經驗 →</div></a>
-      <a class="card layer-card reveal" href="notes.html" style="--c:var(--c-intl)"><span class="n">✍️</span><h3>估價師手記</h3><p>專欄、投書與論文摘要：法拍三個價格、四貸同堂、松機遷建、權利變換制度。</p><div class="go">專欄摘要 →</div></a>
-    </div>
   </div>
 </section>
 
@@ -114,9 +105,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=5"></script>
-<script src="assets/knowledge.js?v=5"></script>
-<script src="assets/common.js?v=5"></script>
+<script src="assets/data.js?v=6"></script>
+<script src="assets/knowledge.js?v=6"></script>
+<script src="assets/common.js?v=6"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -189,10 +180,10 @@
   });
 
   /* 四層卡 */
-  $("#layerCards").innerHTML = D.layers.map(l => `<a class="card layer-card reveal" href="${l.page}" style="--c:${l.color}"><span class="n">${l.n}</span><h3>${l.name}</h3><p>${l.desc}</p><div class="go">${l.items.length} 個觀測項目 →</div></a>`).join("");
+  $("#layerCards").innerHTML = D.layers.map(l => `<a class="card layer-card reveal" href="${l.page}" style="--c:${l.color}"><span class="n">${l.n}</span><h3>${l.name}</h3><p>${l.desc}</p><div class="go">${l.page.startsWith("daily.html") ? "看最新動態" : l.items.length + " 個觀測項目"} →</div></a>`).join("");
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=5"></script>
+<script type="module" src="assets/island.js?v=6"></script>
 </body>
 </html>
