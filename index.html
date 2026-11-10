@@ -3,11 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#e4572e">
 <title>價值島｜中泰不動產智庫的市場觀測站</title>
 <meta name="description" content="一塊地的價格，從四層看起：國際海象、政策氣候、市場潮位、個別條件。中泰不動產智庫整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=8">
+<link rel="stylesheet" href="assets/style.css?v=9">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -105,9 +109,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=8"></script>
-<script src="assets/knowledge.js?v=8"></script>
-<script src="assets/common.js?v=8"></script>
+<script src="assets/data.js?v=9"></script>
+<script src="assets/knowledge.js?v=9"></script>
+<script src="assets/common.js?v=9"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -167,7 +171,7 @@
   });
 
   /* 身分 */
-  $("#heroRoles").innerHTML = "你的身分：" + D.roles.map((r, i) => `<a class="chip" href="roles.html#r${i}">${r.ico} ${r.t}</a>`).join("");
+  $("#heroRoles").innerHTML = "你的身分：" + D.roles.map((r, i) => r.group ? "" : `<a class="chip" href="roles.html#r${i}">${r.ico} ${r.t}</a>`).join("") + `<a class="chip" href="roles.html#pro">🎓 專業人士</a>`;
 
   VI.dailyCounts(c => { Object.keys(c).forEach(k => newCount[k] = c[k].n); renderIndex($("#searchInput").value); });
 
@@ -184,6 +188,6 @@
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=8"></script>
+<script type="module" src="assets/island.js?v=9"></script>
 </body>
 </html>

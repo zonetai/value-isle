@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#e4572e">
 <title>關於本站｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=8">
+<link rel="stylesheet" href="assets/style.css?v=9">
 </head>
 <body>
 
@@ -19,7 +23,7 @@
 </section>
 
 <section class="section" style="padding-top:28px">
-  <div class="container about-grid">
+  <div class="container" style="max-width:900px">
     <div class="card reveal">
       <h3>整理方式</h3>
       <p>價格由四層力量決定，對應估價學的一般因素（國際海象、政策氣候）、區域因素與期日修正（市場潮位）、個別因素（個別條件）。每一個觀測項目都附「對估價的影響」，說明它怎麼進到估價報告，不評價政策好壞。</p>
@@ -42,29 +46,11 @@
         <li>本站內容不構成估價意見、投資或法律建議；個案估價請委託不動產估價師出具報告。</li>
       </ul>
     </div>
-    <div>
-      <div class="card reveal">
-        <h3>怎麼更新</h3>
-        <p>所有數字與文字都在 <code>assets/data.js</code>，改完存檔、推上 GitHub 即可，不需要後端。</p>
-        <ul>
-          <li><b>market</b>：各區單價與逐季走勢</li>
-          <li><b>policies</b>：政策時間軸</li>
-          <li><b>intl</b>：國際海象卡片</li>
-          <li><b>seasons / gauges</b>：季節判讀與儀表</li>
-          <li><b>facts / tour</b>：島上居民的小知識與導覽旁白</li>
-        </ul>
-      </div>
-      <div class="card reveal" style="margin-top:14px">
-        <h3>設計與技術</h3>
-        <p>島的隱喻來自估價師的工作本身：價格受一般因素（國際、政策）、區域因素（市場）與個別因素（標的）層層影響，所以把它畫成海、天、潮、島四層。3D 場景以 Three.js 在瀏覽器即時繪製，全部程式生成，沒有外部模型或素材。原始碼公開於 <a href="https://github.com/zonetai/value-isle">GitHub</a>。</p>
-        <p id="brand" style="margin-top:8px"></p>
-      </div>
-    </div>
   </div>
 </section>
 
-<script src="assets/data.js?v=8"></script>
-<script src="assets/common.js?v=8"></script>
-<script>document.getElementById("brand").textContent = window.DATA.brand; window.VI.reveal();</script>
+<script src="assets/data.js?v=9"></script>
+<script src="assets/common.js?v=9"></script>
+<script>window.VI.reveal();</script>
 </body>
 </html>
