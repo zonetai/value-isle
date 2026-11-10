@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
 <meta name="theme-color" content="#e4572e">
 <link rel="canonical" href="https://zonetai.com/value-isle/policy.html">
 <meta property="og:url" content="https://zonetai.com/value-isle/policy.html">
@@ -13,16 +13,15 @@
 <title>政策時間軸｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="stylesheet" href="assets/style.css?v=14">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">Policy Climate</span>
     <h1>政策時間軸</h1>
     <p>把近年影響不動產價格的政策一字排開，2025 年起的事件來自估價師每月追蹤的一般因素分析。按「播放」讓事件依時間一個個亮起，每一條都附「對估價的影響」。不評論政策好壞，只說它怎麼改變價格形成的方式。</p>
-    <div class="layer-badge" style="--c:var(--c-policy)"><i></i>LAYER 01 · 一般因素</div>
+    <div class="layer-badge" style="--c:var(--c-policy)"><i></i>第 1 層・一般因素</div>
   </div>
 </section>
 
@@ -45,9 +44,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=13"></script>
-<script src="assets/icons.js?v=13"></script>
-<script src="assets/common.js?v=13"></script>
+<script src="assets/data.js?v=14"></script>
+<script src="assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=14"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -97,7 +96,7 @@
   VI.layerDaily("policy", "#layerDaily", { title: "政策氣候的最新動態" });
 
   const L = D.layers.find(l => l.id === "policy");
-  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">POLICY CLIMATE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
   VI.reveal();
 })();
 </script>

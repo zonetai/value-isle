@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
 <meta name="theme-color" content="#e4572e">
 <link rel="canonical" href="https://zonetai.com/value-isle/weather.html">
 <meta property="og:url" content="https://zonetai.com/value-isle/weather.html">
@@ -13,13 +13,12 @@
 <title>估價氣象台｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="stylesheet" href="assets/style.css?v=14">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">Appraiser's Weather</span>
     <h1>估價氣象台</h1>
     <p>四個儀表，對應估價師每天在看的四股力量。選一個「市場季節」，指針、天色與判讀會一起換。</p>
     <div class="season-picker" id="seasonPicker" style="margin-top:24px"></div>
@@ -32,29 +31,26 @@
     <div class="daily-strip" id="dailyStrip"></div>
     <div class="verdict">
       <div class="card reveal">
-        <span class="kicker">This Season</span>
         <h3 id="verdictTitle">本季判讀</h3>
         <p id="verdictText"></p>
         <div class="flow"><span>國際海象</span><i>→</i><span>資金成本</span><i>→</i><span>政策氣候</span><i>→</i><span>市場潮位</span><i>→</i><span>個別條件</span><i>→</i><span><b>價格</b></span></div>
       </div>
       <div class="card reveal">
-        <span class="kicker">How to read</span>
         <h3>怎麼讀這四個儀表</h3>
         <p style="font-size:.92rem">「資金活水」與「政策氣壓」是一般因素，決定需求曲線的位置；「市場潮位」是區域因素與期日修正，決定比較法案例的水位；「條件分化」提醒估價師這一季要在個別因素上花多少篇幅。四個儀表都偏右時，是最容易做出過度樂觀估值的季節。</p>
         <p class="disclaimer">儀表數值為依季節設定的示意判讀，不是量化指標；更新季節判讀請改 assets/data.js 的 seasons。</p>
       </div>
     </div>
     <div class="card reveal" style="margin-top:18px">
-      <span class="kicker">Method</span>
       <h3 style="font-family:var(--serif);font-size:1.3rem;font-weight:900;margin:6px 0">估價師每個月怎麼看一般因素</h3>
       <p style="font-size:.95rem;color:var(--ink-2)" id="macroMethod"></p>
     </div>
   </div>
 </section>
 
-<script src="assets/data.js?v=13"></script>
-<script src="assets/icons.js?v=13"></script>
-<script src="assets/common.js?v=13"></script>
+<script src="assets/data.js?v=14"></script>
+<script src="assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=14"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;

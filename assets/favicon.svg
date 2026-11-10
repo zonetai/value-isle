@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<defs><linearGradient id="g" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#e4572e"/><stop offset="1" stop-color="#f29e4c"/></linearGradient>
-<clipPath id="c"><rect width="64" height="64" rx="18"/></clipPath></defs>
-<g clip-path="url(#c)"><rect width="64" height="64" fill="url(#g)"/><rect y="47" width="64" height="17" fill="#000" opacity=".08"/></g>
-<path d="M13.5 47V40.3A10 10 0 0 1 23.5 30.3H40.5A10 10 0 0 1 50.5 40.3V47A3.5 3.5 0 0 1 47 50.5H17A3.5 3.5 0 0 1 13.5 47Z" fill="#fff8ee"/>
+<rect width="64" height="64" rx="15" fill="#e4572e"/>
+<path d="M11 41.5c2.6-6.2 11.2-9.8 21-9.8s18.4 3.6 21 9.8z" fill="#fff8ee"/>
+<path d="M22.5 34V25.5h7.5V34zM32.5 34V17h8.5v17z" fill="#fff8ee"/>
+<path d="M35.4 21.5h2.7M35.4 25.5h2.7M35.4 29.5h2.7M25 29.5h2.5" stroke="#e4572e" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M12 48.5c3.3 0 3.3-2 6.7-2s3.3 2 6.7 2 3.3-2 6.6-2 3.3 2 6.7 2 3.3-2 6.6-2 3.4 2 6.7 2" fill="none" stroke="#fff8ee" stroke-width="2.6" stroke-linecap="round" opacity=".75"/>
+<path d="M18 54.5c2.8 0 2.8-1.6 5.6-1.6s2.8 1.6 5.6 1.6 2.8-1.6 5.6-1.6 2.8 1.6 5.6 1.6 2.8-1.6 5.6-1.6" fill="none" stroke="#fff8ee" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
 </svg>

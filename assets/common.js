@@ -69,18 +69,18 @@
     const l = D.layers.find(x => x.id === layerId); if(!l) return;
     const p = drawer.querySelector(".panel"); p.style.setProperty("--c", l.color);
     p.innerHTML = `<button class="close" aria-label="關閉">${VI.icon("close")}</button>
-      <span class="kicker">LAYER ${l.n} · ${l.en}</span><h3>${l.name}</h3>
+      <span class="kicker">第 ${+l.n} 層</span><h3>${l.name}</h3>
       <p style="color:var(--ink-2);margin:0">${l.desc}</p>
       <div class="why"><b>估價師怎麼看：</b>${l.why}</div>
-      <div class="items">${l.items.map(i => `<div class="card" ${i.t===focusTitle?'style="border-color:var(--c)"':''}><b>${i.t}</b><p>${i.s}</p><div class="impact">⟶ 對估價的影響：${i.i}</div></div>`).join("")}</div>
-      <div class="goto"><a class="btn" href="${l.page}">${l.page.startsWith("daily.html") ? "看這一層的最新動態" : "進入「" + l.name + "」頁"} →</a></div>`;
+      <div class="items">${l.items.map(i => `<div class="card" ${i.t===focusTitle?'style="border-color:var(--c)"':''}><b>${i.t}</b><p>${i.s}</p><div class="impact"><b>對估價的影響：</b>${i.i}</div></div>`).join("")}</div>
+      <div class="goto"><a class="btn" href="${l.page}">${l.page.startsWith("daily.html") ? "看這一層的最新動態" : "進入「" + l.name + "」頁"}</a></div>`;
     drawer.classList.add("open");
     p.querySelector(".close").onclick = VI.closeDrawer;
     VI.loadDaily(DAILY => {
       if (!DAILY || !drawer.classList.contains("open")) return;
       const news = DAILY.briefs.filter(b => b.layer === layerId).slice(0, 3); if (!news.length) return;
       const box = document.createElement("div"); box.className = "dr-news";
-      box.innerHTML = `<div class="dr-news-head"><span><i class="ld-live"></i>最新動態</span><a href="daily.html#layer-${layerId}">全部 →</a></div>` + news.map(b => `<a href="${VI.esc(b.url)}" target="_blank" rel="noopener"><span class="date">${b.d.slice(5).replace("-", "/")}</span><span><b>${VI.esc(b.t)}</b><small>${VI.esc(b.i || b.s)}</small></span></a>`).join("");
+      box.innerHTML = `<div class="dr-news-head"><span><i class="ld-live"></i>最新動態</span><a href="daily.html#layer-${layerId}">全部動態</a></div>` + news.map(b => `<a href="${VI.esc(b.url)}" target="_blank" rel="noopener"><span class="date">${b.d.slice(5).replace("-", "/")}</span><span><b>${VI.esc(b.t)}</b><small>${VI.esc(b.i || b.s)}</small></span></a>`).join("");
       const items = p.querySelector(".items"); if (items) p.insertBefore(box, items);
     });
     if(focusTitle){ const el = [...p.querySelectorAll(".items .card")].find(c => c.querySelector("b").textContent === focusTitle); el && setTimeout(() => el.scrollIntoView({block:"center",behavior:"smooth"}), 120); }
@@ -117,8 +117,8 @@
     const items = DAILY.briefs.filter(b => b.layer === layerId).slice(0, opts.n || 4), topics = DAILY.topics.filter(t => t.layer === layerId);
     if (!items.length && !topics.length) { el.style.display = "none"; return; }
     el.style.setProperty("--c", L.hex);
-    el.innerHTML = `<div class="ld-head"><div><span class="kicker"><i class="ld-live"></i>最新動態 · 更新至 ${DAILY.updated}</span><h2>${opts.title || L.name + "的最新動態"}</h2><p>${opts.desc || "每天早上自動整理，每則附出處與對估價的影響。"}</p></div><a class="btn ghost sm" href="daily.html#layer-${layerId}">看這一層全部動態 →</a></div>
-      ${topics.map(t => `<a class="card ld-topic" href="daily.html#${t.id}"><span class="tag ${L.cls}">專題</span><div><b>${VI.esc(t.title)}</b><small>${VI.esc(t.status || "")}</small><p>${VI.esc(t.summary || "")}</p></div><span class="go">看專題 →</span></a>`).join("")}
+    el.innerHTML = `<div class="ld-head"><div><span class="kicker"><i class="ld-live"></i>最新動態 · 更新至 ${DAILY.updated}</span><h2>${opts.title || L.name + "的最新動態"}</h2><p>${opts.desc || "每天早上自動整理，每則附出處與對估價的影響。"}</p></div><a class="btn ghost sm" href="daily.html#layer-${layerId}">看這一層全部動態</a></div>
+      ${topics.map(t => `<a class="card ld-topic" href="daily.html#${t.id}"><span class="tag ${L.cls}">專題</span><div><b>${VI.esc(t.title)}</b><small>${VI.esc(t.status || "")}</small><p>${VI.esc(t.summary || "")}</p></div><span class="go">看專題</span></a>`).join("")}
       <div class="ld-grid">${items.map((b, i) => `<article class="card ld-item" style="animation-delay:${i * 60}ms"><div class="meta"><span class="date">${md(b.d)}</span>${b.tag ? `<span class="tag">${VI.esc(b.tag)}</span>` : ""}</div><h3>${VI.esc(b.t)}</h3><p>${VI.esc(b.s)}</p>${b.i ? `<div class="impact">${VI.esc(b.i)}</div>` : ""}<div class="src">${srcLink(b.src, b.url)}</div></article>`).join("")}</div>`;
   });
   /* 四層各有幾則新動態（氣象台與首頁索引用） */

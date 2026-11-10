@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
 <meta name="theme-color" content="#e4572e">
 <link rel="canonical" href="https://zonetai.com/value-isle/market.html">
 <meta property="og:url" content="https://zonetai.com/value-isle/market.html">
@@ -13,16 +13,15 @@
 <title>市場潮位｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="stylesheet" href="assets/style.css?v=14">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">Market Tide</span>
     <h1>市場潮位</h1>
     <p>直接接內政部實價登錄。臺北市 12 個行政區的住宅大樓成交單價，加上 2023 年以來的逐季走勢。潮水漲到哪，一眼看得出來。</p>
-    <div class="layer-badge" style="--c:var(--c-market)"><i></i>LAYER 03 · 區域因素 / 期日修正</div>
+    <div class="layer-badge" style="--c:var(--c-market)"><i></i>第 3 層・區域因素、期日修正</div>
   </div>
 </section>
 
@@ -37,7 +36,6 @@
         <div class="readout"><small id="tideName">臺北市平均</small><b id="tideVal">—</b><small id="tideSub"></small></div>
       </div>
       <div class="card reveal">
-        <span class="kicker">Pick a district</span>
         <h3 style="margin:6px 0 4px">點一個行政區，看它的潮位</h3>
         <p style="font-size:.84rem;color:var(--ink-3);margin:0 0 12px">近一年住宅大樓成交單價（萬元/坪）與件數；水位高低以最高區為滿水位。</p>
         <div class="district-grid" id="districtGrid"></div>
@@ -74,9 +72,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=13"></script>
-<script src="assets/icons.js?v=13"></script>
-<script src="assets/common.js?v=13"></script>
+<script src="assets/data.js?v=14"></script>
+<script src="assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=14"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, toPing = VI.toPing, fmt = VI.fmt;
@@ -155,7 +153,7 @@
   $("#qcaveat").textContent = M.quarterNoteCaveat || "";
   /* 觀測項目 */
   const L = D.layers.find(l => l.id === "market");
-  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">MARKET TIDE</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
   VI.layerDaily("market", "#layerDaily", { title: "市場潮位的最新動態", n: 3 });
   VI.reveal();
 })();

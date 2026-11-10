@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
 <meta name="theme-color" content="#e4572e">
 <link rel="canonical" href="https://zonetai.com/value-isle/global.html">
 <meta property="og:url" content="https://zonetai.com/value-isle/global.html">
@@ -13,16 +13,15 @@
 <title>國際海象｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="stylesheet" href="assets/style.css?v=14">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">Global Currents</span>
     <h1>國際海象</h1>
     <p>國際局勢不會直接出現在估價報告裡，但會透過資金成本、匯率、出口、營建成本與預期，一路流到估價師手上的參數。下面的傳導圖把這條路畫出來，卡片則逐一說明每股力量。</p>
-    <div class="layer-badge" style="--c:var(--c-intl)"><i></i>LAYER 02 · 一般因素</div>
+    <div class="layer-badge" style="--c:var(--c-intl)"><i></i>第 2 層・一般因素</div>
   </div>
 </section>
 
@@ -32,7 +31,7 @@
 
     <div class="section-head" style="margin-top:8px"><div><h2>國際情勢怎麼傳到一塊地的價格</h2><p>由左到右四站：外部力量、傳導管道、估價參數、價格。滑過任一格會亮起它的上下游，點一下可以固定，點空白處回到全貌；每個來源下方那行字是每日觀測抓到的最新消息。</p></div></div>
     <div class="flowmap reveal" id="flowmap"></div>
-    <p class="swipe-hint">← 左右滑動看完整傳導圖，點任一格看上下游 →</p>
+    <p class="swipe-hint">左右滑動看完整傳導圖，點任一格看上下游</p>
     <div class="card flow-info" id="flowInfo"></div>
 
     <div class="section-head reveal" style="margin-top:36px"><div><h2>每股力量的傳導路徑</h2><p>滑過卡片，路徑會一步步亮起。</p></div></div>
@@ -43,16 +42,16 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=13"></script>
-<script src="assets/icons.js?v=13"></script>
-<script src="assets/common.js?v=13"></script>
+<script src="assets/data.js?v=14"></script>
+<script src="assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=14"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
 
   /* ---------- 傳導路徑卡片 ---------- */
   const cards = D.intl;
-  $("#intlGrid").innerHTML = cards.map((c,i) => `<div class="card intl-card reveal" data-i="${i}"><div class="ico">${VI.icon(c.ico)}</div><span class="from">FROM ${c.from}</span><h3>${c.t}</h3><p>${c.s}</p><div class="path">${c.path.map(p => `<span>${p}</span>`).join("")}</div></div>`).join("");
+  $("#intlGrid").innerHTML = cards.map((c,i) => `<div class="card intl-card reveal" data-i="${i}"><div class="ico">${VI.icon(c.ico)}</div><span class="from">${c.from}</span><h3>${c.t}</h3><p>${c.s}</p><div class="path">${c.path.map(p => `<span>${p}</span>`).join("")}</div></div>`).join("");
 
   /* ---------- 傳導圖 ---------- */
   const F = D.flow, W = 1180, H = 650, TX = 1078, TY = 326;
@@ -80,7 +79,7 @@
     <radialGradient id="fglow" cx="50%" cy="50%"><stop offset="0" stop-color="#8fd1e6" stop-opacity=".75"/><stop offset="1" stop-color="#8fd1e6" stop-opacity="0"/></radialGradient></defs>
     <rect width="${W}" height="${H}" rx="14" fill="url(#fbg)"/>`;
   for (let i = 0; i < 9; i++) svg += `<path class="wv" style="animation-delay:${-i * 0.8}s" d="M-40 ${70 + i * 66} Q 80 ${58 + i * 66} 200 ${70 + i * 66} T 440 ${70 + i * 66} T 680 ${70 + i * 66} T 920 ${70 + i * 66} T 1160 ${70 + i * 66} T 1400 ${70 + i * 66}" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.2"/>`;
-  [["外部力量", "GLOBAL FORCES", COL.s.x + 4, "start"], ["傳導管道", "CHANNELS", COL.c.x + 4, "start"], ["估價參數", "APPRAISAL INPUTS", COL.p.x + 4, "start"], ["價格", "PRICE", TX, "middle"]].forEach(([t, e, x, a]) => { svg += `<text class="hd-en" x="${x}" y="26" text-anchor="${a}">${e}</text><text class="hd" x="${x}" y="50" text-anchor="${a}">${t}</text>`; });
+  [["外部力量", "GLOBAL FORCES", COL.s.x + 4, "start"], ["傳導管道", "CHANNELS", COL.c.x + 4, "start"], ["估價參數", "APPRAISAL INPUTS", COL.p.x + 4, "start"], ["價格", "PRICE", TX, "middle"]].forEach(([t, e, x, a]) => { svg += `<text class="hd" x="${x}" y="40" text-anchor="${a}">${t}</text>`; });
 
   [...L1, ...L2, ...L3].forEach((l, i) => {
     const d = pathOf(l), c = colorOf(l);
@@ -91,7 +90,7 @@
 
   F.sources.forEach(n => { const x = COL.s.x, w = COL.s.w;
     svg += `<g class="n" data-k="s" data-id="${n.id}" style="--nc:${n.color}"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 10}" width="4" height="${n.h - 20}" rx="2" fill="${n.color}"/>
-      <use href="#i-${n.ico}" x="${x + 13}" y="${n.y + 11}" width="23" height="23" style="color:${n.color}"/><text class="nm" x="${x + 44}" y="${n.y + 24}">${n.name}</text><text class="tg" x="${x + 44}" y="${n.y + 37}">${n.en}</text>
+      <use href="#i-${n.ico}" x="${x + 13}" y="${n.y + 11}" width="23" height="23" style="color:${n.color}"/><text class="nm" x="${x + 44}" y="${n.y + 28}">${n.name}</text>
       <text class="live" id="live_${n.id}" x="${x + 14}" y="${n.y + 55}">▸ ${esc(cut(n.now, 19))}</text><title>${esc(n.now)}</title></g>`; });
   F.channels.forEach(n => { const x = COL.c.x, w = COL.c.w;
     svg += `<g class="n" data-k="c" data-id="${n.id}" style="--nc:#2f8fb4"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 12}" width="4" height="${n.h - 24}" rx="2" fill="#2f8fb4"/>
@@ -134,7 +133,7 @@
     const n = byId[id], el = $("#flowInfo"); let tags = [], head, body, extra = "";
     if (k === "s") {
       const c = cards[n.card]; tags = n.tags; el.style.setProperty("--c", n.color);
-      head = `<span class="kicker">${n.en} · 外部力量</span><h3>${VI.icon(n.ico)}${n.name}</h3><p>${c ? c.s : n.now}</p>`;
+      head = `<span class="kicker">外部力量</span><h3>${VI.icon(n.ico)}${n.name}</h3><p>${c ? c.s : n.now}</p>`;
       extra = c ? `<div style="margin-top:10px"><button class="btn ghost sm" data-card="${n.card}">看完整傳導路徑 ↓</button></div>` : "";
     } else {
       F.sources.filter(s => t.S.has(s.id)).forEach(s => tags = tags.concat(s.tags)); el.style.setProperty("--c", k === "c" ? "#2f8fb4" : "#5f9d4c");
@@ -169,7 +168,7 @@
   });
 
   const L = D.layers.find(l => l.id === "intl");
-  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">GLOBAL CURRENTS</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
+  $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
   VI.layerDaily("intl", "#layerDaily", { title: "國際海象的最新動態" });
   VI.reveal();
 })();
