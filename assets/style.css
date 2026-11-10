@@ -715,3 +715,11 @@ a.scene-hint b{color:var(--accent);font-size:.74rem}
 .flow-info .news a{display:block;text-decoration:none;padding:7px 0;border-bottom:1px dashed var(--line);font-size:.86rem}
 .flow-info .news a:hover{color:var(--c)}
 .flow-info .news small{display:block;color:var(--ink-3);font-size:.74rem}
+
+/* 手記：年份分段 */
+#yearBar .chip small{margin-left:5px;color:var(--ink-3);font-family:var(--mono);font-size:.7rem}
+#yearBar .chip.on small{color:inherit}
+.year-head{grid-column:1/-1;display:flex;align-items:baseline;gap:10px;margin:18px 0 -2px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.year-head:first-child{margin-top:0}
+.year-head b{font-family:var(--serif);font-size:1.5rem;font-weight:900}
+.year-head span{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
