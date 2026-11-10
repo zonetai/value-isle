@@ -25,8 +25,9 @@
 - 每日觀測：`assets/daily.js`，由每日排程自動更新（保留 45 天、60 則）
 - 市場數字、政策時間軸、國際海象、季節判讀：`assets/data.js`
 - 手記、小測題庫、路人小知識：`assets/knowledge.js`
+- 圖示：`assets/icons.js`（自繪線條 icon）。`data.js` 的 `icon`／`ico` 欄位填這裡的名稱，例如 `ico:"bank"`；要新增圖示就在這個檔案加一筆
 
-改完存檔、推上 `main` 即可，GitHub Pages 會自動重新發布。
+改完存檔、推上 `main` 即可，GitHub Pages 會自動重新發布。改了 `assets/` 裡的樣式或程式，記得把各頁 `?v=` 的版本號加 1，瀏覽器才會抓新檔。
 
 ## 資料來源
 

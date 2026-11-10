@@ -14,7 +14,7 @@
 <meta name="description" content="一塊地的價格，從四層看起：國際海象、政策氣候、市場潮位、個別條件。中泰不動產智庫整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=12">
+<link rel="stylesheet" href="assets/style.css?v=13">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -40,12 +40,12 @@
   </div>
 
   <div class="scene-tools">
-    <button data-tool="labels" class="on"><span>🏷️</span>標示</button>
-    <button data-tool="currents" class="on"><span>〰️</span>海流</button>
-    <button data-tool="pause"><span>⏸</span>暫停</button>
-    <button data-tool="bird"><span>🛰️</span>俯視</button>
-    <button data-tool="home"><span>🏝️</span>全景</button>
-    <button data-tool="tour"><span>▶</span>估價師帶路</button>
+    <button data-tool="labels" class="on"><span><svg class="ic"><use href="#i-tag"/></svg></span>標示</button>
+    <button data-tool="currents" class="on"><span><svg class="ic"><use href="#i-current"/></svg></span>海流</button>
+    <button data-tool="pause"><span><svg class="ic"><use href="#i-pause"/></svg></span><b>暫停</b></button>
+    <button data-tool="bird"><span><svg class="ic"><use href="#i-target"/></svg></span>俯視</button>
+    <button data-tool="home"><span><svg class="ic"><use href="#i-isle"/></svg></span>全景</button>
+    <button data-tool="tour"><span><svg class="ic"><use href="#i-play"/></svg></span>估價師帶路</button>
   </div>
 
   <!-- 左：介紹 -->
@@ -56,7 +56,7 @@
     <div class="layer-meter" id="layerMeter"></div>
     <div class="note" id="seasonNote"></div>
     <div class="cta">
-      <button class="btn" id="btnTour">▶ 估價師帶路（約 1 分鐘）</button>
+      <button class="btn" id="btnTour"><svg class="ic"><use href="#i-play"/></svg>估價師帶路（約 1 分鐘）</button>
       <a class="btn ghost" href="daily.html">看每日觀測</a>
     </div>
     <div class="roles-row" id="heroRoles">你的身分：</div>
@@ -67,7 +67,7 @@
     <span class="kicker">Observatory · 觀測索引</span>
     <h2>四股力量，<br>一塊地的價格。</h2>
     <p class="sub" id="indexSub"></p>
-    <label class="search"><span>🔍</span><input id="searchInput" placeholder="搜尋項目、關鍵字…"><kbd>/</kbd></label>
+    <label class="search"><svg class="ic"><use href="#i-search"/></svg><input id="searchInput" placeholder="搜尋項目、關鍵字…"><kbd>/</kbd></label>
     <div class="layer-list" id="layerList"></div>
   </aside>
 
@@ -75,7 +75,7 @@
     <span class="kicker">估價師帶路</span>
     <h4></h4><p></p>
     <div class="bar"><i></i></div>
-    <div class="ctl"><button data-t="prev">⏮</button><button data-t="next">⏭</button><button data-t="exit">離開 ✕</button></div>
+    <div class="ctl"><button data-t="prev" aria-label="上一站"><svg class="ic"><use href="#i-prev"/></svg></button><button data-t="next" aria-label="下一站"><svg class="ic"><use href="#i-next"/></svg></button><button data-t="exit">離開 <svg class="ic"><use href="#i-close"/></svg></button></div>
   </div>
 
   <a class="scene-hint" id="ticker" href="daily.html"><span class="tk-hint">拖曳旋轉 ・ 滾輪縮放 ・ 點標示看細節 ・ 點路人聽小知識</span></a>
@@ -112,9 +112,10 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=12"></script>
-<script src="assets/knowledge.js?v=12"></script>
-<script src="assets/common.js?v=12"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/knowledge.js?v=13"></script>
+<script src="assets/icons.js?v=13"></script>
+<script src="assets/common.js?v=13"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -134,7 +135,7 @@
       row.className = "layer-row" + (openLayer === l.id ? " on" : "");
       row.style.setProperty("--c", l.color);
       const g = D.gauges.find(x => x.id === l.id);
-      row.innerHTML = `<span class="n">${g ? g.ico : "•"}</span><span class="t">${l.name}<small>${newCount[l.id] ? `<em>近期 ${newCount[l.id]} 則動態</em>・` : ""}${l.desc.split("。")[0]}</small></span><span class="cnt">${items.length} 項</span>`;
+      row.innerHTML = `<span class="n">${g ? VI.icon(g.ico) : ""}</span><span class="t">${l.name}<small>${newCount[l.id] ? `<em>近期 ${newCount[l.id]} 則動態</em>・` : ""}${l.desc.split("。")[0]}</small></span><span class="cnt">${items.length} 項</span>`;
       row.onclick = () => { window.ISLAND ? ISLAND.select(l.id) : toggle(l.id); };
       list.appendChild(row);
       if (openLayer === l.id || q) items.forEach((i, idx) => {
@@ -157,7 +158,7 @@
     if (t === "labels" || t === "currents" || t === "pause") b.classList.toggle("on");
     if (t === "labels") ISLAND.labels(b.classList.contains("on"));
     if (t === "currents") ISLAND.currents(b.classList.contains("on"));
-    if (t === "pause") ISLAND.pause(b.classList.contains("on"));
+    if (t === "pause") { const p = b.classList.contains("on"); ISLAND.pause(p); b.querySelector("span").innerHTML = VI.icon(p ? "play" : "pause"); b.querySelector("b").textContent = p ? "繼續" : "暫停"; }
     if (t === "bird") ISLAND.bird();
     if (t === "home") ISLAND.home();
     if (t === "tour") ISLAND.startTour();
@@ -168,14 +169,14 @@
   /* 季節文字 */
   VI.onSeason((s, S) => {
     $("#seasonNote").textContent = S.note;
-    $("#layerMeter").innerHTML = D.gauges.map((g, i) => `<div style="--c:${g.color}"><span>${g.ico} ${g.name}</span><span class="bar"><i></i></span><b>${S.gauges[i]}</b></div>`).join("");
+    $("#layerMeter").innerHTML = D.gauges.map((g, i) => `<div style="--c:${g.color}"><span>${VI.icon(g.ico)}${g.name}</span><span class="bar"><i></i></span><b>${S.gauges[i]}</b></div>`).join("");
     requestAnimationFrame(() => requestAnimationFrame(() => $$("#layerMeter .bar i").forEach((b, i) => b.style.width = S.gauges[i] + "%")));
-    $("#verdictTitle").textContent = `本季判讀：${S.icon} ${S.name}`;
+    $("#verdictTitle").innerHTML = `本季判讀：${VI.icon(S.icon)}${S.name}`;
     $("#verdictText").textContent = S.verdict;
   });
 
   /* 身分 */
-  $("#heroRoles").innerHTML = "你的身分：" + D.roles.map((r, i) => r.group ? "" : `<a class="chip" href="roles.html#r${i}">${r.ico} ${r.t}</a>`).join("") + `<a class="chip" href="roles.html#pro">🎓 專業人士</a>`;
+  $("#heroRoles").innerHTML = "你的身分：" + D.roles.map((r, i) => r.group ? "" : `<a class="chip" href="roles.html#r${i}">${VI.icon(r.ico)}${r.t}</a>`).join("") + `<a class="chip" href="roles.html#pro">${VI.icon("cap")}專業人士</a>`;
 
   VI.dailyCounts(c => { Object.keys(c).forEach(k => newCount[k] = c[k].n); renderIndex($("#searchInput").value); });
 
@@ -192,6 +193,6 @@
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=12"></script>
+<script type="module" src="assets/island.js?v=13"></script>
 </body>
 </html>

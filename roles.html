@@ -13,7 +13,7 @@
 <title>我是誰｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=12">
+<link rel="stylesheet" href="assets/style.css?v=13">
 </head>
 <body>
 
@@ -36,8 +36,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=12"></script>
-<script src="assets/common.js?v=12"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/icons.js?v=13"></script>
+<script src="assets/common.js?v=13"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -51,7 +52,7 @@
     <g class="zone" data-z="ind"><polygon points="160,200 260,230 380,200 360,160 260,140 180,160" fill="#8cc271"/><rect x="235" y="90" width="34" height="80" fill="#e9eef3"/><rect x="275" y="120" width="34" height="50" fill="#f2c9b6"/><rect x="200" y="130" width="30" height="40" fill="#d9c7a6"/><text x="270" y="250" text-anchor="middle" font-size="12" font-weight="700" fill="#7b4fa3">04 個別條件</text></g>
   </svg>`;
   function render(){
-    const card = (r,i) => `<div class="card role-card reveal in ${on===i?"on":""}" data-i="${i}" id="r${i}"><div class="ico">${r.ico}</div><h3>${r.t}</h3><p>${r.s}</p><div class="layers">${r.layers.map(id => `<span class="tag ${layerOf(id).cls}">${layerOf(id).name}</span>`).join("")}</div><div class="svc">${r.svc}</div></div>`;
+    const card = (r,i) => `<div class="card role-card reveal in ${on===i?"on":""}" data-i="${i}" id="r${i}"><div class="ico">${VI.icon(r.ico)}</div><h3>${r.t}</h3><p>${r.s}</p><div class="layers">${r.layers.map(id => `<span class="tag ${layerOf(id).cls}">${layerOf(id).name}</span>`).join("")}</div><div class="svc">${r.svc}</div></div>`;
     $("#roleGrid").innerHTML = D.roles.map((r,i) => r.group ? "" : card(r,i)).join("");
     $("#proGrid").innerHTML = D.roles.map((r,i) => r.group === "pro" ? card(r,i) : "").join("");
     $$(".role-card").forEach(c => c.onclick = () => { on = on === +c.dataset.i ? null : +c.dataset.i; render(); if (on !== null) detEl().scrollIntoView({ block: "nearest", behavior: "smooth" }); });
@@ -62,7 +63,7 @@
       const r = D.roles[on];
       det.classList.add("open");
       const deep = null;
-      det.innerHTML = `<div><span class="kicker">${r.ico} ${r.t}${r.group === "pro" ? " 怎麼用這座島" : " 的看價路線"}</span><ol class="route">${r.steps.map((s,i) => `<li data-n="${i+1}">${s}</li>`).join("")}</ol><div style="margin-top:10px;font-size:.84rem;color:var(--ink-3)">${r.svc}</div><div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${deep?`<a class="btn sm" href="${deep[0]}">深入：${deep[1]} →</a>`:""}${r.layers.map(id => `<a class="chip" href="${layerOf(id).page}">${layerOf(id).n} ${layerOf(id).name} →</a>`).join("")}</div></div><div class="role-mini">${mini()}</div>`;
+      det.innerHTML = `<div><span class="kicker">${VI.icon(r.ico)}${r.t}${r.group === "pro" ? " 怎麼用這座島" : " 的看價路線"}</span><ol class="route">${r.steps.map((s,i) => `<li data-n="${i+1}">${s}</li>`).join("")}</ol><div style="margin-top:10px;font-size:.84rem;color:var(--ink-3)">${r.svc}</div><div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${deep?`<a class="btn sm" href="${deep[0]}">深入：${deep[1]} →</a>`:""}${r.layers.map(id => `<a class="chip" href="${layerOf(id).page}">${layerOf(id).n} ${layerOf(id).name} →</a>`).join("")}</div></div><div class="role-mini">${mini()}</div>`;
       // 依序亮起該身分關心的層次
       r.layers.forEach((id, i) => setTimeout(() => det.querySelector(`.zone[data-z="${id}"]`)?.classList.add("on"), 200 + i * 350));
     }

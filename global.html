@@ -13,7 +13,7 @@
 <title>國際海象｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=12">
+<link rel="stylesheet" href="assets/style.css?v=13">
 </head>
 <body>
 
@@ -43,15 +43,16 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=12"></script>
-<script src="assets/common.js?v=12"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/icons.js?v=13"></script>
+<script src="assets/common.js?v=13"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
 
   /* ---------- 傳導路徑卡片 ---------- */
   const cards = D.intl;
-  $("#intlGrid").innerHTML = cards.map((c,i) => `<div class="card intl-card reveal" data-i="${i}"><div class="ico">${c.ico}</div><span class="from">FROM ${c.from}</span><h3>${c.t}</h3><p>${c.s}</p><div class="path">${c.path.map(p => `<span>${p}</span>`).join("")}</div></div>`).join("");
+  $("#intlGrid").innerHTML = cards.map((c,i) => `<div class="card intl-card reveal" data-i="${i}"><div class="ico">${VI.icon(c.ico)}</div><span class="from">FROM ${c.from}</span><h3>${c.t}</h3><p>${c.s}</p><div class="path">${c.path.map(p => `<span>${p}</span>`).join("")}</div></div>`).join("");
 
   /* ---------- 傳導圖 ---------- */
   const F = D.flow, W = 1180, H = 650, TX = 1078, TY = 326;
@@ -90,7 +91,7 @@
 
   F.sources.forEach(n => { const x = COL.s.x, w = COL.s.w;
     svg += `<g class="n" data-k="s" data-id="${n.id}" style="--nc:${n.color}"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 10}" width="4" height="${n.h - 20}" rx="2" fill="${n.color}"/>
-      <text x="${x + 14}" y="${n.y + 31}" font-size="20">${n.ico}</text><text class="nm" x="${x + 44}" y="${n.y + 24}">${n.name}</text><text class="tg" x="${x + 44}" y="${n.y + 37}">${n.en}</text>
+      <use href="#i-${n.ico}" x="${x + 13}" y="${n.y + 11}" width="23" height="23" style="color:${n.color}"/><text class="nm" x="${x + 44}" y="${n.y + 24}">${n.name}</text><text class="tg" x="${x + 44}" y="${n.y + 37}">${n.en}</text>
       <text class="live" id="live_${n.id}" x="${x + 14}" y="${n.y + 55}">▸ ${esc(cut(n.now, 19))}</text><title>${esc(n.now)}</title></g>`; });
   F.channels.forEach(n => { const x = COL.c.x, w = COL.c.w;
     svg += `<g class="n" data-k="c" data-id="${n.id}" style="--nc:#2f8fb4"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 12}" width="4" height="${n.h - 24}" rx="2" fill="#2f8fb4"/>
@@ -133,7 +134,7 @@
     const n = byId[id], el = $("#flowInfo"); let tags = [], head, body, extra = "";
     if (k === "s") {
       const c = cards[n.card]; tags = n.tags; el.style.setProperty("--c", n.color);
-      head = `<span class="kicker">${n.en} · 外部力量</span><h3>${n.ico} ${n.name}</h3><p>${c ? c.s : n.now}</p>`;
+      head = `<span class="kicker">${n.en} · 外部力量</span><h3>${VI.icon(n.ico)}${n.name}</h3><p>${c ? c.s : n.now}</p>`;
       extra = c ? `<div style="margin-top:10px"><button class="btn ghost sm" data-card="${n.card}">看完整傳導路徑 ↓</button></div>` : "";
     } else {
       F.sources.filter(s => t.S.has(s.id)).forEach(s => tags = tags.concat(s.tags)); el.style.setProperty("--c", k === "c" ? "#2f8fb4" : "#5f9d4c");

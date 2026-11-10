@@ -13,7 +13,7 @@
 <title>政策時間軸｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=12">
+<link rel="stylesheet" href="assets/style.css?v=13">
 </head>
 <body>
 
@@ -32,8 +32,8 @@
 
     <div class="section-head" style="margin-top:8px"><div><h2>政策時間軸</h2><p>最新的在最上面，往下回溯到 2020 年的信用管制。標「近期動態」的事件來自每日觀測，附原文連結；按播放會從最早的事件一路亮到最新。</p></div></div>
     <div class="tl-player reveal">
-      <button class="btn sm" id="tlPlay">▶ 播放</button>
-      <button class="btn ghost sm" id="tlReset">⏮ 全部顯示</button>
+      <button class="btn sm" id="tlPlay"><svg class="ic"><use href="#i-play"/></svg>播放</button>
+      <button class="btn ghost sm" id="tlReset"><svg class="ic"><use href="#i-prev"/></svg>全部顯示</button>
       <div style="flex:1;min-width:220px"><div class="track"><i id="tlFill"></i><div class="knob" id="tlKnob" style="left:0"></div></div><div class="years" id="tlYears"></div></div>
       <div class="now" id="tlNow">全部</div>
     </div>
@@ -45,8 +45,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=12"></script>
-<script src="assets/common.js?v=12"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/icons.js?v=13"></script>
+<script src="assets/common.js?v=13"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
@@ -66,7 +67,7 @@
   }
   /* 播放器：依序點亮 */
   let timer = null, idx = -1;
-  function stop(){ clearInterval(timer); timer = null; $("#tlPlay").textContent = "▶ 播放"; }
+  function stop(){ clearInterval(timer); timer = null; $("#tlPlay").innerHTML = VI.icon("play") + "播放"; }
   function showAll(){ stop(); idx = -1; $$(".tl-item").forEach(e => e.classList.remove("dim","lit")); $("#tlFill").style.width = "0"; $("#tlKnob").style.left = "0"; $("#tlNow").textContent = "全部"; }
   function step(){
     const items = $$(".tl-item:not(.hide)").reverse();   /* 畫面上最新在上，播放仍由最早播到最新 */
@@ -81,7 +82,7 @@
   $("#tlPlay").onclick = () => {
     if (timer) { stop(); return; }
     if (idx < 0 || idx >= $$(".tl-item:not(.hide)").length - 1) { idx = -1; $$(".tl-item").forEach(e => e.classList.add("dim")); }
-    $("#tlPlay").textContent = "❚❚ 暫停"; step(); timer = setInterval(step, 1800);
+    $("#tlPlay").innerHTML = VI.icon("pause") + "暫停"; step(); timer = setInterval(step, 1800);
   };
   $("#tlReset").onclick = showAll;
   render();

@@ -636,7 +636,7 @@ renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.
 renderer.domElement.addEventListener('pointerup', e => {
   if (!down) return; const moved = Math.hypot(e.clientX - down[0], e.clientY - down[1]); down = null; if (moved > 6 || tour.on) return;
   const p = pick(e); if (!p) return;
-  if (p.person) { const f = allFacts(); VI.toast('🙂 ' + f[Math.floor(Math.random() * f.length)], 3400); p.person.userData.jump = 1; }
+  if (p.person) { const f = allFacts(); VI.toast('路人說：' + f[Math.floor(Math.random() * f.length)], 3400); p.person.userData.jump = 1; }
   else if (p.href) location.href = p.href;
   else if (p.layer) API.select(p.layer, true);
   else API.select(null);

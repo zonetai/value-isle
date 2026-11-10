@@ -6,6 +6,7 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
   const VI = window.VI = { $, $$, seasonHandlers: [] };
+  VI.icon = window.VI_ICON || (() => "");   // 線條圖示（assets/icons.js）
 
   VI.toPing = p => Math.round(p * 3.3058 / 1000) / 10;   // 元/m² → 萬/坪
   VI.fmt = n => n.toLocaleString("zh-TW");
@@ -19,7 +20,7 @@
     document.body.dataset.season = s;
     $$(".season button").forEach(b => b.classList.toggle("on", b.dataset.season === s));
     VI.seasonHandlers.forEach(fn => { try{ fn(s, D.seasons[s]); }catch(e){ console.error(e); } });
-    if(!silent) VI.toast(`${D.seasons[s].icon} 市場季節切換為「${D.seasons[s].name}」`);
+    if(!silent) VI.toast(`市場季節切換為「${D.seasons[s].name}」`);
   };
   VI.onSeason = fn => { VI.seasonHandlers.push(fn); fn(VI.getSeason(), D.seasons[VI.getSeason()]); };
 
@@ -29,15 +30,15 @@
   nav.className = "nav";
   nav.innerHTML = `<div class="container">
     <a class="brand" href="index.html"><span class="logo"></span><span><b>價值島</b><small>中泰不動產智庫・市場觀測站</small></span></a>
-    <button class="nav-toggle" aria-label="選單" aria-expanded="false">☰</button>
+    <button class="nav-toggle" aria-label="選單" aria-expanded="false">${VI.icon("menu")}</button>
     <div class="nav-links">${D.pages.map(p => `<a href="${p.href}" class="${p.href===here?"on":""}">${p.label}</a>`).join("")}</div>
     <div class="season" title="切換市場季節：天色、潮位與判讀都會跟著變">
-      ${Object.entries(D.seasons).map(([k,v]) => `<button data-season="${k}"><span>${v.icon}</span>${v.name}</button>`).join("")}
+      ${Object.entries(D.seasons).map(([k,v]) => `<button data-season="${k}" aria-label="${v.name}"><span>${VI.icon(v.icon)}</span>${v.name}</button>`).join("")}
     </div></div>`;
   document.body.prepend(nav);
   /* 窄螢幕的下拉選單：點按鈕開關，點選單外面或按 Esc 收起 */
   const navToggle = nav.querySelector(".nav-toggle"), navLinks = nav.querySelector(".nav-links");
-  const setMenu = open => { navLinks.classList.toggle("open", open); navToggle.setAttribute("aria-expanded", open); navToggle.textContent = open ? "✕" : "☰"; };
+  const setMenu = open => { navLinks.classList.toggle("open", open); navToggle.setAttribute("aria-expanded", open); navToggle.innerHTML = VI.icon(open ? "close" : "menu"); };
   navToggle.onclick = e => { e.stopPropagation(); setMenu(!navLinks.classList.contains("open")); };
   document.addEventListener("click", e => { if (navLinks.classList.contains("open") && !navLinks.contains(e.target)) setMenu(false); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") setMenu(false); });
@@ -67,7 +68,7 @@
   VI.openDrawer = (layerId, focusTitle) => {
     const l = D.layers.find(x => x.id === layerId); if(!l) return;
     const p = drawer.querySelector(".panel"); p.style.setProperty("--c", l.color);
-    p.innerHTML = `<button class="close">✕</button>
+    p.innerHTML = `<button class="close" aria-label="關閉">${VI.icon("close")}</button>
       <span class="kicker">LAYER ${l.n} · ${l.en}</span><h3>${l.name}</h3>
       <p style="color:var(--ink-2);margin:0">${l.desc}</p>
       <div class="why"><b>估價師怎麼看：</b>${l.why}</div>

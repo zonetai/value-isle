@@ -13,7 +13,7 @@
 <title>估價氣象台｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=12">
+<link rel="stylesheet" href="assets/style.css?v=13">
 </head>
 <body>
 
@@ -52,13 +52,14 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=12"></script>
-<script src="assets/common.js?v=12"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/icons.js?v=13"></script>
+<script src="assets/common.js?v=13"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
   // 季節選擇器
-  $("#seasonPicker").innerHTML = Object.entries(D.seasons).map(([k,v]) => `<button data-season="${k}"><b>${v.icon} ${v.name}</b><small>${v.verdict.split("。")[0]}。</small></button>`).join("");
+  $("#seasonPicker").innerHTML = Object.entries(D.seasons).map(([k,v]) => `<button data-season="${k}"><b>${VI.icon(v.icon)}${v.name}</b><small>${v.verdict.split("。")[0]}。</small></button>`).join("");
   $$("#seasonPicker button").forEach(b => b.onclick = () => VI.setSeason(b.dataset.season));
 
   // 儀表
@@ -66,7 +67,7 @@
   const board = $("#board");
   D.gauges.forEach(g => {
     const el = document.createElement("div"); el.className = "card gauge reveal"; el.style.setProperty("--c", g.color);
-    el.innerHTML = `<div class="ico">${g.ico}</div><h3>${g.name}</h3><span class="state"></span><div class="dial">${dial()}</div><div class="scale"><span>${g.lo}</span><span>${g.hi}</span></div><p>${g.text}</p>`;
+    el.innerHTML = `<div class="ico">${VI.icon(g.ico)}</div><h3>${g.name}</h3><span class="state"></span><div class="dial">${dial()}</div><div class="scale"><span>${g.lo}</span><span>${g.hi}</span></div><p>${g.text}</p>`;
     el.onclick = () => VI.openDrawer(g.id);
     board.appendChild(el);
   });
@@ -80,7 +81,7 @@
   }
   VI.onSeason((s, S) => {
     $$("#seasonPicker button").forEach(b => b.classList.toggle("on", b.dataset.season === s));
-    $("#verdictTitle").textContent = `本季判讀：${S.icon} ${S.name}`;
+    $("#verdictTitle").innerHTML = `本季判讀：${VI.icon(S.icon)}${S.name}`;
     $("#verdictText").textContent = S.verdict;
     setTimeout(() => setGauges(S.gauges), 50);
   });

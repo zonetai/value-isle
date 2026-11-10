@@ -732,6 +732,35 @@ a.scene-hint b{color:var(--accent);font-size:.74rem}
 .year-head span{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
 
 /* ============================================================
+   圖示（assets/icons.js 的線條 icon）
+   ============================================================ */
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.14em;flex:none;overflow:visible}
+.btn .ic,.chip .ic{width:1.1em;height:1.1em}
+h3 .ic,.season-picker b .ic{margin-right:.32em}
+.kicker .ic{width:1.35em;height:1.35em;vertical-align:-.32em;margin-right:.4em}
+/* 四季各一色（只限季節按鈕；body 也有 data-season，不能寫成通用選擇器）；選中時跟著按鈕變白 */
+button[data-season="spring"] .ic{color:#5f9d4c} button[data-season="summer"] .ic{color:#d9822b}
+button[data-season="autumn"] .ic{color:#c0592f} button[data-season="winter"] .ic{color:#4a7fb0}
+.season button span{display:flex;font-size:1.05rem}
+.season button.on .ic{color:#fff}
+/* 卡片上的圖示：淡色底小方塊，顏色跟著所屬層次 */
+.gauge .ico,.intl-card .ico,.role-card .ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.55rem;color:var(--c,var(--ink-2));background:color-mix(in srgb,var(--c,var(--ink-2)) 11%,#fff)}
+.intl-card .ico{--c:var(--c-intl)}
+.role-card .ico{--c:var(--accent);transition:.3s}
+.role-card:hover .ico{transform:rotate(-6deg)}
+.layer-row .n{color:var(--c);font-size:1.45rem}
+.layer-meter div>span:first-child{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.layer-meter .ic{color:var(--c);font-size:1.05em}
+.scene-tools button span{display:flex}
+.scene-tools button b{font-weight:inherit}
+.search .ic{color:var(--ink-3);font-size:1.05rem}
+.tour .ctl button{display:inline-flex;align-items:center;gap:4px}
+.drawer .close{display:flex;align-items:center;justify-content:center}
+.nav-toggle{line-height:0}
+.nav-toggle .ic{width:1.2rem;height:1.2rem}
+.roles-row .chip{gap:5px}
+
+/* ============================================================
    響應式補強（平板、手機）
    ============================================================ */
 /* 格線欄位縮成一欄時，不讓裡面的長內容把整欄撐寬 */
