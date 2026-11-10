@@ -47,7 +47,8 @@
     <div><b>資料來源</b><ul>
       <li>內政部地政司 不動產交易實價查詢服務系統（政府資料開放授權條款第 1 版）</li>
       <li>中央銀行、財政部、內政部、金管會公開新聞稿</li>
-      <li>資料整理至 ${D.asOf}</li></ul></div>
+      <li>每日觀測：各則附原始出處</li>
+      <li id="footAsOf">資料整理至 ${D.asOf}</li></ul></div>
     <div><b>站內頁面</b><ul>${D.pages.map(p => `<li><a href="${p.href}">${p.label}</a></li>`).join("")}</ul></div>
   </div>`;
   document.body.appendChild(foot);
@@ -119,6 +120,13 @@
     if (!DAILY) return; const out = {};
     D.layers.forEach(l => { const list = DAILY.briefs.filter(b => b.layer === l.id); out[l.id] = { n: list.length, latest: list[0] || null }; });
     cb(out, DAILY);
+  });
+
+  /* ---------- 頁尾日期：跟著每日觀測的更新日期走（取較新的一個） ---------- */
+  VI.loadDaily(DAILY => {
+    const el = document.getElementById("footAsOf"); if (!el) return;
+    const d = DAILY && DAILY.updated > D.asOf ? DAILY.updated : D.asOf;
+    el.textContent = `資料整理至 ${d}`;
   });
 
   /* ---------- 初始化季節（不彈提示） ---------- */

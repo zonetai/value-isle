@@ -13,7 +13,7 @@
 <title>市場潮位｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=9">
+<link rel="stylesheet" href="assets/style.css?v=10">
 </head>
 <body>
 
@@ -74,8 +74,8 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=9"></script>
-<script src="assets/common.js?v=9"></script>
+<script src="assets/data.js?v=10"></script>
+<script src="assets/common.js?v=10"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, toPing = VI.toPing, fmt = VI.fmt;
@@ -118,7 +118,7 @@
     svg.innerHTML = s;
     if (animate) requestAnimationFrame(() => $$("#distChart .bar-rect").forEach((r,i) => setTimeout(() => r.setAttribute("width", r.dataset.w), i*50)));
     $$("#distChart .bar-rect").forEach((r,i) => r.onclick = () => showTide(data[i]));
-    $("#distSource").textContent = `資料：內政部不動產交易實價查詢服務系統，期間 ${M.period}，建物型態「住宅大樓」、交易標的含房地、單價>0，依鄉鎮市區簡單平均；顏色深淺代表件數多寡。整理至 ${D.asOf}。`;
+    $("#distSource").textContent = `資料：內政部不動產交易實價查詢服務系統，期間 ${M.period}，建物型態「住宅大樓」、交易標的含房地、單價>0，依鄉鎮市區簡單平均；顏色深淺代表件數多寡。實價登錄統計整理至 ${D.asOf}。`;
   }
   $$("[data-sort]").forEach(b => b.onclick = () => { $$("[data-sort]").forEach(x=>x.classList.remove("on")); b.classList.add("on"); sortMode = b.dataset.sort; renderDist(true); });
   renderDist(true);
