@@ -29,13 +29,18 @@
   nav.className = "nav";
   nav.innerHTML = `<div class="container">
     <a class="brand" href="index.html"><span class="logo"></span><span><b>價值島</b><small>中泰不動產智庫・市場觀測站</small></span></a>
-    <button class="nav-toggle" aria-label="選單">☰</button>
+    <button class="nav-toggle" aria-label="選單" aria-expanded="false">☰</button>
     <div class="nav-links">${D.pages.map(p => `<a href="${p.href}" class="${p.href===here?"on":""}">${p.label}</a>`).join("")}</div>
     <div class="season" title="切換市場季節：天色、潮位與判讀都會跟著變">
       ${Object.entries(D.seasons).map(([k,v]) => `<button data-season="${k}"><span>${v.icon}</span>${v.name}</button>`).join("")}
     </div></div>`;
   document.body.prepend(nav);
-  nav.querySelector(".nav-toggle").onclick = () => nav.querySelector(".nav-links").classList.toggle("open");
+  /* 窄螢幕的下拉選單：點按鈕開關，點選單外面或按 Esc 收起 */
+  const navToggle = nav.querySelector(".nav-toggle"), navLinks = nav.querySelector(".nav-links");
+  const setMenu = open => { navLinks.classList.toggle("open", open); navToggle.setAttribute("aria-expanded", open); navToggle.textContent = open ? "✕" : "☰"; };
+  navToggle.onclick = e => { e.stopPropagation(); setMenu(!navLinks.classList.contains("open")); };
+  document.addEventListener("click", e => { if (navLinks.classList.contains("open") && !navLinks.contains(e.target)) setMenu(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") setMenu(false); });
   nav.querySelectorAll(".season button").forEach(b => b.onclick = () => VI.setSeason(b.dataset.season));
 
   /* ---------- 頁尾 ---------- */

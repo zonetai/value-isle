@@ -64,6 +64,8 @@ controls.maxPolarAngle = Math.PI * 0.47; controls.minPolarAngle = 0.12;
 controls.target.copy(CENTER);
 controls.autoRotate = !reduceMotion; controls.autoRotateSpeed = 0.3;
 controls.enabled = false;
+/* 觸控：上下滑交給瀏覽器捲動頁面，左右拖曳才旋轉島嶼，雙指縮放 */
+renderer.domElement.style.touchAction = 'pan-y';
 
 /* ---------- 燈光 ---------- */
 const hemi = new THREE.HemisphereLight(0xdff1f7, 0x7fae62, 0.95); scene.add(hemi);
@@ -817,7 +819,11 @@ function animate() {
   renderer.render(scene, camera); labelRenderer.render(scene, camera);
 }
 
-function resize() { const w = wrap.clientWidth, h = wrap.clientHeight; if (!w || !h) return; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h); labelRenderer.setSize(w, h); }
+/* 直式螢幕（手機）時放大垂直視角，讓左右取景維持跟方形畫面一樣寬，島不會被切掉 */
+const BASE_FOV = 36;
+function resize() { const w = wrap.clientWidth, h = wrap.clientHeight; if (!w || !h) return; camera.aspect = w / h;
+  camera.fov = camera.aspect >= 1 ? BASE_FOV : Math.min(58, 2 * Math.atan(Math.tan(BASE_FOV * Math.PI / 360) / camera.aspect) * 180 / Math.PI);
+  camera.updateProjectionMatrix(); renderer.setSize(w, h); labelRenderer.setSize(w, h); }
 new ResizeObserver(resize).observe(wrap); resize();
 setProgress(70);
 requestAnimationFrame(() => { setProgress(100); animate(); });
