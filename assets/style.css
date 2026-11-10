@@ -680,3 +680,38 @@ a.scene-hint b{color:var(--accent);font-size:.74rem}
 
 .layer-list{overflow-x:hidden}
 .layer-row .t small em{font-style:normal;color:var(--c);font-weight:700}
+
+/* ============================================================
+   國際洋流傳導圖
+   ============================================================ */
+.flowmap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin-bottom:14px;overflow-x:auto}
+.flowmap svg{display:block;width:100%;min-width:900px;height:auto}
+.flowmap .hd{font-family:var(--serif);font-weight:900;font-size:17px;fill:var(--ink)}
+.flowmap .hd-en{font-family:var(--mono);font-size:9.5px;letter-spacing:2px;fill:var(--ink-3)}
+.flowmap .n{cursor:pointer;transition:opacity .35s}
+.flowmap .n rect.box{fill:#fff;stroke:var(--line);stroke-width:1.2;transition:stroke .25s,stroke-width .25s,filter .25s}
+.flowmap .n:hover rect.box,.flowmap .n.on rect.box{stroke:var(--nc,var(--ink));stroke-width:2.2;filter:drop-shadow(0 4px 8px rgba(0,0,0,.12))}
+.flowmap .nm{font-size:14px;font-weight:700;fill:var(--ink)}
+.flowmap .sb{font-size:11px;fill:var(--ink-2)}
+.flowmap .tg{font-family:var(--mono);font-size:8.5px;letter-spacing:1.4px;fill:var(--ink-3)}
+.flowmap .live{font-size:10.5px;fill:var(--nc)}
+.flowmap .fl{fill:none;stroke-linecap:round;opacity:.42;transition:opacity .35s}
+.flowmap .fd{fill:none;stroke:#fff;stroke-linecap:round;stroke-dasharray:3 13;opacity:.75;animation:flow 1.6s linear infinite;transition:opacity .35s;pointer-events:none}
+.flowmap .dot{transition:opacity .35s}
+.flowmap.dim .n:not(.on){opacity:.38}
+.flowmap.dim .fl:not(.on){opacity:.05}
+.flowmap.dim .fd:not(.on),.flowmap.dim .dot:not(.on){opacity:0}
+.flowmap.dim .fl.on{opacity:.85}
+.flowmap .isle{animation:bob 4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.flowmap .wv{animation:wave 7s ease-in-out infinite}
+.flow-info{display:grid;grid-template-columns:1.1fr 1.2fr 1.3fr;gap:18px;margin-bottom:26px;border-top:5px solid var(--c,var(--c-intl));transition:border-color .3s}
+@media (max-width:900px){.flow-info{grid-template-columns:1fr}}
+.flow-info h3{font-size:1.15rem;margin:4px 0 6px}
+.flow-info p{margin:0;font-size:.88rem;color:var(--ink-2)}
+.flow-info .steps{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.flow-info .steps div{font-size:.84rem;display:flex;gap:8px;align-items:baseline}
+.flow-info .steps b{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-3);min-width:64px}
+.flow-info .news a{display:block;text-decoration:none;padding:7px 0;border-bottom:1px dashed var(--line);font-size:.86rem}
+.flow-info .news a:hover{color:var(--c)}
+.flow-info .news small{display:block;color:var(--ink-3);font-size:.74rem}

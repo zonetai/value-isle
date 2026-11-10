@@ -6,7 +6,7 @@
 <title>國際洋流｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
   <div class="container">
     <span class="kicker">Global Currents</span>
     <h1>國際洋流</h1>
-    <p>國際局勢不會直接出現在估價報告裡，但會透過「資金成本」與「預期」一路流到價格。下面的洋流圖畫出每一股力量怎麼流向臺灣，卡片則畫出它的傳導路徑。</p>
+    <p>國際局勢不會直接出現在估價報告裡，但會透過資金成本、匯率、出口、營建成本與預期，一路流到估價師手上的參數。下面的傳導圖把這條路畫出來，卡片則逐一說明每股力量。</p>
     <div class="layer-badge" style="--c:var(--c-intl)"><i></i>LAYER 02 · 一般因素</div>
   </div>
 </section>
@@ -23,10 +23,11 @@
   <div class="container">
     <div class="layer-daily" id="layerDaily"></div>
 
-    <div class="section-head" style="margin-top:8px"><div><h2>洋流怎麼流到臺灣</h2><p>點圖上的來源，會帶到對應的傳導路徑。</p></div></div>
-    <div class="currents-map reveal">
-      <svg viewBox="0 0 1000 420" id="map"></svg>
-    </div>
+    <div class="section-head" style="margin-top:8px"><div><h2>洋流怎麼流到一塊地的價格</h2><p>由左到右四站：外部力量、傳導管道、估價參數、價格。滑過任一格會亮起它的上下游，點一下可以固定，點空白處回到全貌；每個來源下方那行字是每日觀測抓到的最新消息。</p></div></div>
+    <div class="flowmap reveal" id="flowmap"></div>
+    <div class="card flow-info" id="flowInfo"></div>
+
+    <div class="section-head reveal" style="margin-top:36px"><div><h2>每股力量的傳導路徑</h2><p>滑過卡片，路徑會一步步亮起。</p></div></div>
     <div class="intl-grid" id="intlGrid"></div>
 
     <div class="section-head reveal" style="margin-top:56px"><div><h2>這一層的觀測項目</h2><p>估價師在「國際洋流」這一層會看的指標。</p></div></div>
@@ -34,38 +35,129 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/common.js?v=6"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/common.js?v=7"></script>
 <script>
 (function(){
-  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
-  /* 洋流圖：五個來源流向臺灣 */
-  const nodes = [
-    { id:0, x:120, y:120, t:"美國", s:"FED · TARIFF", c:"#2a6f97" },
-    { id:1, x:160, y:300, t:"外匯市場", s:"TWD / USD", c:"#2b8a6e" },
-    { id:2, x:520, y:60, t:"全球科技業", s:"AI · SEMICONDUCTOR", c:"#7b4fa3" },
-    { id:3, x:880, y:120, t:"東亞供應鏈", s:"SUPPLY CHAIN", c:"#c9711a" },
-    { id:4, x:860, y:320, t:"區域安全", s:"GEOPOLITICS", c:"#b5452e" },
-    { id:5, x:300, y:60, t:"全球通膨", s:"MATERIALS · WAGES", c:"#8a5a2b" }
-  ];
-  const TW = { x:520, y:250 };
-  let s = `<defs><radialGradient id="g" cx="50%" cy="50%"><stop offset="0" stop-color="#8fd1e6" stop-opacity=".6"/><stop offset="1" stop-color="#8fd1e6" stop-opacity="0"/></radialGradient></defs>
-    <rect width="1000" height="420" fill="#eaf6fb" rx="12"/>`;
-  for (let i = 0; i < 9; i++) s += `<path d="M-20 ${40+i*45} Q 100 ${30+i*45} 220 ${40+i*45} T 460 ${40+i*45} T 700 ${40+i*45} T 940 ${40+i*45} T 1180 ${40+i*45}" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1"/>`;
-  s += `<circle cx="${TW.x}" cy="${TW.y}" r="90" fill="url(#g)"/>`;
-  nodes.forEach(n => {
-    const cx = (n.x + TW.x) / 2 + (n.y < TW.y ? 40 : -40), cy = (n.y + TW.y) / 2 + (n.x < TW.x ? 60 : -60);
-    s += `<path class="lane" data-i="${n.id}" d="M${n.x} ${n.y} Q ${cx} ${cy} ${TW.x} ${TW.y}" stroke="${n.c}" style="animation-delay:${-n.id*0.4}s"/>`;
-  });
-  nodes.forEach(n => { s += `<g class="src" data-i="${n.id}" style="cursor:pointer"><circle cx="${n.x}" cy="${n.y}" r="26" fill="#fff" stroke="${n.c}" stroke-width="2"/><text class="node" x="${n.x}" y="${n.y+4}" text-anchor="middle">${n.t}</text><text class="node-sub" x="${n.x}" y="${n.y+42}" text-anchor="middle">${n.s}</text></g>`; });
-  s += `<g class="tw"><polygon points="${TW.x-18},${TW.y-34} ${TW.x+14},${TW.y-30} ${TW.x+22},${TW.y+6} ${TW.x+4},${TW.y+36} ${TW.x-16},${TW.y+20} ${TW.x-24},${TW.y-10}" fill="#7fbf63" stroke="#5f9d4c" stroke-width="2"/><text class="node" x="${TW.x}" y="${TW.y+58}" text-anchor="middle">臺灣不動產</text><text class="node-sub" x="${TW.x}" y="${TW.y+72}" text-anchor="middle">資金成本 → 預期 → 價格</text></g>`;
-  $("#map").innerHTML = s;
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
 
+  /* ---------- 傳導路徑卡片 ---------- */
   const cards = D.intl;
   $("#intlGrid").innerHTML = cards.map((c,i) => `<div class="card intl-card reveal" data-i="${i}"><div class="ico">${c.ico}</div><span class="from">FROM ${c.from}</span><h3>${c.t}</h3><p>${c.s}</p><div class="path">${c.path.map(p => `<span>${p}</span>`).join("")}</div></div>`).join("");
-  // 點地圖上的來源，對應卡片亮起並捲到
-  const nodeToCard = { 0:0, 1:1, 2:3, 3:2, 4:4, 5:5 };
-  $$("#map .src").forEach(g => g.onclick = () => { const ci = nodeToCard[g.dataset.i]; $$(".intl-card").forEach(c => c.classList.remove("lit")); const card = $(`.intl-card[data-i="${ci}"]`); card.classList.add("lit"); card.scrollIntoView({ block:"center", behavior:"smooth" }); $$("#map .lane").forEach(l => l.style.opacity = l.dataset.i == g.dataset.i ? 1 : .2); setTimeout(() => $$("#map .lane").forEach(l => l.style.opacity = ""), 2500); });
+
+  /* ---------- 傳導圖 ---------- */
+  const F = D.flow, W = 1180, H = 650, TX = 1078, TY = 326;
+  const COL = { s: { x: 16, w: 242 }, c: { x: 406, w: 196 }, p: { x: 750, w: 208 } };
+  const byId = {};
+  const place = (list, h, top, bottom) => { const gap = (bottom - top - list.length * h) / (list.length - 1); list.forEach((n, i) => { n.y = top + i * (h + gap); n.h = h; n.cy = n.y + h / 2; byId[n.id] = n; }); };
+  place(F.sources, 66, 72, 630); place(F.channels, 78, 100, 602); place(F.params, 78, 100, 602);
+  const mk = (arr, st) => arr.map(([a, b, w], i) => ({ a, b, w, st, id: `l${st}_${i}` }));
+  const L1 = mk(F.links1, 1), L2 = mk(F.links2, 2), L3 = F.params.map((p, i) => ({ a: p.id, b: "tw", w: 2.2, st: 3, id: `l3_${i}` }));
+  const cyOf = id => byId[id] ? byId[id].cy : TY;
+  function ports(links) {
+    const out = {}, inn = {};
+    links.forEach(l => { (out[l.a] = out[l.a] || []).push(l); (inn[l.b] = inn[l.b] || []).push(l); });
+    Object.values(out).forEach(a => { a.sort((x, y) => cyOf(x.b) - cyOf(y.b)); a.forEach((l, i) => l.y1 = cyOf(l.a) + (i - (a.length - 1) / 2) * 12); });
+    Object.values(inn).forEach(a => { a.sort((x, y) => cyOf(x.a) - cyOf(y.a)); a.forEach((l, i) => l.y2 = cyOf(l.b) + (i - (a.length - 1) / 2) * (l.b === "tw" ? 15 : 12)); });
+  }
+  ports(L1); ports(L2); ports(L3);
+  const X = { 1: [COL.s.x + COL.s.w, COL.c.x], 2: [COL.c.x + COL.c.w, COL.p.x], 3: [COL.p.x + COL.p.w, TX - 66] };
+  const colorOf = l => l.st === 1 ? byId[l.a].color : l.st === 2 ? "#2f8fb4" : "#5f9d4c";
+  const pathOf = l => { const [x1, x2] = X[l.st], dx = (x2 - x1) * 0.5; return `M${x1} ${l.y1} C ${x1 + dx} ${l.y1}, ${x2 - dx} ${l.y2}, ${x2} ${l.y2}`; };
+  const cut = (s, n) => s.length > n ? s.slice(0, n) + "…" : s;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="國際洋流傳導圖">
+    <defs><linearGradient id="fbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2fafd"/><stop offset="1" stop-color="#dcf0f6"/></linearGradient>
+    <radialGradient id="fglow" cx="50%" cy="50%"><stop offset="0" stop-color="#8fd1e6" stop-opacity=".75"/><stop offset="1" stop-color="#8fd1e6" stop-opacity="0"/></radialGradient></defs>
+    <rect width="${W}" height="${H}" rx="14" fill="url(#fbg)"/>`;
+  for (let i = 0; i < 9; i++) svg += `<path class="wv" style="animation-delay:${-i * 0.8}s" d="M-40 ${70 + i * 66} Q 80 ${58 + i * 66} 200 ${70 + i * 66} T 440 ${70 + i * 66} T 680 ${70 + i * 66} T 920 ${70 + i * 66} T 1160 ${70 + i * 66} T 1400 ${70 + i * 66}" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.2"/>`;
+  [["外部力量", "GLOBAL FORCES", COL.s.x + 4, "start"], ["傳導管道", "CHANNELS", COL.c.x + 4, "start"], ["估價參數", "APPRAISAL INPUTS", COL.p.x + 4, "start"], ["價格", "PRICE", TX, "middle"]].forEach(([t, e, x, a]) => { svg += `<text class="hd-en" x="${x}" y="26" text-anchor="${a}">${e}</text><text class="hd" x="${x}" y="50" text-anchor="${a}">${t}</text>`; });
+
+  [...L1, ...L2, ...L3].forEach((l, i) => {
+    const d = pathOf(l), c = colorOf(l);
+    svg += `<path id="${l.id}" class="fl" data-id="${l.id}" d="${d}" stroke="${c}" stroke-width="${(l.w * 2.6).toFixed(1)}"/>
+      <path class="fd" data-id="${l.id}" d="${d}" stroke-width="${Math.max(1.4, l.w * 0.9).toFixed(1)}" style="animation-delay:${-(i % 7) * 0.23}s"/>
+      <circle class="dot" data-id="${l.id}" r="3.4" fill="${c}" stroke="#fff" stroke-width="1"><animateMotion dur="${(3.2 + (i % 5) * 0.6).toFixed(1)}s" repeatCount="indefinite" begin="${-(i * 0.41).toFixed(2)}s"><mpath href="#${l.id}"/></animateMotion></circle>`;
+  });
+
+  F.sources.forEach(n => { const x = COL.s.x, w = COL.s.w;
+    svg += `<g class="n" data-k="s" data-id="${n.id}" style="--nc:${n.color}"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 10}" width="4" height="${n.h - 20}" rx="2" fill="${n.color}"/>
+      <text x="${x + 14}" y="${n.y + 31}" font-size="20">${n.ico}</text><text class="nm" x="${x + 44}" y="${n.y + 24}">${n.name}</text><text class="tg" x="${x + 44}" y="${n.y + 37}">${n.en}</text>
+      <text class="live" id="live_${n.id}" x="${x + 14}" y="${n.y + 55}">▸ ${esc(cut(n.now, 19))}</text><title>${esc(n.now)}</title></g>`; });
+  F.channels.forEach(n => { const x = COL.c.x, w = COL.c.w;
+    svg += `<g class="n" data-k="c" data-id="${n.id}" style="--nc:#2f8fb4"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 12}" width="4" height="${n.h - 24}" rx="2" fill="#2f8fb4"/>
+      <text class="nm" x="${x + 18}" y="${n.cy - 4}">${n.name}</text><text class="sb" x="${x + 18}" y="${n.cy + 16}">${n.sub}</text></g>`; });
+  F.params.forEach(n => { const x = COL.p.x, w = COL.p.w;
+    svg += `<g class="n" data-k="p" data-id="${n.id}" style="--nc:#5f9d4c"><rect class="box" x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="12"/><rect x="${x}" y="${n.y + 12}" width="4" height="${n.h - 24}" rx="2" fill="#5f9d4c"/>
+      <text class="nm" x="${x + 18}" y="${n.cy - 4}">${n.name}</text><text class="sb" x="${x + 18}" y="${n.cy + 16}" fill="#5f9d4c">${n.sub}</text></g>`; });
+
+  svg += `<circle cx="${TX}" cy="${TY + 10}" r="92" fill="url(#fglow)"/>
+    <g class="isle"><ellipse cx="${TX}" cy="${TY + 40}" rx="66" ry="20" fill="#bfe6f2"/><ellipse cx="${TX}" cy="${TY + 34}" rx="56" ry="17" fill="#e9d8a8"/><ellipse cx="${TX}" cy="${TY + 29}" rx="47" ry="13" fill="#7fbf63"/>
+      <rect x="${TX - 34}" y="${TY - 18}" width="18" height="46" fill="#d9c7a6"/><rect x="${TX - 34}" y="${TY - 20}" width="18" height="4" fill="#b8a27c"/>
+      <rect x="${TX - 11}" y="${TY - 58}" width="22" height="88" fill="#e9eef3"/>${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${TX - 11}" y="${TY - 50 + i * 13}" width="22" height="4" fill="#2a6f97" opacity=".6"/>`).join("")}<rect x="${TX - 12}" y="${TY - 61}" width="24" height="4" fill="#7b4fa3"/>
+      <rect x="${TX + 16}" y="${TY - 8}" width="18" height="38" fill="#f2c9b6"/><rect x="${TX + 15}" y="${TY - 11}" width="20" height="4" fill="#7b4fa3"/>
+      <circle cx="${TX - 44}" cy="${TY + 22}" r="7" fill="#3f8f3a"/><circle cx="${TX + 44}" cy="${TY + 24}" r="6" fill="#4da043"/></g>
+    <text class="nm" x="${TX}" y="${TY + 84}" text-anchor="middle">臺灣不動產價格</text>`;
+  F.targets.forEach((t, i) => { const x = TX - 49 + (i % 2) * 51, y = TY + 96 + Math.floor(i / 2) * 26; svg += `<rect x="${x}" y="${y}" width="47" height="21" rx="10.5" fill="#fff" stroke="#cfe3dc"/><text class="sb" x="${x + 23.5}" y="${y + 15}" text-anchor="middle">${t}</text>`; });
+  svg += `</svg>`;
+  const wrap = $("#flowmap"); wrap.innerHTML = svg;
+
+  /* ---------- 高亮上下游 ---------- */
+  let DAILY = null;
+  const briefsFor = tags => !DAILY ? [] : DAILY.briefs.filter(b => b.layer === "intl" && tags.some(t => ((b.tag || "") + b.t).includes(t)));
+  function trace(k, id) {
+    let S = new Set(), C = new Set(), Pm = new Set(), links = new Set();
+    if (k === "s") { S.add(id); L1.filter(l => l.a === id).forEach(l => { links.add(l.id); C.add(l.b); }); }
+    if (k === "c") { C.add(id); L1.filter(l => l.b === id).forEach(l => { links.add(l.id); S.add(l.a); }); }
+    if (k === "p") { Pm.add(id); L2.filter(l => l.b === id).forEach(l => { links.add(l.id); C.add(l.a); }); L1.filter(l => C.has(l.b)).forEach(l => { links.add(l.id); S.add(l.a); }); }
+    if (k !== "p") L2.filter(l => C.has(l.a)).forEach(l => { links.add(l.id); Pm.add(l.b); });
+    L3.filter(l => Pm.has(l.a)).forEach(l => links.add(l.id));
+    return { S, C, Pm, links };
+  }
+  function select(k, id) {
+    const t = trace(k, id); wrap.classList.add("dim");
+    $$("#flowmap .n").forEach(g => { const kk = g.dataset.k, on = (kk === "s" ? t.S : kk === "c" ? t.C : t.Pm).has(g.dataset.id); g.classList.toggle("on", on); });
+    $$("#flowmap .fl, #flowmap .fd, #flowmap .dot").forEach(e => e.classList.toggle("on", t.links.has(e.dataset.id)));
+    info(k, id, t);
+  }
+  const names = (set, list) => list.filter(n => set.has(n.id)).map(n => n.name).join("、") || "—";
+  function info(k, id, t) {
+    const n = byId[id], el = $("#flowInfo"); let tags = [], head, body, extra = "";
+    if (k === "s") {
+      const c = cards[n.card]; tags = n.tags; el.style.setProperty("--c", n.color);
+      head = `<span class="kicker">${n.en} · 外部力量</span><h3>${n.ico} ${n.name}</h3><p>${c ? c.s : n.now}</p>`;
+      extra = c ? `<div style="margin-top:10px"><button class="btn ghost sm" data-card="${n.card}">看完整傳導路徑 ↓</button></div>` : "";
+    } else {
+      F.sources.filter(s => t.S.has(s.id)).forEach(s => tags = tags.concat(s.tags)); el.style.setProperty("--c", k === "c" ? "#2f8fb4" : "#5f9d4c");
+      head = `<span class="kicker">${k === "c" ? "傳導管道" : "估價參數 · " + n.sub}</span><h3>${n.name}</h3><p>${n.d || n.sub}</p>`;
+    }
+    body = `<span class="kicker">這條路怎麼走</span><div class="steps"><div><b>外部力量</b><span>${names(t.S, F.sources)}</span></div><div><b>傳導管道</b><span>${names(t.C, F.channels)}</span></div><div><b>估價參數</b><span>${names(t.Pm, F.params)}</span></div><div><b>最後</b><span>臺灣不動產價格</span></div></div>`;
+    const news = briefsFor(tags).slice(0, 3);
+    el.innerHTML = `<div>${head}${extra}</div><div>${body}</div><div class="news"><span class="kicker"><i class="ld-live"></i> 相關最新動態</span>${news.length ? news.map(b => `<a href="${esc(b.url)}" target="_blank" rel="noopener"><b>${b.d.slice(5).replace("-", "/")}</b>　${esc(b.t)}<small>${esc(b.i || b.s)}</small></a>`).join("") : `<p style="margin-top:8px">${DAILY ? "近期沒有直接相關的快訊。" : "載入中…"}</p>`}</div>`;
+    const btn = el.querySelector("[data-card]");
+    if (btn) btn.onclick = () => { $$(".intl-card").forEach(c => c.classList.remove("lit")); const card = $(`#intlGrid .intl-card[data-i="${btn.dataset.card}"]`); card.classList.add("lit"); card.scrollIntoView({ block: "center", behavior: "smooth" }); };
+  }
+
+  /* 自動輪播，使用者一碰就停 */
+  let cur = { k: "s", id: F.sources[0].id }, auto = 0, timer = setInterval(() => { auto = (auto + 1) % F.sources.length; cur = { k: "s", id: F.sources[auto].id }; select(cur.k, cur.id); }, 4200);
+  const stopAuto = () => { if (timer) { clearInterval(timer); timer = null; } };
+  let pinned = false;
+  $$("#flowmap .n").forEach(g => {
+    const go = () => { stopAuto(); cur = { k: g.dataset.k, id: g.dataset.id }; select(cur.k, cur.id); };
+    g.addEventListener("mouseenter", () => { if (!pinned) go(); });
+    g.addEventListener("click", e => { e.stopPropagation(); pinned = true; go(); });
+  });
+  /* 滑出圖外回到全貌；點空白處取消釘選 */
+  wrap.addEventListener("mouseleave", () => { if (!pinned && !timer) wrap.classList.remove("dim"); });
+  wrap.addEventListener("click", () => { pinned = false; stopAuto(); wrap.classList.remove("dim"); });
+  select(cur.k, cur.id);
+
+  /* 每日觀測載入後，把每個來源的最新一則填進去 */
+  VI.loadDaily(d => {
+    DAILY = d; if (!d) return;
+    F.sources.forEach(n => { const b = briefsFor(n.tags)[0]; if (!b) return; const el = document.getElementById("live_" + n.id); if (el) { el.textContent = "▸ " + b.d.slice(5).replace("-", "/") + " " + cut(b.t, 15); el.parentNode.querySelector("title").textContent = b.t + "（" + b.src + "）"; } });
+    select(cur.k, cur.id);
+  });
 
   const L = D.layers.find(l => l.id === "intl");
   $("#items").innerHTML = L.items.map(i => `<div class="card intl-card reveal"><span class="from">GLOBAL CURRENTS</span><h3>${i.t}</h3><p>${i.s}</p><div class="path"><span>${i.i}</span></div></div>`).join("");
