@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta name="theme-color" content="#c06a1a">
+<link rel="canonical" href="https://zonetai.com/value-isle/far-payment/about.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>關於｜容積代金學堂</title>
+<meta name="description" content="容積代金學堂的整理方式、依據與限制。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">About</span>
+    <h1>關於容積代金學堂</h1>
+    <p class="lede">這是價值島的姊妹站。價值島從四層看一塊地的價格；這裡只看其中一個制度：當政府用「蓋更高的權利」換取公共設施用地，這個權利該怎麼定價、誰來審、錢去了哪裡。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid g2">
+      <div class="card reveal"><h3>整理方式</h3><p>內容依大專院校「都市更新與容積代金估價實務」課程的兩份簡報（制度篇、估價與審議篇）與臺北市容積代金估價報告書範本（113 年修正版）整理，拆成九站：制度在前、估價在中、審議與市場在後。每一站末尾接到下一站。</p><p>示範案來自 114 學年度上學期期末考計算題（新北市板橋區模擬案），試算器的計算結果與解答檔一致：容移後單價 1,819,000、容移前 1,433,000 元/坪、代金 128,441,500 元、代金市價比 0.8223。檢核燈號的門檻（例如市價比 0.5 與 1.05）為教學設定，非審議標準。</p></div>
+      <div class="card reveal"><h3>依據與版本</h3><ul style="margin:8px 0 0;padding-left:18px;font-size:.9rem;color:var(--ink-2);line-height:1.9"><li>都市計畫法第 83 條之 1（98.01.07 修正）；都市計畫容積移轉實施辦法（103.08.04 修正）</li><li>古蹟歷史建築紀念建築土地容積移轉辦法（114.01.15 修正並更名）；文化資產保存法第 41 條（112.11.29 修正）</li><li>臺北市容積移轉審查許可自治條例（110.07.15 修正）；臺北市容積代金基金收支保管及運用自治條例（111.09.14）</li><li>臺北市容積代金估價報告書範本（113 年修正版）；分段估價原則（113.12.13）</li><li>臺北市政府都市發展局容積代金審議委員會作業要點（112.05.09）、議事規則（109.01.03）</li><li>臺北市政府以容積代金基金採購私有公共設施保留地投標須知（F115）</li><li>新北市 113 年作業注意事項與審議重點（113.9.24 教育訓練）</li><li>臺北代金估價通案原則研析（115 年度學員版）；114 年度臺北市容移代金協檢專案期末總結報告</li></ul></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card reveal"><h3>限制</h3><p>各縣市規定不同且逐年修訂。本站以臺北市 113 年修正版範本為主軸，新北市欄位依 113 年教育訓練簡報整理；教材標為「待查證」的數字與日期，本站照樣標示。引用前請核對主管機關現行版本。</p><p>本站不出現客戶、個案地址與金額、個人姓名；市場數據以行政區統計呈現。內容為教學用一般性整理，不構成估價意見或審議依據；實際案件以主管機關現行範本、法規及審議決議為準。</p></div>
+      <div class="card reveal"><h3>你的紀錄</h3><p>小測答題、找碴成績、自主檢核勾選與試算器參數都只存在你的瀏覽器裡，不會上傳。想重來，清除瀏覽器此站資料即可。</p><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="clear">清除本站紀錄</button><a class="btn ghost sm" href="../index.html">🏝️ 去價值島</a></div></div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=1"></script>
+<script src="assets/common.js?v=1"></script>
+<script>
+document.getElementById("clear").onclick = () => { ["fp-progress", "fp-quiz", "fp-calc", "fp-selfcheck"].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); window.FPU.toast("已清除本站紀錄"); };
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta name="theme-color" content="#c06a1a">
+<link rel="canonical" href="https://zonetai.com/value-isle/far-payment/data.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>08 市場數據｜容積代金學堂</title>
+<meta name="description" content="臺北市 153 件容積代金審議案件：代金市價比分布、12 個行政區的容積單價區間與三個價位群、114 年度新核定案件。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">08 · Market Data</span>
+    <h1>市場數據偵探：153 件審議案件告訴我們什麼</h1>
+    <p class="lede">一張圖、三句話：一個發現、一個疑問、一個估價啟示。例：代金與市價比集中在 80%～89%，你的個案若是 105%，第一個要回頭檢查哪個參數？</p>
+    <div class="where"><span class="tag">代金市價比</span><span class="tag">12 行政區</span><span class="tag">三個價位群</span><span class="tag">114 年新核定</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Ratio</span><h2>代金與市價比例：集中在 80%～99%</h2><p id="ratioSub"></p></div></div>
+    <div class="stat-row reveal" id="ratioStats"></div>
+    <div class="chart reveal" style="margin-top:14px"><h3>代金市價比分布</h3><p class="sub">件數；逾 100% 為特殊個案</p><svg id="ratioChart" viewBox="0 0 720 220" role="img" aria-label="代金市價比分布長條圖"></svg><p class="muted" style="font-size:.8rem;margin-top:8px" id="ratioNote"></p></div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card reveal"><span class="kicker">發現</span><p>市價比穩定：80～99% 占 84.3%。邊際容積的價值通常低於平均容積單價，與邊際效益遞減一致。</p></div>
+      <div class="card reveal"><span class="kicker">疑問</span><p>逾 100% 的 2 件特殊個案，是產品、量體還是參數造成？未達 80% 的 22 件又集中在哪些區？</p></div>
+      <div class="card reveal"><span class="kicker">啟示</span><p>個案市價比若偏離區間，先用敏感度分析找出是售價、造價還是利潤率造成，再決定要修參數還是補說明。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Districts</span><h2>各行政區：歷年代金容積單價</h2><p>12 個行政區累計 152 件（表 24 口徑）。每一列是該區容積平均單價的最低到最高（元/坪）；圓點直徑反映件數。滑過看市價比區間。</p></div><div class="seg" id="sortSeg"><button class="on" data-s="price">依單價排序</button><button data-s="n">依件數排序</button></div></div>
+    <div class="chart reveal"><h3>容積平均單價區間（元/坪）</h3><p class="sub">依 114 年度臺北市容移代金協檢專案期末總結報告表 24；顏色為價位群</p><svg id="distChart" viewBox="0 0 760 420" role="img" aria-label="各行政區容積單價區間圖"></svg><div class="legend" id="distLegend"></div></div>
+    <div class="grid g3" style="margin-top:14px" id="groups"></div>
+    <div class="reveal" style="margin-top:14px" id="distTable"></div>
+    <p class="source">教材載明截至 114 年 11 月共 153 件審議案件，表 24 彙整 152 件，兩者口徑略有不同；三群件數 53＋91＋8＝152。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Recent</span><h2>114 年度新核定：6 區共 17 件</h2><p>近一年核定整體穩定，落於歷年區間內。</p></div></div>
+    <div class="reveal" id="recentTable"></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card reveal"><h3>114 年度市場五大趨勢</h3><ol style="margin:8px 0 0;padding-left:20px;font-size:.9rem;color:var(--ink-2);line-height:1.9"><li><b>市價比穩定</b>：80～99% 占 84.3%</li><li><b>區域差異</b>：容積單價最高約 167 萬、最低約 25 萬元/坪</li><li><b>特殊識別</b>：逾 100% 僅 2 件</li><li><b>案量成長</b>：輪值估價師事務所 120 家以上</li><li><b>審議優化</b>：三層把關制</li></ol></div>
+      <div class="card reveal"><h3>找碴時怎麼用這張表</h3><p>每抓到一項問題，必須對應到一個檢核類別（基本資料、估價條件、土開法、土地比較法、價格決定、附件），並說明它會把市價比往哪個方向推。市價比不是審議門檻，而是幫你定位問題的指南針。</p><div style="margin-top:12px"><a class="btn sm" href="quiz.html">下一站：判斷題與辭典 →</a></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="tip" id="tip"></div>
+<script src="assets/data.js?v=1"></script>
+<script src="assets/common.js?v=1"></script>
+<script>
+(function(){
+  const D = window.FP, U = window.FPU, $ = U.$, $$ = U.$$;
+  const tip = $("#tip");
+  document.addEventListener("mousemove", e => { const t = e.target.closest("[data-tip]"); if (t) { tip.textContent = t.dataset.tip; tip.classList.add("show"); tip.style.left = Math.min(e.clientX + 12, innerWidth - 270) + "px"; tip.style.top = (e.clientY + 14) + "px"; } else tip.classList.remove("show"); });
+  /* 市價比分布 */
+  const RD = D.ratioDist; $("#ratioSub").textContent = `截至 ${RD.asOf}共 ${RD.total} 件審議案件。`; $("#ratioNote").textContent = RD.note;
+  $("#ratioStats").innerHTML = [["70 件 ／ 45.8%", "集中區間 80～89%"], ["129 件 ／ 84.3%", "合計 80～99%"], ["2 件 ／ 1.3%", "特殊個案 ＞ 100%"]].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+  (function(){ const W = 720, H = 220, L = 60, R = 20, T = 14, B = 36, max = 80, bs = RD.buckets, bw = (W - L - R) / bs.length, sy = v => T + (H - T - B) * (1 - v / max);
+    let s = ""; [0, 20, 40, 60, 80].forEach(v => { s += `<line class="grid-l" x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}"/><text class="ax" x="${L - 8}" y="${sy(v) + 3}" text-anchor="end">${v}</text>`; });
+    bs.forEach((b, i) => { const x = L + bw * i + bw * .25, w = bw * .5, pct = (b.n / RD.total * 100).toFixed(1); s += `<rect class="bar" x="${x}" y="${sy(b.n)}" width="${w}" height="${sy(0) - sy(b.n)}" rx="4" fill="${b.k === "逾 100%" ? "var(--warn)" : "var(--c-fee)"}" opacity="${b.k.includes("8") || b.k.includes("9") ? 1 : .7}" data-tip="${b.k}：${b.n} 件（${pct}%）"/><text class="val" x="${x + w / 2}" y="${sy(b.n) - 6}" text-anchor="middle">${b.n} 件・${pct}%</text><text class="lbl" x="${x + w / 2}" y="${H - 12}" text-anchor="middle">${b.k}</text>`; });
+    $("#ratioChart").innerHTML = s; })();
+  /* 行政區區間圖 */
+  const gcol = { 1: "var(--c-after)", 2: "var(--c-before)", 3: "var(--c-fee)" }, gname = { 1: "高價位群", 2: "中價位群", 3: "一般價位群" };
+  function drawDist(sort) { const W = 760, H = 420, L = 70, R = 30, T = 20, B = 34, rows = [...D.districts].sort((a, b) => sort === "n" ? b.n - a.n : b.phi - a.phi), rh = (H - T - B) / rows.length, max = 1800000, sx = v => L + (W - L - R) * v / max;
+    let s = ""; [0, 300000, 600000, 900000, 1200000, 1500000, 1800000].forEach(v => { s += `<line class="grid-l" x1="${sx(v)}" x2="${sx(v)}" y1="${T}" y2="${H - B}"/><text class="ax" x="${sx(v)}" y="${H - B + 14}" text-anchor="middle">${v / 10000} 萬</text>`; });
+    rows.forEach((d, i) => { const y = T + rh * i + rh / 2, r = 4 + Math.sqrt(d.n) * 1.6; s += `<g class="rng" data-tip="${d.d}：${d.n} 件；容積單價 ${d.plo.toLocaleString()}～${d.phi.toLocaleString()} 元/坪；市價比 ${d.lo}%～${d.hi}%${d.hi > 100 ? "（曾逾 100%）" : ""}"><text class="lbl" x="${L - 8}" y="${y + 4}" text-anchor="end">${d.d}</text><line x1="${sx(d.plo)}" x2="${sx(d.phi)}" y1="${y}" y2="${y}" stroke="${gcol[d.g]}" stroke-width="2" stroke-linecap="round"/><circle cx="${sx(d.plo)}" cy="${y}" r="${r}" fill="#fff" stroke="${gcol[d.g]}" stroke-width="2"/><circle cx="${sx(d.phi)}" cy="${y}" r="${r}" fill="${gcol[d.g]}" stroke="#fff" stroke-width="2"/><text class="val" x="${sx(d.phi) + r + 6}" y="${y + 4}">${Math.round(d.phi / 10000)} 萬${d.hi > 100 ? " ★" : ""}</text></g>`; });
+    $("#distChart").innerHTML = s; }
+  drawDist("price");
+  $("#distLegend").innerHTML = Object.entries(gname).map(([g, n]) => `<span><i style="background:${gcol[g]}"></i>${n}</span>`).join("") + `<span>★ 市價比曾逾 100%</span>`;
+  $$("#sortSeg button").forEach(b => b.onclick = () => { $$("#sortSeg button").forEach(x => x.classList.toggle("on", x === b)); drawDist(b.dataset.s); });
+  $("#groups").innerHTML = D.priceGroups.map(g => `<div class="card reveal" style="border-left:5px solid ${gcol[g.g]}"><h3>${g.t}　<span class="mono muted" style="font-size:.9rem">${g.r}</span></h3><p><b>${g.n} 件</b>・${g.who}</p></div>`).join("");
+  $("#distTable").innerHTML = U.table(["行政區", "案件數", "代金市價比區間", "容積平均單價（元/坪）", "價位群"], D.districts.map(d => [d.d, d.n, `${d.lo}%～${d.hi}%`, `${d.plo.toLocaleString()}～${d.phi.toLocaleString()}`, `<span class="tag" style="background:${gcol[d.g]};color:#fff">${gname[d.g]}</span>`]), "num");
+  $("#recentTable").innerHTML = U.table(["行政區", "案件數", "市價比區間", "容積平均單價（元/坪）"], D.recent114.map(r => [r.d, r.n, r.r, r.p]), "num");
+  U.reveal();
+})();
+</script>
+</body>
+</html>

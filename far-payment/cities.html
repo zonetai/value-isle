@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta name="theme-color" content="#c06a1a">
+<link rel="canonical" href="https://zonetai.com/value-isle/far-payment/cities.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>03 各縣市制度｜容積代金學堂</title>
+<meta name="description" content="六都容積代金概況、強制雙軌與彈性雙軌、三種估價模式與三種審查制度、臺北與新北的規定對照與申請實務。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">03 · Cities</span>
+    <h1>各縣市制度：同樣叫代金，規則不一樣</h1>
+    <p class="lede">要不要強制繳代金、代金怎麼算、誰來審，各縣市選擇不同。跨縣市執業最常見的錯，是把一市的規定套到另一市。選了哪一市，就照那一市的規則。</p>
+    <div class="where"><span class="tag">六都概況</span><span class="tag">三種制度類型</span><span class="tag">三種估價模式</span><span class="tag">三種審查制度</span><span class="tag">臺北 vs 新北</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Six cities</span><h2>六都容積代金：案件概況</h2><p>申請件數（2021 年至 2026 年 5 月）與實施委託估價起始年。臺北最早（2014 年全國首創委託估價）；新北、桃園件數最多，彈性雙軌下申請量大；非六都的彰化縣 2015、嘉義市 2017 也在跟進。</p></div></div>
+    <div class="chart reveal"><h3>六都申請件數</h3><p class="sub">件；滑過長條看實施起始年</p><svg id="cityChart" viewBox="0 0 720 230" role="img" aria-label="六都容積代金申請件數長條圖"></svg></div>
+    <div class="reveal" style="margin-top:14px" id="cityTable"></div>
+    <p class="source" id="cityNote"></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Three types</span><h2>要不要強制繳代金：三種制度類型</h2></div></div>
+    <div class="grid g3" id="sysTypes"></div>
+    <div class="section-head reveal" style="margin-top:48px"><div><span class="kicker">Three models</span><h2>代金估價模式：三種算法</h2><p>同樣叫代金，計價基礎不一樣。本站以第一種為主：兩情境地價差額。第二、三種用平均單價，會高估或低估邊際容積。</p></div></div>
+    <div class="reveal" id="modelTable"></div>
+    <div class="section-head reveal" style="margin-top:48px"><div><span class="kicker">Who reviews</span><h2>代金審查制度：誰來審</h2></div></div>
+    <div class="grid g3" id="revSys"></div>
+    <p class="source">資料來源：臺北代金估價通案原則研析（115 年度學員版）p.7–9；114 估全聯字第 197 號函。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Current status</span><h2>各縣市代金制度現況（115 年 11 月查核）</h2></div></div>
+    <div class="reveal" id="statusTable"></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card reveal"><span class="tag before">新北</span><h3 style="margin-top:8px">用規則把容移導向「好用的公設」</h3>
+        <div class="step-list" style="margin-top:10px">
+          <div class="card"><div><b>107 年</b><p>道路用地須全持分辦理捐贈。</p></div></div>
+          <div class="card"><div><b>108 年</b><p>鼓勵捐贈五項開放性公設：公園、兒童遊樂場、綠地、體育場、廣場。</p></div></div>
+          <div class="card"><div><b>110 年 3 月</b><p>折繳代金機制啟動；代金全數繳入新北市公共建設用地基金。</p></div></div>
+          <div class="card"><div><b>113 年 1 月 1 日</b><p>優先收受五項公設；非五項公設之容移不得逾接受基地基準容積 20%。</p></div></div>
+          <div class="card"><div><b>113 年 7 月</b><p>各公設管養機關得自訂受贈條件。</p></div></div>
+        </div>
+        <p>代金實施滿 3 年：成案 190 件、繳納金額逾 220 億元（至 113 年 3 月）。代金實施後捐贈公保地面積明顯下降，113 年約為高峰期四分之一。</p></div>
+      <div class="card reveal"><span class="tag after">高雄</span><h3 style="margin-top:8px">代金從公告現值改為市價</h3>
+        <div class="grid g2" style="margin-top:10px">
+          <div><b>舊制</b><p>50% 公保地＋50% 代金；代金以公告現值計。經內政部要求回歸實施辦法第 9 條之 1。</p></div>
+          <div><b>新制（114.01.23）</b><p>自由選擇比例：100% 公保地、100% 代金或混合；代金以接受基地市價計，三家查估、公會協審後採中位數。</p></div>
+        </div>
+        <p style="margin-top:10px"><b>TOD 增額容積代金（114.08）：</b>都委會通過環狀輕軌、鐵路地下化鳳山計畫增額容積，代金折繳不得低於申請增額容積價值 50%。</p>
+        <div class="note" style="margin-top:12px">估價意涵：同一個「代金」，計價基礎從公告現值變市價，估價師才真正進場。</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Taipei vs New Taipei</span><h2>臺北與新北：規定對照</h2><p>跨縣市執業最常見的錯，是把一市的規定套到另一市。審議期間的處理方式相反，是最常考的差異。</p></div><div class="seg" id="citySeg"><button class="on" data-c="both">兩市並列</button><button data-c="tpe">只看臺北</button><button data-c="ntpc">只看新北</button></div></div>
+    <div class="reveal" id="vsTable"></div>
+    <p class="source" id="vsNote"></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Application · Taipei</span><h2>臺北市：接受基地評估原則與申請步驟</h2><p>檢討原則依中央辦法與各地自治法規；四個角色各自要檢討什麼：送出基地（可移出條件、全體同意、清理地上物與他項權利）、接受基地（區位、面積、臨路、上限、代金比例與估價程序）、範圍（同一主要計畫區，跨區須經內政部都委會）、審議（都審、開發許可；都更、整開、永久性空地特殊規定）。</p></div></div>
+    <div class="grid g2">
+      <div class="reveal" id="tpeRules"></div>
+      <div>
+        <div class="reveal" id="tpeSteps"></div>
+        <div class="note reveal" style="margin-top:12px"><b>實務上的程序排法（非法規明文）：</b>保守順序為容移 → 都更 → 都審 → 容移 → 都更。都更掛件後容移須先提出申請；都審不必等容移書審公函，可平行推進；都審不必先送都更幹事會，但兩者量體須一致，否則代金要重估。</div>
+      </div>
+    </div>
+    <p class="source">資料來源：臺北市容積移轉審查許可自治條例（110.07.15 修正）；臺北市政府都市發展局容移快速請照方案（112.05）；臺北市容積代金預先繳納作業說明（112.04.28 修訂）。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="kicker">Application · New Taipei</span><h2>新北市：先檢討開發方式，後檢討容積移轉</h2><p>臺北用「區位條件」篩選，新北用「評定原則」打分：臨路容移 ＋ 評定原則 ＝ 可移入容積總量。</p></div></div>
+    <div class="grid g3">
+      <div class="card reveal"><span class="kicker">1</span><h3>開發方式</h3><p>都更、危老、簡易都更、海砂屋、輻射屋。</p></div>
+      <div class="card reveal"><span class="kicker">2</span><h3>基地規模與臨路</h3><p>臨路寬度決定可移入基準。</p></div>
+      <div class="card reveal"><span class="kicker">3</span><h3>TOD</h3><p>大運量捷運站周邊 300m（年運量 1,200 萬人次以下 150m）屬增額容積機制。</p></div>
+      <div class="card reveal"><span class="kicker">4</span><h3>特性檢討</h3><p>山坡地、重劃區等。</p></div>
+      <div class="card reveal"><span class="kicker">5</span><h3>土管檢討</h3><p>上限、容獎禁止、退縮、禁止容移地區。</p></div>
+      <div class="card reveal"><span class="kicker">6</span><h3>受贈條件</h3><p>113.1.1 起非五項公設容移不得逾基準容積 20%；113.7 起各機關得自訂受贈條件。</p></div>
+    </div>
+    <div class="reveal" style="margin-top:14px" id="ntpcTable"></div>
+    <p class="source">資料來源：新北市都市計畫容積移轉許可審查要點第 5 點；新北市政府辦理都市計畫容積移轉申請移入容積量體評定原則（109.01.07 修正第三點）；受理容積移轉案件申請作業規範。內部條件積分：基地大小完整性、周邊公設、TOD 距離、綠覆、減少開挖、開放空間等。</p>
+    <div style="margin-top:18px"><a class="btn sm" href="valuation.html">下一站：估價邏輯與試算 →</a></div>
+  </div>
+</section>
+
+<div class="tip" id="tip"></div>
+<script src="assets/data.js?v=1"></script>
+<script src="assets/common.js?v=1"></script>
+<script>
+(function(){
+  const D = window.FP, U = window.FPU, $ = U.$, $$ = U.$$;
+  /* 六都長條圖 */
+  (function(){ const W = 720, H = 230, L = 70, R = 20, T = 14, B = 34, max = 300, data = D.cities6;
+    const bw = (W - L - R) / data.length, sx = i => L + bw * i + bw * .2, sw = bw * .6, sy = v => T + (H - T - B) * (1 - v / max);
+    let s = ""; [0, 100, 200, 300].forEach(v => { s += `<line class="grid-l" x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}"/><text class="ax" x="${L - 8}" y="${sy(v) + 3}" text-anchor="end">${v}</text>`; });
+    data.forEach((d, i) => { s += `<rect class="bar" x="${sx(i)}" y="${sy(d.n)}" width="${sw}" height="${sy(0) - sy(d.n)}" rx="4" fill="${d.mode === "強制雙軌" ? "var(--c-after)" : "var(--c-before)"}" data-tip="${d.c}：${d.n} 件；實施委託估價 ${d.since}；${d.mode}"/><text class="val" x="${sx(i) + sw / 2}" y="${sy(d.n) - 6}" text-anchor="middle">${d.n}</text><text class="lbl" x="${sx(i) + sw / 2}" y="${H - 12}" text-anchor="middle">${d.c}</text>`; });
+    $("#cityChart").innerHTML = s;
+    $("#cityChart").insertAdjacentHTML("afterend", `<div class="legend"><span><i style="background:var(--c-after)"></i>強制雙軌</span><span><i style="background:var(--c-before)"></i>彈性雙軌</span></div>`);
+  })();
+  const tip = $("#tip");
+  document.addEventListener("mousemove", e => { const t = e.target.closest("[data-tip]"); if (t) { tip.textContent = t.dataset.tip; tip.classList.add("show"); tip.style.left = Math.min(e.clientX + 12, innerWidth - 270) + "px"; tip.style.top = (e.clientY + 14) + "px"; } else tip.classList.remove("show"); });
+
+  $("#cityTable").innerHTML = U.table(["縣市", "案件數", "實施代金委託估價", "制度"], D.cities6.map(c => [c.c, `<span class="mono">${c.n}</span>`, c.since, `<span class="tag ${c.mode === "強制雙軌" ? "after" : "before"}">${c.mode}</span>`]));
+  $("#cityNote").textContent = D.cities6Note;
+  $("#sysTypes").innerHTML = D.systemTypes.map((t, i) => `<div class="card reveal num-card" style="--c:${["var(--c-after)", "var(--c-before)", "var(--ink-3)"][i]}"><span class="n">${["I", "II", "III"][i]}</span><h3>${t.t}</h3><p>${t.s}</p><p><b>執行縣市：</b>${t.who}</p><p class="muted" style="font-size:.84rem">${t.why}</p></div>`).join("");
+  $("#modelTable").innerHTML = U.table(["模式", "計算方式", "執行縣市", "特色"], D.feeModels.map((m, i) => [m.t + (i === 0 ? ' <span class="tag fee">本站主軸</span>' : ""), `<span class="mono" style="font-size:.82rem">${m.f}</span>`, m.who, m.note]));
+  $("#revSys").innerHTML = D.reviewSystems.map((r, i) => `<div class="card reveal"><span class="kicker">${["I", "II", "III"][i]}</span><h3 style="margin-top:6px">${r.t}</h3><p><b>${r.who}</b></p><p>${r.s}</p></div>`).join("");
+  $("#statusTable").innerHTML = U.table(["縣市", "最新法源（修正日）", "代金方式", "估價與審查"], D.cities6.map(c => [c.c, c.law, c.fee, c.rev]));
+
+  function renderVs(mode) {
+    const head = mode === "both" ? ["項目", "臺北市", "新北市"] : ["項目", mode === "tpe" ? "臺北市" : "新北市"];
+    $("#vsTable").innerHTML = U.table(head, D.tpeVsNtpc.map(r => mode === "both" ? [r.k, r.tpe, r.ntpc] : [r.k, mode === "tpe" ? r.tpe : r.ntpc]));
+  }
+  renderVs("both"); $("#vsNote").textContent = D.tpeVsNtpcNote;
+  $$("#citySeg button").forEach(b => b.onclick = () => { $$("#citySeg button").forEach(x => x.classList.toggle("on", x === b)); renderVs(b.dataset.c); });
+
+  $("#tpeRules").innerHTML = U.table(["檢討項目", "現行規定", "條次"], [
+    ["區位", "捷運場站出入口半徑 800m 內，且面臨 8m 以上已開闢道路；或半徑 500m 內有 0.5 公頃以上已開闢公園綠地廣場，並臨 15m 道路或兩條道路其一達 12m", "§6"],
+    ["面積", "應超過 1,000 ㎡；排除山坡地、古蹟毗鄰街廓、保護區變更住宅區等", "§7"],
+    ["上限", "移入容積加計其他獎勵 ≦ 法定容積 50%；都更、危老獎勵不計入", "§9"],
+    ["方式", "繳代金、歷史建築土地、捐贈公保地；代金 ≧ 移入量 50%，捐地 ≦ 50%；道路須完整路段或已開闢", "§2-1、§4"],
+    ["程序", "建築計畫經都審及開發許可審議通過並經核定，始得申請許可；審議通過後須清理送出基地法律關係並移轉登記，始核發許可", "§5、§10"]
+  ]);
+  $("#tpeSteps").innerHTML = `<div class="step-list">${[
+    "公設及代金併同申請，取得書面審查後辦理都市設計審議",
+    "都審掛件後可申請繳納估價費用",
+    "都審核定後，都發局委託三家估價",
+    "取得委託估價函後即可申請建照（容移快速請照方案）",
+    "核准建照須檢附容積移轉許可證明，或預先繳納代金證明",
+    "預繳案件：一樓樓版勘驗前完成代金找補、捐地並取得許可證明"
+  ].map(s => `<div class="card"><div>${s}</div></div>`).join("")}</div>`;
+  $("#ntpcTable").innerHTML = U.table(["類型", "條件", "可移入容積"], [
+    ["簡易類型", "臨 8m 以上、未達 20m 道路", "依道路寬度數值（8%～19%）"],
+    ["簡易類型", "臨 20m 以上道路", "20%"],
+    ["一般類型", "臨路基準＋內部條件＋外部環境改善", "合計 ≦ 基準容積 30% 或 40%"],
+    ["捐贈非五項公設", "113.1.1 起", "≦ 基準容積 20%"],
+    ["TOD 增額容積", "捷運站周邊（另一機制）", "最高 50%，總容積 ≦ 基準 2 倍"]
+  ]);
+  U.reveal();
+})();
+</script>
+</body>
+</html>

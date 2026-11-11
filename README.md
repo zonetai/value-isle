@@ -20,6 +20,15 @@
 | `drill.html` 估價小測 | 23 題分類測驗與辭典 | 翻牌、答對答錯回饋 |
 | `about.html` 關於 | 整理方式、資料與知識來源、更新方式 | |
 
+## 姊妹站：容積代金學堂（`far-payment/`）
+
+容積移轉與容積代金的學習網站，線上版 https://zonetai.com/value-isle/far-payment/ 。九站學習路線：故事、法令、縣市、估價試算、範本、審議與找碴、標購、數據、小測。
+
+- `far-payment/assets/data.js`：全站內容（時間軸、縣市、範本規則、題庫、辭典、示範案）
+- `far-payment/assets/calc.js`：雙情境土地開發分析計算與檢核引擎（示範案數字與 114 上期末考解答檔一致）
+- `far-payment/assets/scene.js`：首頁雙塔場景；`common.js`、`style.css` 為共用程式與樣式
+- 新增頁面時照樣加 canonical 與 github.io 的 noindex 腳本
+
 ## 更新方式
 
 - 每日觀測：`assets/daily.js`，由每日排程自動更新（保留 45 天、60 則）
