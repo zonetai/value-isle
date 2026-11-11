@@ -6,7 +6,7 @@
    - layer：intl 國際海象／policy 政策氣候／market 市場潮位／ind 個別條件
    ============================================================ */
 window.DAILY = {
-  updated: "2026-11-10",
+  updated: "2026-11-11",
   schedule: "每日上午自動更新",
 
   /* ---------- 專題 ---------- */
@@ -30,6 +30,7 @@ window.DAILY = {
         { name: "政策含意（已有報導者）", items: [
           { t: "關稅：國會換屆不直接改變稅率", s: "關稅由總統依國會既有授權訂定；民主黨擬提案收回權限，但難以跨過否決門檻。", src: "Council on Foreign Relations", url: "https://www.cfr.org/articles/democrats-win-control-of-congress-heres-how-that-could-affect-u-s-foreign-policy" },
           { t: "聯準會：市場定價 12 月 9 日升息 1 碼的機率約七成以上", s: "10 月非農新增 16.5 萬人、失業率 4.1%；國內銀行估升息機率逾 75%，短期美元偏強。", src: "經濟日報", url: "https://udn.com/news/story/7239/9866610" },
+          { t: "10 月 CPI 高於預期，12 月升息定價升至 88%", s: "11/10 公布 CPI 月增 0.4%，預期 0.3%；升 2 碼機率 11%，一週前為零。", src: "CNBC", url: "https://www.cnbc.com/2026/11/10/market-spooked-because-now-the-fed-may-need-a-supersized-hike-in-december.html" },
           { t: "財政：政府撥款 12 月 11 日到期，債務上限估 2027 年觸頂", s: "年底前須通過臨時或全年撥款法案；智庫預期 2027 年出現債限僵局。", src: "CNBC", url: "https://www.cnbc.com/2026/11/09/congress-government-funding-debt-limit-elections.html" },
           { t: "對臺與晶片：關稅與軍售仍由行政部門主導", s: "半導體 232、301 關稅與對臺軍售進度不因國會換屆直接改變，變的是監督力道。", src: "數位時代", url: "https://www.bnext.com.tw/article/92878/us-midterm-elections-2026-result-taiwan-tariff" }
         ] },
@@ -118,6 +119,11 @@ window.DAILY = {
 
   /* ---------- 每日快訊（由新到舊） ---------- */
   briefs: [
+    { d: "2026-11-10", layer: "intl", tag: "聯準會", t: "美國 10 月 CPI 月增 0.4%，升息預期升溫", s: "高於預期的 0.3%；10 年期美債殖利率升近 10 個基點至 4.95%，市場定價 12 月升 1 碼機率 88%。", i: "美國利率走高會帶動國內資金成本，收益法折現率不宜下修。", src: "CNBC", url: "https://www.cnbc.com/2026/11/10/market-spooked-because-now-the-fed-may-need-a-supersized-hike-in-december.html" },
+    { d: "2026-11-10", layer: "intl", tag: "股市", t: "臺股漲 1,050 點，收 42,711.92 點", s: "加權指數漲幅 2.52%，成交金額新臺幣 1 兆 33.39 億元，連 2 日反彈。", i: "股市回穩有助財富效果，但量價反應需一到兩季才進入比較法案例。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611100131.aspx" },
+    { d: "2026-11-10", layer: "intl", tag: "匯率", t: "新臺幣盤中逼近 33 元，收 32.865 元", s: "盤中最低 32.97 元，央行尾盤調節後轉為升值 1.7 分；外資賣超 341.16 億元。", i: "匯率偏弱推升進口建材成本，成本法重建成本須留意期日修正。", src: "自由時報", url: "https://ec.ltn.com.tw/article/breakingnews/5636034" },
+    { d: "2026-11-10", layer: "ind", tag: "都更", t: "高雄左營機20公辦都更動土，總投資 153 億元", s: "基地約 4,270 坪，規劃 7 棟建物、約 1,741 戶，含社宅約 85 戶，預計 2033 年完工。", i: "公辦都更動工使周邊住宅供給時程明確，屬區域因素，可作為後續比較標的來源。", src: "安傳媒", url: "https://annewsmedia.com/2026/11/10/regional-focus/23438/" },
+    { d: "2026-11-09", layer: "policy", tag: "九合一", t: "北市都更政見攻防：國有地盤點與人力", s: "沈伯洋稱都發局嚴重缺人力；蔣萬安要求說明國有地來源，並列舉南機場等公辦都更案。", i: "政見屬主張階段，估價上僅揭露為不確定因素，不反映於更新後價值。", src: "聯合報", url: "https://udn.com/vote2026/story/124652/9865720" },
     { d: "2026-11-09", layer: "intl", tag: "出口", t: "10 月出口 967.6 億美元，年增 58.9%", s: "出口連 36 個月正成長，資通與視聽產品 476 億美元、電子零組件 326.8 億美元。", i: "科技業獲利與就業支撐園區周邊住宅與廠辦需求，是區域因素的正面訊號。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611090213.aspx" },
     { d: "2026-11-09", layer: "intl", tag: "匯率", t: "新臺幣收 32.882 元，外資續匯出", s: "臺股大漲但外資仍賣超 900 億元，盤中最低 32.957 元。", i: "匯率走貶推升進口建材成本，也影響外資與壽險對商用不動產的配置。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611090222.aspx" },
     { d: "2026-11-09", layer: "policy", tag: "九合一", t: "淡海科學城進駐時程各有說法", s: "行政院長稱民國 118 年可進駐；李四川競辦引內政部資料稱 124 年工程才完成。", i: "區段徵收完成時點未定前，估價不宜把園區效益提前反映在周邊地價。", src: "聯合報", url: "https://udn.com/news/story/124652/9867368" },
