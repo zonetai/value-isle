@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/burden.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>03 共同負擔拆解｜權變沙盤</title>
+<meta name="description" content="都市更新共同負擔逐項拆解：工程費、人事行政管理費、銷售管理費、風險管理費、信託管理費、貸款利息、稅捐、容積獎勵申請費、其他。填費率看共負比，燈號標出要有說明的項目，可帶入分回試算。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">第 3 站</span>
+    <h1>共同負擔拆解：一項一項攤開</h1>
+    <p class="lede">共同負擔不是實施者說多少就是多少，每一項都要有必要性、合理性、可驗證性。這一站以示範基地的更新後總價為分母，填十項費率，看共負比落在哪裡、哪一項燈號亮。</p>
+    <div class="where"><span class="tag c">工程</span><span class="tag c">管理</span><span class="tag c">財務</span><span class="tag c">稅費</span><span class="tag c">利潤</span></div>
+  </div>
+</section>
+
+<section class="section" id="burden">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>十項費用與共負比</h2><p id="basis"></p></div>
+      <div class="tools"><button class="btn ghost sm" id="reset">還原預設</button><button class="btn ghost sm" id="share">複製分享連結</button><a class="btn accent sm" id="toCalc" href="calc.html">帶入分回試算</a></div></div>
+    <div class="kpis reveal" id="kpi"></div>
+    <div class="calc" style="margin-top:18px">
+      <div class="card reveal">
+        <div class="grp">實施方式</div>
+        <div style="display:flex;gap:18px;flex-wrap:wrap"><label class="switch"><input type="checkbox" id="isPublic">公辦都更</label><label class="switch"><input type="checkbox" id="hasTrust" checked>有辦理信託</label></div>
+        <div class="grp">工程費</div>
+        <div class="fgrid">
+          <label class="fld"><span>造價單價<i class="u">元/坪</i></span><input class="inp" type="number" id="unit" step="1000" min="0"></label>
+          <label class="fld"><span>地下層數</span><input class="inp" type="number" id="floorsDown" step="1" min="0"></label>
+          <label class="fld"><span>開挖率<i class="u">%</i></span><input class="inp" type="number" id="digRate" step="1" min="0" max="100"></label>
+        </div>
+        <div class="grp">管理費</div>
+        <div class="fgrid">
+          <label class="fld"><span>人事行政<i class="u">% 工程費</i></span><input class="inp" type="number" id="adminMgmt" step="0.1" min="0"></label>
+          <label class="fld"><span>銷售管理<i class="u">% 總銷</i></span><input class="inp" type="number" id="salesMgmt" step="0.1" min="0"></label>
+          <label class="fld"><span>風險管理<i class="u">% 其他費用合計</i></span><input class="inp" type="number" id="riskMgmt" step="0.5" min="0"></label>
+          <label class="fld"><span>信託管理<i class="u">% 總銷</i></span><input class="inp" type="number" id="trustMgmt" step="0.1" min="0"></label>
+        </div>
+        <div class="grp">貸款利息</div>
+        <div class="fgrid">
+          <label class="fld"><span>計息月數</span><input class="inp" type="number" id="months" step="1" min="0"></label>
+          <label class="fld"><span>實際工期<i class="u">月</i></span><input class="inp" type="number" id="workMonths" step="1" min="0"></label>
+          <label class="fld"><span>年利率<i class="u">%</i></span><input class="inp" type="number" id="rate" step="0.1" min="0"></label>
+          <label class="fld"><span>貸款占工程費<i class="u">%</i></span><input class="inp" type="number" id="loanRatio" step="5" min="0" max="100"></label>
+        </div>
+        <div class="grp">稅費、利潤、其他</div>
+        <div class="fgrid">
+          <label class="fld"><span>稅捐<i class="u">% 總銷</i></span><input class="inp" type="number" id="tax" step="0.1" min="0"></label>
+          <label class="fld"><span>容積獎勵申請費<i class="u">% 總銷</i></span><input class="inp" type="number" id="bonusFee" step="0.1" min="0"></label>
+          <label class="fld"><span>另列實施者利潤<i class="u">% 總銷</i></span><input class="inp" type="number" id="profit" step="0.5" min="0"></label>
+          <label class="fld"><span>其他<i class="u">% 總銷</i></span><input class="inp" type="number" id="other" step="0.1" min="0"></label>
+        </div>
+        <p class="source">基數的選擇是教學簡化：實務上各項依提列總表規定的基數與級距計算，數值請以主管機關現行總表為準。</p>
+      </div>
+      <div>
+        <div class="card reveal"><h3>各項金額與占比</h3><div class="bars" id="bars" style="margin-top:12px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>燈號 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><div id="checks" style="margin-top:10px"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>每一項怎麼算、審查問什麼</h2></div></div>
+    <div class="bitems" id="items"></div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=3"></script>
+<script src="assets/calc.js?v=3"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=3"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const fresh = () => ({ ...clone(D.burdenDemo), city: "tpe", isPublic: false, hasTrust: true });
+  let S = (U.param("b") && U.dec(U.param("b"))) || fresh();
+  /* 分母：示範基地或試算頁帶來的基地 */
+  const calcS = (U.param("s") && U.dec(U.param("s"))) || { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };
+  const r0 = C.run(calcS);
+  $("#basis").textContent = `分母為${U.param("s") ? "試算頁帶來的基地" : "示範基地"}：更新後總價 B ${U.wanShort(r0.b.B)}、容積樓地板 ${r0.b.farPing.toFixed(0)} 坪、基地 ${r0.a.totalPing} 坪。`;
+
+  const flat = ["adminMgmt", "salesMgmt", "riskMgmt", "trustMgmt", "tax", "bonusFee", "profit", "other"];
+  function fill() {
+    $("#isPublic").checked = S.isPublic; $("#hasTrust").checked = S.hasTrust;
+    $("#unit").value = S.construction.unit; $("#floorsDown").value = S.construction.floorsDown; $("#digRate").value = S.construction.digRate;
+    ["months", "workMonths", "rate", "loanRatio"].forEach(k => $("#" + k).value = S.interest[k]);
+    flat.forEach(k => $("#" + k).value = S[k]);
+  }
+  function read() {
+    S.isPublic = $("#isPublic").checked; S.hasTrust = $("#hasTrust").checked;
+    S.construction = { unit: +$("#unit").value, floorsDown: +$("#floorsDown").value, digRate: +$("#digRate").value };
+    S.interest = Object.fromEntries(["months", "workMonths", "rate", "loanRatio"].map(k => [k, +$("#" + k).value]));
+    flat.forEach(k => S[k] = +$("#" + k).value);
+  }
+  function render() {
+    const b = C.burden(S, r0.b, { totalPing: r0.a.totalPing, bcr: calcS.site.bcr }, calcS.after);
+    $("#kpi").innerHTML = `<div class="kpi main"><span>共負比 D ＝ C ÷ B</span><b>${b.ratio.toFixed(1)}%</b><small>地主分回 ${(100 - b.ratio).toFixed(1)}%</small></div><div class="kpi"><span>共同負擔 C</span><b>${U.wanShort(b.C)}</b></div><div class="kpi"><span>工程費（地上 ${b.abovePing.toFixed(0)} 坪＋地下 ${b.belowPing.toFixed(0)} 坪）</span><b>${U.wanShort(b.items.construction)}</b></div><div class="kpi"><span>地主分回合計</span><b>${U.wanShort(r0.b.B - b.C)}</b></div>`;
+    const mx = Math.max(...Object.values(b.items));
+    $("#bars").innerHTML = D.burdenItems.map(it => { const v = b.items[it.k]; return `<div class="br"><span>${it.t}</span><div class="bar"><i style="width:${mx ? v / mx * 100 : 0}%"></i></div><b>${U.wanShort(v)}<br><span class="muted" style="font-size:.7rem">占 C ${(v / b.C * 100).toFixed(1)}%</span></b></div>`; }).join("");
+    $("#sum").textContent = U.lamps(b.checks, $("#checks"));
+    const u = new URL("calc.html", location.href); u.searchParams.set("d", b.ratio.toFixed(1)); if (U.param("s")) u.searchParams.set("s", U.param("s"));
+    $("#toCalc").href = u.toString();
+  }
+  $("#items").innerHTML = D.burdenItems.map(it => `<div class="bitem"><div><b>${it.t}</b><small>${it.s}</small></div><div><small>怎麼算</small>${it.how}</div><div><small>審查問什麼</small>${it.q}</div></div>`).join("");
+  fill(); render();
+  document.addEventListener("input", e => { if (e.target.closest("#burden")) { read(); render(); } });
+  document.addEventListener("change", e => { if (e.target.closest("#burden")) { read(); render(); } });
+  $("#reset").onclick = () => { S = fresh(); fill(); render(); U.toast("已還原預設"); };
+  $("#share").onclick = () => U.copy(U.share(S, "b"));
+  U.reveal();
+})();
+</script>
+</body>
+</html>

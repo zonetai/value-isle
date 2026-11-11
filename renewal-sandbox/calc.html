@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/calc.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>02 分回試算｜權變沙盤</title>
+<meta name="description" content="填自己家的土地持分、建物坪數、樓層與基地條件，保守、基準、樂觀三情境並排看都更分回坪數、分回價值與找補。每個數字可展開看公式，輸入值可編成連結分享，列印即一頁摘要。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">第 2 站</span>
+    <h1>分回試算：填自己家的條件，看三種情境</h1>
+    <p class="lede">預載示範基地：臺北市住三、四宗合併、四十戶。先選一戶當「我家」，改成自己的坪數與樓層，再改基地與更新後的假設。每改一格立刻重算；數字旁邊可以展開看怎麼算的。</p>
+    <div class="where"><span class="tag">我家</span><span class="tag">基地與各宗</span><span class="tag">更新後假設</span><span class="tag">三情境</span><span class="tag">燈號</span><span class="tag">敏感度</span></div>
+  </div>
+</section>
+
+<section class="section" id="calc">
+  <div class="container">
+    <div class="section-head reveal"><div><h2 id="caseName"></h2><p>分回價值 ＝ （B − C）× 我家 A ÷ ΣA；分回坪數 ＝ 分回價值 ÷ 選配單價。</p></div>
+      <div class="tools"><button class="btn ghost sm" id="reset">還原示範基地</button><button class="btn ghost sm" id="share">複製分享連結</button><button class="btn ghost sm" id="print">列印一頁摘要</button></div></div>
+    <div class="kpis reveal" id="kpi"></div>
+    <div class="calc" style="margin-top:18px">
+      <div class="card reveal">
+        <div class="grp">我家</div>
+        <div class="fgrid">
+          <label class="fld" style="grid-column:1/-1"><span>選一戶當我家</span><select class="inp" id="me"></select></label>
+          <label class="fld"><span>土地持分<i class="u">坪</i></span><input class="inp" type="number" id="myLand" step="0.1" min="0"></label>
+          <label class="fld"><span>建物面積<i class="u">坪</i></span><input class="inp" type="number" id="myBldg" step="0.1" min="0"></label>
+          <label class="fld"><span>樓層</span><select class="inp" id="myFloor"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+          <label class="fld"><span>用途</span><select class="inp" id="myUse"><option value="res">住宅</option><option value="shop">一樓店面</option></select></label>
+          <div class="fld" style="grid-column:span 2"><span id="modeLbl">宗內分配方式</span><div class="seg" id="mode" role="group" aria-labelledby="modeLbl"><button type="button" data-v="building" class="on">依建物效用</button><button type="button" data-v="land">依土地持分</button></div></div>
+        </div>
+        <div class="grp">選配（更新後想拿哪一戶）</div>
+        <div class="fgrid">
+          <label class="fld"><span>樓層</span><select class="inp" id="pickFloor"></select></label>
+          <label class="fld"><span>用途</span><select class="inp" id="pickUse"><option value="res">住宅</option><option value="shop">一樓店面</option></select></label>
+          <label class="fld"><span>坪數<i class="u">0＝依分回取整</i></span><input class="inp" type="number" id="pickPing" step="1" min="0" value="0"></label>
+        </div>
+        <div class="grp">基地</div>
+        <div class="fgrid">
+          <label class="fld"><span>比準地單價<i class="u">萬/坪</i></span><input class="inp" type="number" id="baseUnit" step="1" min="1"></label>
+          <label class="fld"><span>法定容積率<i class="u">%</i></span><input class="inp" type="number" id="farLegal" step="1" min="1"></label>
+          <label class="fld"><span>獎勵容積<i class="u">% 法定</i></span><input class="inp" type="number" id="bonus" step="1" min="0" max="50"></label>
+          <label class="fld"><span>建蔽率<i class="u">%</i></span><input class="inp" type="number" id="bcr" step="1" min="1" max="100"></label>
+        </div>
+        <div class="lots" id="lots" style="margin-top:10px"></div>
+        <p class="source" style="margin-top:8px">各宗調整率相加後乘比準地單價，取位至千元。四十戶結構依各宗面積平均展開，「我家」那一戶可改成自己的坪數。</p>
+        <div class="grp">更新後假設</div>
+        <div class="fgrid">
+          <label class="fld"><span>樓層數</span><input class="inp" type="number" id="floors" step="1" min="2"></label>
+          <label class="fld"><span>公設比<i class="u">%</i></span><input class="inp" type="number" id="publicRatio" step="1" min="0" max="60"></label>
+          <label class="fld"><span>住宅均價<i class="u">萬/坪</i></span><input class="inp" type="number" id="resPrice" step="1" min="1"></label>
+          <label class="fld"><span>店面單價<i class="u">萬/坪</i></span><input class="inp" type="number" id="shopPrice" step="1" min="0"></label>
+          <label class="fld"><span>車位單價<i class="u">萬/位</i></span><input class="inp" type="number" id="parkPrice" step="1" min="0"></label>
+          <label class="fld"><span>車位數</span><input class="inp" type="number" id="parkN" step="1" min="0"></label>
+          <label class="switch" style="grid-column:1/-1"><input type="checkbox" id="hasShop">一樓規劃店面</label>
+        </div>
+        <div class="grp">共同負擔</div>
+        <div class="sliders"><label><span>共負比 D<output id="ratioOut"></output></span><input type="range" id="ratio" min="20" max="60" step="0.5"></label></div>
+        <p class="source">想逐項拆，去〈共同負擔拆解〉算完按「帶入分回試算」。</p>
+      </div>
+      <div>
+        <div class="card reveal"><h3>三情境</h3><p class="muted" style="font-size:.82rem">固定變動三個參數：更新後均價、共負比、獎勵容積。</p><div class="scen" id="scen" style="margin-top:12px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>這個數字怎麼來的</h3><div class="steps" id="steps" style="margin-top:10px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>燈號 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><p class="muted" style="font-size:.82rem">每項展開三層：看什麼、規則或區間、怎麼修。門檻標明教學門檻者非審議標準。</p><div id="checks" style="margin-top:10px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>哪個參數最敏感</h3><p class="muted" style="font-size:.82rem">每個參數上下各動一次，看我家分回坪數的變化。</p><div class="tornado" id="tornado" style="margin-top:12px"></div></div>
+      </div>
+    </div>
+    <details class="acc reveal" style="margin-top:18px"><summary>全部四十戶的 A 值與分回</summary><div class="body" id="allUnits"></div></details>
+    <p class="print-only source">權變沙盤・中泰不動產智庫整理。本頁為教學用試算摘要，不構成估價意見或審議依據。列印日期：<span id="printDate"></span></p>
+  </div>
+</section>
+
+<script src="assets/data.js?v=3"></script>
+<script src="assets/calc.js?v=3"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=3"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const fresh = () => ({ city: "tpe", site: clone(D.demo.site), after: clone(D.demo.after), burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: clone(D.demo.pick), mode: "building", my: null });
+  let S = (U.param("s") && U.dec(U.param("s"))) || fresh();
+  if (U.param("d")) S.burdenRatio = +U.param("d");
+
+  /* 展開四十戶並套用「我家」覆寫 */
+  function units() {
+    const u = C.expandUnits(S.site);
+    if (S.my) { const i = u.findIndex(x => x.id === S.me); if (i >= 0) u[i] = { ...u[i], ...S.my }; }
+    return u;
+  }
+  const input = () => ({ ...S, units: units() });
+
+  /* ---------- 表單 ---------- */
+  const F = ["baseUnit", "farLegal", "bonus", "bcr", "floors", "publicRatio", "resPrice", "shopPrice", "parkPrice", "parkN"];
+  const toWan = ["baseUnit", "resPrice", "shopPrice", "parkPrice"];
+  function fill() {
+    const u = units(), me = u.find(x => x.id === S.me) || u[0];
+    $("#me").innerHTML = u.map(x => `<option value="${x.id}"${x.id === S.me ? " selected" : ""}>${x.id}　${x.floor} 樓${x.use === "shop" ? "店面" : ""}・土地 ${x.landPing} 坪・建物 ${x.bldgPing} 坪</option>`).join("");
+    $("#myLand").value = me.landPing; $("#myBldg").value = me.bldgPing; $("#myFloor").value = me.floor; $("#myUse").value = me.use;
+    $$("#mode button").forEach(b => b.classList.toggle("on", b.dataset.v === S.mode));
+    $("#pickFloor").innerHTML = Array.from({ length: S.after.floors }, (_, i) => `<option value="${i + 1}"${i + 1 === S.pick.floor ? " selected" : ""}>${i + 1} 樓</option>`).join("");
+    $("#pickUse").value = S.pick.use; $("#pickPing").value = S.pick.ping;
+    F.forEach(k => { const v = k in S.site ? S.site[k] : S.after[k]; $("#" + k).value = toWan.includes(k) ? Math.round(v / 1e4) : v; });
+    $("#hasShop").checked = !!S.after.hasShop;
+    $("#ratio").value = S.burdenRatio; $("#ratioOut").textContent = S.burdenRatio + "%";
+    $("#lots").innerHTML = `<div class="lot head"><span>宗</span><span>坪</span>${D.lotAdj.map(a => `<span>${a.t}%</span>`).join("")}</div>` + S.site.lots.map((l, i) => `<div class="lot"><b>${l.id}</b><input class="inp" type="number" data-lot="${i}" data-k="ping" value="${l.ping}" step="1" min="1" aria-label="${l.id} 面積（坪）">${D.lotAdj.map(a => `<input class="inp" type="number" data-lot="${i}" data-adj="${a.k}" value="${l.adj[a.k]}" step="1" aria-label="${l.id} ${a.t}調整率">`).join("")}</div>`).join("");
+  }
+
+  function read() {
+    S.me = $("#me").value;
+    S.my = { landPing: +$("#myLand").value, bldgPing: +$("#myBldg").value, floor: +$("#myFloor").value, use: $("#myUse").value };
+    S.pick = { floor: +$("#pickFloor").value, use: $("#pickUse").value, ping: +$("#pickPing").value || 0 };
+    F.forEach(k => { const v = +$("#" + k).value * (toWan.includes(k) ? 1e4 : 1); if (k in S.site) S.site[k] = v; else S.after[k] = v; });
+    S.after.hasShop = $("#hasShop").checked;
+    S.burdenRatio = +$("#ratio").value;
+    $$("#lots input").forEach(el => { const l = S.site.lots[+el.dataset.lot]; if (el.dataset.k) l.ping = +el.value || 1; else l.adj[el.dataset.adj] = +el.value || 0; });
+  }
+
+  /* ---------- 輸出 ---------- */
+  function render() {
+    const r = C.run(input());
+    $("#caseName").textContent = D.demo.name + "（每一格都可以改）";
+    $("#ratioOut").textContent = S.burdenRatio + "%";
+    $("#kpi").innerHTML = `
+      <div class="kpi main"><span>我家分回坪數（選配 ${r.input.pick.floor} 樓${r.input.pick.use === "shop" ? "店面" : ""}，單價 ${Math.round(r.pickPrice / 1e4)} 萬/坪）</span><b>${r.pingBack.toFixed(1)} 坪</b><small>更新前建物 ${r.my.bldgPing} 坪</small></div>
+      <div class="kpi"><span>我家分回價值</span><b>${U.wanShort(r.myValue)}</b></div>
+      <div class="kpi"><span>選 ${r.pickPing} 坪時找補</span><b class="${r.settle > 0 ? "up" : ""}">${r.settle >= 0 ? "補 " : "領 "}${U.wanShort(Math.abs(r.settle))}</b></div>
+      <div class="kpi"><span>我家更新前權值 A</span><b>${U.wanShort(r.my.A)}</b><small>占 ${U.pct(r.my.pct, 2)}</small></div>`;
+
+    /* 三情境 */
+    $("#scen").innerHTML = C.scenarios(input()).map(s => `<div class="card ${s.k}"><h4>${s.t}</h4><div class="s">${s.s}</div><div class="big">${s.r.pingBack.toFixed(1)}<small> 坪</small></div><div class="kv"><b>分回價值</b><span>${U.wanShort(s.r.myValue)}</span><b>獎勵容積</b><span>${s.bonusUsed}%</span><b>共負比</b><span>${s.r.ratio}%</span><b>地主分回</b><span>${U.pct(s.r.ownerShare, 0)}</span><b>找補</b><span>${s.r.settle >= 0 ? "補" : "領"} ${U.wanShort(Math.abs(s.r.settle))}</span></div></div>`).join("");
+
+    /* 計算過程 */
+    const a = r.a, b = r.b, lot = a.lots.find(l => l.id === r.my.lot);
+    const st = (t, v, f, cls = "") => `<div class="st ${cls}"><div>${t}${f ? `<span class="f">${f}</span>` : ""}</div><div class="v">${v}</div></div>`;
+    $("#steps").innerHTML =
+      st("比準地單價", U.fmt(S.site.baseUnit) + " 元/坪") +
+      st(`${lot.id} 合併前單價`, U.fmt(lot.unitBefore) + " 元/坪", `${U.fmt(S.site.baseUnit)} × (1 ${lot.adjSum >= 0 ? "+" : "−"} ${Math.abs(lot.adjSum)}%)，取千元`) +
+      st("合併增值係數", a.coef.toFixed(4), `${U.wanShort(a.mergedTotal)} ÷ ${U.wanShort(a.sumBefore)}`) +
+      st(`${lot.id} 合併後地價`, U.wanShort(lot.totalAfter), `${U.fmt(lot.unitBefore)} × ${lot.ping} 坪 × ${a.coef.toFixed(4)}`) +
+      st("我家在宗內的占比", U.pct(r.my.share, 2), S.mode === "land" ? `土地持分 ${r.my.landPing} 坪 ÷ 宗內合計` : `建物 ${r.my.bldgPing} 坪 × 效用比 ${r.my.eff.toFixed(2)}${r.my.factor !== 1 ? ` × 店面 ${r.my.factor}` : ""} ÷ 宗內合計`) +
+      st("我家 A 值", U.wanShort(r.my.A), `占全部 A（${U.wanShort(a.sumA)}）的 ${U.pct(r.my.pct, 2)}`, "sum") +
+      st("容積樓地板", b.farPing.toFixed(0) + " 坪", `${a.totalPing} 坪 × ${S.site.farLegal}% × (1 + ${S.site.bonus}%)`) +
+      st("銷售坪數", b.sellPing.toFixed(0) + " 坪", `× ${D.extraRatio} ÷ (1 − ${S.after.publicRatio}%)，銷坪比 ${b.sellRatio.toFixed(2)}`) +
+      st("更新後總價 B", U.wanShort(b.B), `店面 ${U.wanShort(b.S_shop)} ＋ 住宅 ${U.wanShort(b.S_res)} ＋ 車位 ${U.wanShort(b.S_park)}`, "sum") +
+      st("共同負擔 C", U.wanShort(r.C), `B × ${S.burdenRatio}%`) +
+      st("地主分回合計", U.wanShort(r.landValue), `B − C，占 ${U.pct(r.ownerShare)}`) +
+      st("我家分回價值", U.wanShort(r.myValue), `${U.wanShort(r.landValue)} × ${U.pct(r.my.pct, 2)}`, "sum") +
+      st("選配單價", U.fmt(r.pickPrice) + " 元/坪", r.input.pick.use === "shop" ? "店面單價" : `住宅均價 × 樓層效用比 ${C.effAfter(r.input.pick.floor, S.after).toFixed(2)}`) +
+      st("分回坪數", r.pingBack.toFixed(2) + " 坪", `${U.wanShort(r.myValue)} ÷ ${U.fmt(r.pickPrice)}`, "sum") +
+      st(`選 ${r.pickPing} 坪的找補`, (r.settle >= 0 ? "補 " : "領 ") + U.wanShort(Math.abs(r.settle)), `${r.pickPing} × ${U.fmt(r.pickPrice)} − ${U.wanShort(r.myValue)}`) +
+      st("分回價值 ÷ 更新前 A 值", r.multiple.toFixed(2) + " 倍", "常見一點五到兩倍；低於一要回頭看 B 與 C");
+
+    $("#sum").textContent = U.lamps(C.check(r), $("#checks"));
+
+    /* 敏感度 */
+    const sens = C.sensitivity(input()), mx = Math.max(...sens.map(s => Math.max(Math.abs(s.up), Math.abs(s.dn)))) || 1;
+    $("#tornado").innerHTML = sens.map(s => { const w = x => Math.abs(x) / mx * 50; return `<div class="tr"><span>${s.t}</span><div class="bar"><i style="left:${50 - (s.dn < 0 ? w(s.dn) : 0)}%;width:${w(s.dn)}%;opacity:.55"></i><i style="left:${50 - (s.up < 0 ? w(s.up) : 0)}%;width:${w(s.up)}%"></i></div><b>${s.up >= 0 ? "+" : "−"}${Math.abs(s.up).toFixed(1)} / ${s.dn >= 0 ? "+" : "−"}${Math.abs(s.dn).toFixed(1)} 坪</b></div>`; }).join("");
+
+    /* 全戶表 */
+    const rows = a.rows.map(x => { const v = r.landValue * x.pct, pp = v / r.pickPrice; return { _cls: x.id === r.my.id ? "me" : "", c: [x.id, x.floor + " 樓" + (x.use === "shop" ? "店面" : ""), x.landPing, x.bldgPing, U.wanShort(x.A), U.pct(x.pct, 2), U.wanShort(v), pp.toFixed(1)] }; });
+    $("#allUnits").innerHTML = U.table(["戶", "樓層", "土地坪", "建物坪", "A 值", "占比", "分回價值", "依我家選配單價換算坪數"], rows, "num");
+  }
+
+  function refreshPick() {
+    const sel = $("#pickFloor");
+    if (sel.options.length !== S.after.floors) { sel.innerHTML = Array.from({ length: S.after.floors }, (_, i) => `<option value="${i + 1}">${i + 1} 樓</option>`).join(""); S.pick.floor = Math.min(S.pick.floor, S.after.floors); sel.value = S.pick.floor; }
+  }
+  function sync() { read(); refreshPick(); render(); }
+  fill(); render();
+  $("#printDate").textContent = new Date().toLocaleDateString("zh-TW");
+  document.addEventListener("input", e => { if (e.target.closest("#calc")) sync(); });
+  document.addEventListener("change", e => { if (e.target.closest("#calc")) sync(); });
+  $("#me").addEventListener("change", () => { S.me = $("#me").value; S.my = null; fill(); render(); });
+  $$("#mode button").forEach(b => b.onclick = () => { S.mode = b.dataset.v; fill(); render(); });
+  $("#reset").onclick = () => { S = fresh(); history.replaceState(null, "", location.pathname); fill(); render(); U.toast("已還原示範基地"); };
+  $("#share").onclick = () => U.copy(U.share(S));
+  $("#print").onclick = () => print();
+  U.reveal();
+})();
+</script>
+</body>
+</html>
