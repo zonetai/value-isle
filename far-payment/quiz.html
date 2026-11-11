@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
 <meta name="theme-color" content="#c06a1a">
 <link rel="canonical" href="https://zonetai.com/value-isle/far-payment/quiz.html">
 <script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
@@ -11,13 +11,13 @@
 <meta name="description" content="容積代金判斷題：制度、法令、縣市、估價、範本、審議、標購七類，每題附依據；加上容積代金辭典。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=1">
+<link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">09 · Quiz</span>
+    <span class="kicker">第 9 站</span>
     <h1>判斷題與辭典</h1>
     <p class="lede">答對一題之後，再試著說出依據是哪一市、哪一版的規定；課堂上這樣可以再加一分。題目來自課堂判斷題與期末考題型，每題附依據。答題紀錄留在你的瀏覽器裡。</p>
   </div>
@@ -36,8 +36,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=1"></script>
-<script src="assets/common.js?v=1"></script>
+<script src="assets/data.js?v=2"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=2"></script>
 <script>
 (function(){
   const D = window.FP, U = window.FPU, $ = U.$, $$ = U.$$;
@@ -51,7 +52,7 @@
     const P = pool(), q = P[qi], c = $("#quizCard");
     const score = P.filter(x => record[key(x)] === true).length, tried = P.filter(x => record[key(x)] !== undefined).length;
     c.innerHTML = `<span class="qn">${q.cat} · Q ${qi + 1} / ${P.length}</span><h3>${q.q}</h3><div class="q-opts">${q.opts.map((o, i) => `<button data-i="${i}">${["A", "B", "C", "D"][i]}　${o}</button>`).join("")}</div><div class="q-exp" id="qExp">${q.exp}<cite>依據：${q.src}</cite></div>
-      <div class="q-foot"><div><span class="score">答對 ${score} / 已答 ${tried}</span><div class="score-ring">${P.map(x => `<i class="${record[key(x)] === true ? "ok" : record[key(x)] === false ? "no" : ""}"></i>`).join("")}</div></div><div style="display:flex;gap:6px"><button class="btn ghost sm" id="qPrev" ${qi === 0 ? "disabled" : ""}>←</button><button class="btn ghost sm" id="qNext">${qi === P.length - 1 ? "重新開始" : "下一題 →"}</button></div></div>`;
+      <div class="q-foot"><div><span class="score">答對 ${score} / 已答 ${tried}</span><div class="score-ring">${P.map(x => `<i class="${record[key(x)] === true ? "ok" : record[key(x)] === false ? "no" : ""}"></i>`).join("")}</div></div><div style="display:flex;gap:6px"><button class="btn ghost sm" id="qPrev" ${qi === 0 ? "disabled" : ""} aria-label="上一題"><svg class="ic" aria-hidden="true"><use href="#i-prev"/></svg></button><button class="btn ghost sm" id="qNext">${qi === P.length - 1 ? "重新開始" : "下一題"}</button></div></div>`;
     answered = record[key(q)] !== undefined;
     if (answered) { $$(".q-opts button")[q.a].classList.add("right"); $("#qExp").classList.add("show"); }
     $$(".q-opts button").forEach(b => b.onclick = () => { if (answered) return; answered = true; const i = +b.dataset.i; if (i === q.a) { b.classList.add("right"); record[key(q)] = true; U.toast("答對了！說得出依據是哪一市、哪一版嗎？"); } else { b.classList.add("wrong"); $$(".q-opts button")[q.a].classList.add("right"); record[key(q)] = false; } saveR(); $("#qExp").classList.add("show"); $(".score").textContent = `答對 ${P.filter(x => record[key(x)] === true).length} / 已答 ${P.filter(x => record[key(x)] !== undefined).length}`; $$(".score-ring i")[qi].className = record[key(q)] ? "ok" : "no"; });

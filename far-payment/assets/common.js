@@ -6,6 +6,7 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
   const FP = window.FPU = { $, $$ };
+  FP.icon = (n) => (window.VI_ICON ? window.VI_ICON(n) : "");
   FP.fmt = n => Math.round(n).toLocaleString("zh-TW");
   FP.esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   FP.yi = n => (n / 1e8).toFixed(2) + " 億";
@@ -23,10 +24,10 @@
   const nav = document.createElement("nav");
   nav.className = "nav";
   nav.innerHTML = `<div class="container">
-    <a class="brand" href="index.html"><span class="logo"><i></i><i></i></span><span><b>容積代金學堂</b><small>FAR Payment Study · 中泰不動產智庫</small></span></a>
-    <button class="nav-toggle" aria-label="選單">☰</button>
+    <a class="brand" href="index.html"><span class="logo"></span><span><b>容積代金學堂</b><small>中泰不動產智庫・價值島姊妹站</small></span></a>
+    <button class="nav-toggle" aria-label="選單">${FP.icon("menu")}</button>
     <div class="nav-links">${D.pages.map(p => `<a href="${p.href}" class="${p.href === here ? "on" : ""}">${p.n ? `<em>${p.n}</em>` : ""}${p.label}</a>`).join("")}</div>
-    <a class="nav-isle" href="../index.html" title="回到價值島">🏝️ 價值島</a></div>`;
+    <a class="nav-isle" href="../index.html" title="回到價值島">${FP.icon("isle")}價值島</a></div>`;
   document.body.prepend(nav);
   nav.querySelector(".nav-toggle").onclick = () => nav.querySelector(".nav-links").classList.toggle("open");
 
@@ -51,7 +52,7 @@
   if (idx >= 0) {
     const prev = lessons[idx - 1], next = lessons[idx + 1];
     const pn = document.createElement("div"); pn.className = "container pn";
-    pn.innerHTML = `${prev ? `<a class="pn-a" href="${prev.href}"><small>← 上一站</small><b>${prev.n} ${prev.short}</b></a>` : "<span></span>"}${next ? `<a class="pn-a next" href="${next.href}"><small>下一站 →</small><b>${next.n} ${next.short}</b></a>` : `<a class="pn-a next" href="index.html"><small>回首頁</small><b>學習路線</b></a>`}`;
+    pn.innerHTML = `${prev ? `<a class="pn-a" href="${prev.href}"><small>上一站</small><b>${prev.n} ${prev.short}</b></a>` : "<span></span>"}${next ? `<a class="pn-a next" href="${next.href}"><small>下一站</small><b>${next.n} ${next.short}</b></a>` : `<a class="pn-a next" href="index.html"><small>回首頁</small><b>學習路線</b></a>`}`;
     document.body.insertBefore(pn, foot);
   }
 

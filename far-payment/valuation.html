@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
 <meta name="theme-color" content="#c06a1a">
 <link rel="canonical" href="https://zonetai.com/value-isle/far-payment/valuation.html">
 <script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
@@ -11,13 +11,13 @@
 <meta name="description" content="容積代金的估價邏輯：雙情境、土地開發分析法、示範案試算器、敏感度分析與容移前量體重建。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=1">
+<link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">04 · Valuation</span>
+    <span class="kicker">第 4 站</span>
     <h1>估價邏輯與試算：同一基地、兩套情境、一個差額</h1>
     <p class="lede">問題不在現況交易價格，而在容量改變後的未來開發成果。所以以土地開發分析法為主，比較法、收益法輔助；兩個情境各算一次土地價格，差額就是移入容積的經濟價值。這一站可以親手改參數。</p>
     <div class="where"><span class="tag">容積價值概念</span><span class="tag">雙情境</span><span class="tag">示範案試算器</span><span class="tag">敏感度</span><span class="tag">量體重建</span></div>
@@ -26,7 +26,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Concepts</span><h2>容積價值的兩個觀念</h2></div></div>
+    <div class="section-head reveal"><div><h2>容積價值的兩個觀念</h2></div></div>
     <div class="grid g3">
       <div class="card reveal"><span class="kicker">觀念 1</span><h3 style="margin-top:6px">最高最有效利用</h3><p>容積價值 ＝ 土地開發價值 ≒ 土地價格。土地的價格，就是它能蓋出來的東西扣掉成本與利潤後剩下的錢。</p></div>
       <div class="card reveal"><span class="kicker">觀念 2</span><h3 style="margin-top:6px">邊際效益遞減</h3><p>容積越多，每坪容積的單價越低。所以邊際容積通常比平均容積便宜，代金市價比多半低於 1。</p></div>
@@ -37,7 +37,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Two scenarios</span><h2>核心邏輯：兩個開發情境的比較</h2><p>移入容積的經濟價值 ＝ 兩個情境之間的增額差異。</p></div></div>
+    <div class="section-head reveal"><div><h2>核心邏輯：兩個開發情境的比較</h2><p>移入容積的經濟價值 ＝ 兩個情境之間的增額差異。</p></div></div>
     <div class="grid g2">
       <div class="card reveal" style="border-left:5px solid var(--c-before)"><span class="tag before">情境 A</span><h3 style="margin-top:8px">未含容積移入</h3><p>依法定容積＋其他獎勵開發。基地容積包含法定容積、其他都市計畫獎勵、都更獎勵或海砂屋獎勵等非移入容積，且為<b>實際設計額度，非上限額度</b>：容移前不是把獎勵算滿。</p></div>
       <div class="card reveal" style="border-left:5px solid var(--c-after)"><span class="tag after">情境 B</span><h3 style="margin-top:8px">含容積移入</h3><p>依移入後容積開發。除上述非移入容積外，加計容積移轉、TOD 獎勵、增額容積等須估價者；為基地最後審定之總樓地板面積。</p></div>
@@ -53,7 +53,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Warm-up</span><h2>小試身手：公式練習</h2></div></div>
+    <div class="section-head reveal"><div><h2>小試身手：公式練習</h2></div></div>
     <div class="grid g2">
       <div class="card reveal">
         <h3>條件設定</h3>
@@ -72,7 +72,7 @@
 
 <section class="section" id="calc">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Calculator</span><h2>示範案試算器：把公式走一次</h2><p>V ＝ S ÷(1＋R)÷(1＋i) −(C＋M)；單價取位至千位；總價＝單價 × 土地坪數。預載 114 上期末考計算題（新北市板橋區模擬案），每改一格立刻重算並檢核。</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="loadBase">還原示範案</button><a class="btn ghost sm" href="review.html#flaw">去找碴大賽 →</a></div></div>
+    <div class="section-head reveal"><div><h2>示範案試算器：把公式走一次</h2><p>V ＝ S ÷(1＋R)÷(1＋i) −(C＋M)；單價取位至千位；總價＝單價 × 土地坪數。預載 114 上期末考計算題（新北市板橋區模擬案），每改一格立刻重算並檢核。</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="loadBase">還原示範案</button><a class="btn ghost sm" href="review.html#flaw">去找碴大賽</a></div></div>
     <div class="kpis reveal" id="kpi"></div>
     <div class="calc" style="margin-top:18px">
       <div class="card reveal">
@@ -93,7 +93,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Sensitivity</span><h2>先猜再拉：售價漲 5%，代金漲多少？</h2><p>容移前後同步調整，其餘參數不變。</p></div></div>
+    <div class="section-head reveal"><div><h2>先猜再拉：售價漲 5%，代金漲多少？</h2><p>容移前後同步調整，其餘參數不變。</p></div></div>
     <div class="grid g2">
       <div class="card reveal"><h3>先表決</h3><p>示範案住宅售價同步 +5%，代金大約變動多少？</p>
         <div class="guess" id="sensGuess" style="margin-top:10px"><button data-v="5">A 約 5%</button><button data-v="10">B 約 10%</button><button data-v="2">C 約 2%</button><button data-v="0">D 不變</button></div>
@@ -114,7 +114,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Massing</span><h2>容移前量體怎麼重建：削頂，地下層二選一</h2><p>業主只給移入後方案，估價師要自己重建容移前情境。不是重新設計一棟樓，而是把容移後方案削去頂層；地下層則先決定減樓層還是縮開挖率。</p></div></div>
+    <div class="section-head reveal"><div><h2>容移前量體怎麼重建：削頂，地下層二選一</h2><p>業主只給移入後方案，估價師要自己重建容移前情境。不是重新設計一棟樓，而是把容移後方案削去頂層；地下層則先決定減樓層還是縮開挖率。</p></div></div>
     <div class="massing">
       <div><svg id="massSvg" viewBox="0 0 520 360" role="img" aria-label="容移前後量體示意"></svg></div>
       <div class="card reveal">
@@ -129,13 +129,14 @@
       </div>
     </div>
     <p class="source">資料來源：臺北市容積代金估價報告書範本（113 年修正版）p.8、p.56–57；臺北代金估價通案原則研析（115 年度學員版）p.25–27。</p>
-    <div style="margin-top:18px"><a class="btn sm" href="template.html">下一站：範本精讀 →</a></div>
+    <div style="margin-top:18px"><a class="btn sm" href="template.html">下一站：範本精讀</a></div>
   </div>
 </section>
 
-<script src="assets/data.js?v=1"></script>
-<script src="assets/calc.js?v=1"></script>
-<script src="assets/common.js?v=1"></script>
+<script src="assets/data.js?v=2"></script>
+<script src="assets/calc.js?v=2"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=2"></script>
 <script>
 (function(){
   const D = window.FP, C = window.CALC, U = window.FPU, $ = U.$, $$ = U.$$, nf = U.fmt;
@@ -156,7 +157,7 @@
   try { const s = localStorage.getItem("fp-calc"); if (s) state = JSON.parse(s); } catch (e) {}
   const save = () => { try { localStorage.setItem("fp-calc", JSON.stringify(state)); } catch (e) {} };
   $("#fCommon").innerHTML = F_COMMON.map(([k, l, u]) => `<label class="pair" style="grid-template-columns:1fr;gap:4px"><span>${l}<i class="u">${u}</i></span><input data-k="${k}" type="number" inputmode="decimal" step="any"></label>`).join("");
-  $("#fScen").innerHTML = F_SCEN.map(([g, fs]) => `<div class="grp">${g}</div><div class="pair head"><span></span><b class="a">容移後 AFTER</b><b class="b">容移前 BEFORE</b></div>` + fs.map(([k, l, u]) => `<div class="pair"><span>${l}<i class="u">${u}</i></span><input data-s="aft" data-k="${k}" type="number" inputmode="decimal" step="any" aria-label="容移後${l}"><input data-s="bef" data-k="${k}" type="number" inputmode="decimal" step="any" aria-label="容移前${l}"></div>`).join("")).join("");
+  $("#fScen").innerHTML = F_SCEN.map(([g, fs]) => `<div class="grp">${g}</div><div class="pair head"><span></span><b class="a">容移後</b><b class="b">容移前</b></div>` + fs.map(([k, l, u]) => `<div class="pair"><span>${l}<i class="u">${u}</i></span><input data-s="aft" data-k="${k}" type="number" inputmode="decimal" step="any" aria-label="容移後${l}"><input data-s="bef" data-k="${k}" type="number" inputmode="decimal" step="any" aria-label="容移前${l}"></div>`).join("")).join("");
   $$("#calc input[data-k]").forEach(el => el.addEventListener("input", () => { const v = parseFloat(el.value); if (isNaN(v)) return; if (el.dataset.s) state[el.dataset.s][el.dataset.k] = v; else state[el.dataset.k] = v; save(); render(); }));
   $("#city").addEventListener("change", e => { state.city = e.target.value; save(); render(); });
   function fill() { F_COMMON.forEach(([k]) => $(`#fCommon input[data-k="${k}"]`).value = state[k]); F_SCEN.forEach(([, fs]) => fs.forEach(([k]) => { $(`input[data-s="aft"][data-k="${k}"]`).value = state.aft[k]; $(`input[data-s="bef"][data-k="${k}"]`).value = state.bef[k]; })); $("#city").value = state.city; $("#caseName").textContent = state.name; }

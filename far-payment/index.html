@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
 <meta name="theme-color" content="#c06a1a">
 <link rel="canonical" href="https://zonetai.com/value-isle/far-payment/index.html">
 <meta property="og:url" content="https://zonetai.com/value-isle/far-payment/index.html">
@@ -12,19 +12,19 @@
 <meta name="description" content="容積移轉與容積代金的學習網站：制度故事、法令、各縣市比較、估價試算、範本精讀、審議與協檢、公保地標購、市場數據與判斷題。中泰不動產智庫整理。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=1">
+<link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 
 <header class="hero">
   <div class="container">
     <div>
-      <span class="kicker">FAR Payment Study · 中泰不動產智庫</span>
+      <span class="kicker">中泰不動產智庫・價值島姊妹站</span>
       <h1>同一塊地，<br>兩套情境，<span>一個差額。</span></h1>
       <p class="lede">容積代金，是政府把「蓋更高的權利」賣給你的價錢。估價師怎麼算這個價錢、審議委員怎麼看一份報告、代金收進來之後又去了哪裡。這個學堂把課堂上的三份教材整理成九站，每一站都能動手。</p>
       <div class="hero-stats" id="heroStats"></div>
       <div class="cta">
-        <a class="btn accent" href="valuation.html">▶ 先去拉參數看代金怎麼變</a>
+        <a class="btn accent" href="valuation.html"><svg class="ic" aria-hidden="true"><use href="#i-calc"/></svg>先去拉參數看代金怎麼變</a>
         <a class="btn ghost" href="story.html">從故事開始</a>
       </div>
       <div class="flow"><span class="b">未含容積移入之地價</span><i>vs</i><span class="a">含容積移入之地價</span><i>→</i><span class="f">差額 ＝ 容積代金</span><i>→</i><span>三家查估</span><i>→</i><span>三層審議</span><i>→</i><span>標購公保地</span></div>
@@ -34,8 +34,8 @@
         <svg id="scene" role="img" aria-label="兩棟建築：未含容積移入 11 層、含容積移入 14 層，差額為容積代金"></svg>
         <div class="scene-ctl">
           <div class="steps" id="sceneSteps"></div>
-          <button class="btn ghost sm" id="sceneNext">下一步 ⏭</button>
-          <button class="btn sm" id="scenePlay">▶ 自動播放</button>
+          <button class="btn ghost sm" id="sceneNext">下一步<svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></button>
+          <button class="btn sm" id="scenePlay"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>自動播放</button>
         </div>
         <div class="scene-cap" id="sceneCap"><b>載入中</b><span>示範案的數字正在算。</span></div>
         <div style="height:3px;background:var(--paper-2);border-radius:2px;margin-top:8px;overflow:hidden"><i id="sceneBar" style="display:block;height:100%;width:0;background:var(--accent);transition:width .4s"></i></div>
@@ -46,14 +46,14 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Three questions</span><h2>開場三問：先猜，學完再回頭對答案</h2><p>點開每一題看答案在哪一站。</p></div></div>
+    <div class="section-head reveal"><div><h2>開場三問：先猜，學完再回頭對答案</h2><p>點開每一題看答案在哪一站。</p></div></div>
     <div class="openers" id="openers"></div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="section-head reveal"><div><span class="kicker">Route</span><h2>九站學習路線</h2><p>制度在前、估價在中、審議與市場在後。每站末尾都有下一站；小測的答題紀錄會留在你的瀏覽器裡。</p></div><a class="btn ghost" href="quiz.html">直接去小測 →</a></div>
+    <div class="section-head reveal"><div><h2>九站學習路線</h2><p>制度在前、估價在中、審議與市場在後。每站末尾都有下一站；小測的答題紀錄會留在你的瀏覽器裡。</p></div><a class="btn ghost" href="quiz.html">直接去小測</a></div>
     <div class="route" id="route"></div>
   </div>
 </section>
@@ -62,33 +62,32 @@
   <div class="container">
     <div class="grid g2">
       <div class="card reveal">
-        <span class="kicker">How to read</span>
         <h3 style="font-family:var(--serif);font-size:1.3rem;margin-top:6px">估價師怎麼看代金</h3>
         <p>代金不是「每坪容積多少錢」直接乘出來的。估價師先重建兩個開發情境：一個只用法定容積與免估價的獎勵，一個加上移入的容積；兩個情境各走一次土地開發分析法，再把兩個土地總價相減。移入容積的價值，就是它對這塊地的<b>邊際貢獻</b>。</p>
         <p>所以審議看的不是答案，而是兩個情境是否用<b>同一套邏輯</b>：銷坪比、建蔽率、造價級距、間接費率都要一致，差異只能來自容積本身。這也是為什麼範本花最多篇幅規定「容移前情境怎麼重建」。</p>
       </div>
       <div class="card reveal">
-        <span class="kicker">Sister site</span>
         <h3 style="font-family:var(--serif);font-size:1.3rem;margin-top:6px">和價值島的關係</h3>
         <p>價值島從國際海象、政策氣候、市場潮位、個別條件四層看一塊地的價格。容積代金學堂則聚焦在其中一個制度：當政府用「蓋更高的權利」換取公共設施用地，這個權利該怎麼定價。</p>
         <p>兩站都由中泰不動產智庫整理，立場中立；本站內容為教學用整理，不構成估價意見或審議依據。</p>
-        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn ghost sm" href="../index.html">🏝️ 去價值島</a><a class="btn ghost sm" href="about.html">關於本站</a></div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn ghost sm" href="../index.html"><svg class="ic" aria-hidden="true"><use href="#i-isle"/></svg>去價值島</a><a class="btn ghost sm" href="about.html">關於本站</a></div>
       </div>
     </div>
   </div>
 </section>
 
-<script src="assets/data.js?v=1"></script>
-<script src="assets/calc.js?v=1"></script>
-<script src="assets/common.js?v=1"></script>
-<script src="assets/scene.js?v=1"></script>
+<script src="assets/data.js?v=2"></script>
+<script src="assets/calc.js?v=2"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=2"></script>
+<script src="assets/scene.js?v=2"></script>
 <script>
 (function(){
   const D = window.FP, U = window.FPU, $ = U.$;
   const P = U.progress();
-  $("#openers").innerHTML = D.openers.map((o, i) => `<div class="card opener reveal" style="transition-delay:${i * 80}ms"><span class="kicker">Q${i + 1}</span><div class="q" style="margin-top:6px">${o.q}</div><p>${o.s}</p><div class="hint">點一下看答案在哪一站 →</div><div class="ans">${o.a}<div style="margin-top:10px"><a class="btn ghost sm" href="${o.page}">去那一站 →</a></div></div></div>`).join("");
+  $("#openers").innerHTML = D.openers.map((o, i) => `<div class="card opener reveal" style="transition-delay:${i * 80}ms"><span class="kicker">第 ${i + 1} 問</span><div class="q" style="margin-top:6px">${o.q}</div><p>${o.s}</p><div class="hint">點一下看答案在哪一站</div><div class="ans">${o.a}<div style="margin-top:10px"><a class="btn ghost sm" href="${o.page}">去那一站</a></div></div></div>`).join("");
   U.flip(".opener");
-  $("#route").innerHTML = D.pages.filter(p => p.n).map((p, i) => `<a class="card reveal ${P["seen:" + p.href] ? "seen" : ""}" href="${p.href}" style="transition-delay:${i * 60}ms"><span class="n">${p.n}</span><h3>${p.short}</h3><p>${p.desc}</p><div class="go">進入這一站 →</div></a>`).join("");
+  $("#route").innerHTML = D.pages.filter(p => p.n).map((p, i) => `<a class="card reveal ${P["seen:" + p.href] ? "seen" : ""}" href="${p.href}" style="transition-delay:${i * 60}ms"><span class="n">${p.n}</span><h3>${p.short}</h3><p>${p.desc}</p><div class="go">進入這一站</div></a>`).join("");
   U.reveal();
 })();
 </script>

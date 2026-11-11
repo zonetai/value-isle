@@ -36,8 +36,8 @@
     ${bldg(bx.b, bef, 99, "b")}
     ${bldg(bx.a, aft, bef, "a")}
     <g id="brace" opacity="0"><path d="M${bx.a + FW + 14},${topA} h10 v${FH * (aft - bef)} h-10" fill="none" stroke="#c06a1a" stroke-width="2"/><text x="${bx.a + FW + 32}" y="${topA + FH * (aft - bef) / 2 - 4}" class="lbl" fill="#c06a1a">移入容積</text><text x="${bx.a + FW + 32}" y="${topA + FH * (aft - bef) / 2 + 10}" class="sub">${demo.inM2.toLocaleString()} ㎡ ／ 多 ${aft - bef} 層</text></g>
-    <g id="lb"><text x="${bx.b + FW / 2}" y="${G + 24}" text-anchor="middle" class="lbl">未含容積移入　${bef}F／B${demo.bef.floorsDown}</text><text x="${bx.b + FW / 2}" y="${G + 38}" text-anchor="middle" class="sub">BEFORE</text></g>
-    <g id="la"><text x="${bx.a + FW / 2}" y="${G + 24}" text-anchor="middle" class="lbl">含容積移入　${aft}F／B${demo.aft.floorsDown}</text><text x="${bx.a + FW / 2}" y="${G + 38}" text-anchor="middle" class="sub">AFTER</text></g>
+    <g id="lb"><text x="${bx.b + FW / 2}" y="${G + 24}" text-anchor="middle" class="lbl">未含容積移入　${bef}F／B${demo.bef.floorsDown}</text></g>
+    <g id="la"><text x="${bx.a + FW / 2}" y="${G + 24}" text-anchor="middle" class="lbl">含容積移入　${aft}F／B${demo.aft.floorsDown}</text></g>
     <g id="pb" opacity="0"><rect x="${bx.b + 14}" y="${topB - 34}" width="100" height="24" rx="6" fill="#1c1b18"/><text x="${bx.b + FW / 2}" y="${topB - 17}" text-anchor="middle" class="val" fill="#fff">${U.yi(r.b.total)}</text><text x="${bx.b + FW / 2}" y="${topB - 40}" text-anchor="middle" class="sub">土地價格</text></g>
     <g id="pa" opacity="0"><rect x="${bx.a + 14}" y="${topA - 34}" width="100" height="24" rx="6" fill="#1c1b18"/><text x="${bx.a + FW / 2}" y="${topA - 17}" text-anchor="middle" class="val" fill="#fff">${U.yi(r.a.total)}</text><text x="${bx.a + FW / 2}" y="${topA - 40}" text-anchor="middle" class="sub">土地價格</text></g>
     <g id="fee" opacity="0"><line x1="${bx.b + FW}" y1="${topB - 22}" x2="${bx.a}" y2="${topA - 22}" stroke="#c06a1a" stroke-width="1.5" stroke-dasharray="4 4"/><rect x="${(bx.b + FW + bx.a) / 2 - 62}" y="${(topA + topB) / 2 - 40}" width="124" height="34" rx="8" fill="#c06a1a"/><text x="${(bx.b + FW + bx.a) / 2}" y="${(topA + topB) / 2 - 25}" text-anchor="middle" class="sub" fill="#fff" style="fill:#fff">容積代金</text><text x="${(bx.b + FW + bx.a) / 2}" y="${(topA + topB) / 2 - 12}" text-anchor="middle" class="val" fill="#fff" style="fill:#fff;font-weight:700">${U.yi(r.fee)}</text></g>
@@ -67,8 +67,8 @@
     $$("#sceneSteps button").forEach((b, k) => b.classList.toggle("on", k === i));
     const bar = $("#sceneBar"); if (bar) bar.style.width = ((i + 1) / steps.length * 100) + "%";
   }
-  function play() { stop(); timer = setInterval(() => show((cur + 1) % steps.length), 5200); $("#scenePlay").textContent = "⏸ 暫停"; }
-  function stop() { clearInterval(timer); timer = null; $("#scenePlay").textContent = "▶ 自動播放"; }
+  function play() { stop(); timer = setInterval(() => show((cur + 1) % steps.length), 5200); $("#scenePlay").innerHTML = U.icon("pause") + "暫停"; }
+  function stop() { clearInterval(timer); timer = null; $("#scenePlay").innerHTML = U.icon("play") + "繼續"; }
   $$("#sceneSteps button").forEach(b => b.onclick = () => { stop(); show(+b.dataset.i); });
   $("#scenePlay").onclick = () => timer ? stop() : play();
   $("#sceneNext").onclick = () => { stop(); show((cur + 1) % steps.length); };

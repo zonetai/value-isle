@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
 <meta name="theme-color" content="#c06a1a">
 <link rel="canonical" href="https://zonetai.com/value-isle/far-payment/about.html">
 <script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
@@ -11,13 +11,12 @@
 <meta name="description" content="容積代金學堂的整理方式、依據與限制。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=1">
+<link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">About</span>
     <h1>關於容積代金學堂</h1>
     <p class="lede">這是價值島的姊妹站。價值島從四層看一塊地的價格；這裡只看其中一個制度：當政府用「蓋更高的權利」換取公共設施用地，這個權利該怎麼定價、誰來審、錢去了哪裡。</p>
   </div>
@@ -31,13 +30,14 @@
     </div>
     <div class="grid g2" style="margin-top:14px">
       <div class="card reveal"><h3>限制</h3><p>各縣市規定不同且逐年修訂。本站以臺北市 113 年修正版範本為主軸，新北市欄位依 113 年教育訓練簡報整理；教材標為「待查證」的數字與日期，本站照樣標示。引用前請核對主管機關現行版本。</p><p>本站不出現客戶、個案地址與金額、個人姓名；市場數據以行政區統計呈現。內容為教學用一般性整理，不構成估價意見或審議依據；實際案件以主管機關現行範本、法規及審議決議為準。</p></div>
-      <div class="card reveal"><h3>你的紀錄</h3><p>小測答題、找碴成績、自主檢核勾選與試算器參數都只存在你的瀏覽器裡，不會上傳。想重來，清除瀏覽器此站資料即可。</p><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="clear">清除本站紀錄</button><a class="btn ghost sm" href="../index.html">🏝️ 去價值島</a></div></div>
+      <div class="card reveal"><h3>你的紀錄</h3><p>小測答題、找碴成績、自主檢核勾選與試算器參數都只存在你的瀏覽器裡，不會上傳。想重來，清除瀏覽器此站資料即可。</p><div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="clear">清除本站紀錄</button><a class="btn ghost sm" href="../index.html"><svg class="ic" aria-hidden="true"><use href="#i-isle"/></svg>去價值島</a></div></div>
     </div>
   </div>
 </section>
 
-<script src="assets/data.js?v=1"></script>
-<script src="assets/common.js?v=1"></script>
+<script src="assets/data.js?v=2"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=2"></script>
 <script>
 document.getElementById("clear").onclick = () => { ["fp-progress", "fp-quiz", "fp-calc", "fp-selfcheck"].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} }); window.FPU.toast("已清除本站紀錄"); };
 </script>
