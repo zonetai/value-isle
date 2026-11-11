@@ -31,10 +31,11 @@
 
 ## 姊妹站：權變沙盤（`renewal-sandbox/`）
 
-都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。四站：計算鏈、分回試算、共同負擔拆解、審查視角；首頁依地主、實施者、審查者三條路線進站。架構與分期見 `renewal-sandbox/PLAN.md`。
+都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。五站：計算鏈、市價怎麼決定、分回試算、共同負擔試算、法規依據；首頁依地主、實施者、專業服務者三條路線進站。架構與分期見 `renewal-sandbox/PLAN.md`。
 
 - `renewal-sandbox/assets/data.js`：全站內容（示範基地、燈號文字、審查清單、辭典）
-- `renewal-sandbox/assets/calc.js`：A、B、C 與分回的計算引擎、三情境、敏感度、燈號、共同負擔拆解；規則庫 `RULES` 與計算分離
+- `renewal-sandbox/assets/calc.js`：A、B、C 與分回的計算引擎、三情境、敏感度、燈號；規則庫 `RULES` 與計算分離
+- `renewal-sandbox/assets/burden.js`：共同負擔案件試算引擎，`CITY` 規則庫收錄臺北市費用提列總表與工程造價要項、新北市提列基準與營建單價，換版本只改規則庫
 - `renewal-sandbox/assets/common.js`、`style.css`：共用程式與樣式，主色深青；試算輸入值以網址參數 `?s=` 分享，共同負擔以 `?b=`，帶入共負比以 `?d=`
 - 示範基地是教學用區間中值組合，不對應實際案件；門檻標明「教學門檻」者非審議標準
 

@@ -11,7 +11,7 @@
 <meta name="description" content="填自己家的土地持分、建物坪數、樓層與基地條件，保守、基準、樂觀三情境並排看都更分回坪數、分回價值與找補。每個數字可展開看公式，輸入值可編成連結分享，列印即一頁摘要。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=4">
+<link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body>
 
@@ -67,7 +67,7 @@
         </div>
         <div class="grp">共同負擔</div>
         <div class="sliders"><label><span>共負比 D<output id="ratioOut"></output></span><input type="range" id="ratio" min="20" max="60" step="0.5"></label></div>
-        <p class="source">想逐項拆，去〈共同負擔拆解〉算完按「帶入分回試算」。</p>
+        <p class="source">想照北市、新北的提列標準逐項算，去〈共同負擔試算〉算完按「帶入分回試算」。</p>
       </div>
       <div>
         <div class="card reveal"><h3>三情境</h3><p class="muted" style="font-size:.82rem">固定變動三個參數：更新後均價、共負比、獎勵容積。</p><div class="scen" id="scen" style="margin-top:12px"></div></div>
@@ -81,10 +81,10 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/calc.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/calc.js?v=5"></script>
 <script src="../assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=3"></script>
+<script src="assets/common.js?v=5"></script>
 <script>
 (function(){
   const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
