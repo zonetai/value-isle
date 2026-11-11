@@ -29,6 +29,15 @@
 - `far-payment/assets/scene.js`：首頁雙塔場景；`common.js`、`style.css` 為共用程式與樣式
 - 新增頁面時照樣加 canonical 與 github.io 的 noindex 腳本
 
+## 姊妹站：權變沙盤（`renewal-sandbox/`）
+
+都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。四站：計算鏈、分回試算、共同負擔拆解、審查視角；首頁依地主、實施者、審查者三條路線進站。架構與分期見 `renewal-sandbox/PLAN.md`。
+
+- `renewal-sandbox/assets/data.js`：全站內容（示範基地、燈號文字、審查清單、辭典）
+- `renewal-sandbox/assets/calc.js`：A、B、C 與分回的計算引擎、三情境、敏感度、燈號、共同負擔拆解；規則庫 `RULES` 與計算分離
+- `renewal-sandbox/assets/common.js`、`style.css`：共用程式與樣式，主色深青；試算輸入值以網址參數 `?s=` 分享，共同負擔以 `?b=`，帶入共負比以 `?d=`
+- 示範基地是教學用區間中值組合，不對應實際案件；門檻標明「教學門檻」者非審議標準
+
 ## 更新方式
 
 - 每日觀測：`assets/daily.js`，由每日排程自動更新（保留 45 天、60 則）
@@ -36,7 +45,7 @@
 - 手記、小測題庫、路人小知識：`assets/knowledge.js`
 - 圖示：`assets/icons.js`（自繪線條 icon）。`data.js` 的 `icon`／`ico` 欄位填這裡的名稱，例如 `ico:"bank"`；要新增圖示就在這個檔案加一筆
 
-改完存檔、推上 `main` 即可，GitHub Pages 會自動重新發布。改了 `assets/` 裡的樣式或程式，記得把各頁 `?v=` 的版本號加 1，瀏覽器才會抓新檔。
+改完存檔、推上 `main` 即可，GitHub Pages 會自動重新發布。改了 `assets/` 裡的樣式或程式（含兩個姊妹站各自的 `assets/`），記得把各頁 `?v=` 的版本號加 1，瀏覽器才會抓新檔。
 
 ## 資料來源
 
