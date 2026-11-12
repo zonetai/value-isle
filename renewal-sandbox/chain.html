@@ -11,13 +11,13 @@
 <meta name="description" content="都市更新權利變換的四個數字：更新前權利價值 A、更新後房地總價 B、共同負擔 C、分回。每一個怎麼算、彼此怎麼串，以及三個常見誤會。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">第 1 站</span>
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-exchange"/></svg>第 1 站</span>
     <h1>四個數字怎麼串：A、B、C 與分回</h1>
     <p class="lede">權利變換的分配，只用四個數字就能講完。更新前每一戶的土地權利值多少（A），蓋好之後整棟值多少（B），蓋這棟樓要花多少（C），B 減 C 之後依 A 的占比分回。這一站把每個數字的計算鏈攤開，後面三站各講其中一個。</p>
     <div class="where"><span class="tag a">更新前權值 A</span><span class="tag b">更新後總價 B</span><span class="tag c">共同負擔 C</span><span class="tag d">分回與找補</span></div>
@@ -26,7 +26,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="chain4 reveal" id="chain4"></div>
+    <div class="chain4 reveal stagger" id="chain4"></div>
     <div class="formula reveal" style="margin-top:14px">各戶分回價值 ＝ （<span class="b">B</span> − <span class="c">C</span>）× <span class="a">A<sub>我</sub></span> ÷ <span class="a">ΣA</span>　　分回坪數 ＝ 分回價值 ÷ 選配單價　　找補 ＝ 選配價值 − 分回價值</div>
   </div>
 </section>
@@ -56,9 +56,8 @@
           <p class="note" style="margin-top:14px" id="aNote"></p>
         </div>
         <div class="card reveal" style="margin-top:14px">
-          <h3>更新前樓層別效用比（無電梯五層公寓）</h3>
-          <div id="effTbl" style="margin-top:10px"></div>
-          <p class="source">教學預設值。實務上依各案比較案例與使用情況決定；無電梯棟不得出現高樓層加分。一樓店面另以店面比準戶估價。</p>
+          <h3>樓層別效用比：由估價師依個案查估</h3>
+          <p>同一棟裡每一層相對於基準樓層的價值比，由三家估價師依比較案例與使用情況查估，沒有固定表。常見的方向是：無電梯公寓愈高愈便宜、一樓店面另以店面比準戶估、更新後電梯大樓愈高愈貴。本站試算用的數值只是讓流程能走的示範假設，不是標準，也不是任何案件的參考值。</p>
         </div>
       </div>
     </div>
@@ -71,7 +70,7 @@
     <div class="grid g3">
       <div class="card reveal"><span class="kicker">第一步</span><h3 style="margin-top:6px">容積變成坪數</h3><p>基地面積 × 法定容積率 × （1 ＋ 獎勵） ＝ 容積樓地板。加上陽台、梯廳等附屬面積，再除以（1 − 公設比），就是可以賣的坪數。公設比每差三個百分點，銷售坪數差約百分之五。</p></div>
       <div class="card reveal"><span class="kicker">第二步</span><h3 style="margin-top:6px">三種產品分開估</h3><p>店面、住宅、車位各自有比準戶與單價，不能用一個均價乘總坪。店面與樓上住宅的倍數常態在一點五到兩倍；車位單價要跟同區新案一致。</p></div>
-      <div class="card reveal"><span class="kicker">第三步</span><h3 style="margin-top:6px">樓層別效用比</h3><p>更新後的電梯大樓，以二樓為基準，每上一層加約百分之一。各戶選配的單價 ＝ 住宅均價 × 該樓層效用比，這個單價決定分回坪數。</p></div>
+      <div class="card reveal"><span class="kicker">第三步</span><h3 style="margin-top:6px">樓層別效用比</h3><p>更新後的電梯大樓以某一層為基準，各層依市場查估效用比，愈高通常愈貴，但斜率由個案決定。各戶選配的單價 ＝ 住宅均價 × 該樓層效用比，這個單價決定分回坪數。</p></div>
     </div>
     <div class="formula reveal" style="margin-top:14px"><span class="b">B</span> ＝ 店面坪 × 店面單價 ＋ 住宅坪 × 住宅均價 ＋ 車位數 × 車位單價</div>
     <p class="note reveal" style="margin-top:14px">市場支撐怎麼看：找基地周邊近兩年、近五年完工的新成屋成交，算中位數與分位，更新後均價要落在合理分位並寫明。本站不含成交資料，可以去價值島的〈市場潮位〉看各區單價，或查實價登錄。</p>
@@ -89,7 +88,7 @@
       <div>
         <div class="card reveal">
           <h3>共負比 D ＝ C ÷ B</h3>
-          <p>業界常見區間約三成到四成五。超過四成五要有強說明，低於三成要確認費用有沒有漏列。</p>
+          <p>由實施者依提列標準逐項提列、經審議會審議決定，每案不同。本站不給區間、不下結論，只把每一項怎麼算攤開。</p>
           <p>共負比是一個比例，分母是 B。B 被喊高，比例會變漂亮，但地主分到的是價值不是比例，所以看共負比之前要先看 B 有沒有市場支撐。</p>
           <div style="margin-top:14px"><a class="btn sm" href="burden.html">去共同負擔拆解，逐項看燈號</a></div>
         </div>
@@ -117,17 +116,16 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/calc.js?v=6"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
 <script src="../assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=6"></script>
+<script src="assets/common.js?v=7"></script>
 <script>
 (function(){
   const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$;
-  $("#chain4").innerHTML = D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("");
+  $("#chain4").innerHTML = D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="ico">${U.icon(c.ico)}</div><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("");
   $("#myths").innerHTML = D.myths.map((m, i) => `<div class="card myth reveal" style="transition-delay:${i * 80}ms"><span class="kicker">誤會 ${i + 1}</span><div class="q" style="margin-top:6px">${m.q}</div><div class="hint">點一下看為什麼</div><div class="ans">${m.a}</div></div>`).join("");
   U.flip(".myth");
-  $("#effTbl").innerHTML = U.table(["樓層", "效用比", "說明"], Object.entries(D.effBefore).map(([f, e]) => [f + " 樓", e.toFixed(2), f == 1 ? "住宅一樓為基準；店面另乘 " + D.shopFactor : (f == 5 ? "頂樓，無電梯、漏水風險" : "")]), "num");
   $("#bItems").innerHTML = D.burdenItems.map(b => `<details class="acc"><summary>${b.t}<span class="muted" style="font-weight:400;font-size:.8rem">${b.g}</span></summary><p>${b.s}。${b.how}</p></details>`).join("");
 
   const base = { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };

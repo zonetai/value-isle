@@ -7,9 +7,8 @@
   const D = () => window.RS;
   const RULES = {
     tpe: { name: "臺北市",
-      burdenRange: [30, 45], shopRange: [1.5, 2.0], publicRange: [28, 36], lotAdjMax: 15,
-      bonusCap: 50, settleWarn: 0.2, ownerShareWarn: 50,
-      salesMgmtMax: 6, riskMgmtMax: 14, adminMgmtMax: 3.5, profitNote: 20 }
+      shopRange: [1.5, 2.0], publicRange: [28, 36], lotAdjMax: 15,
+      bonusCap: 50, settleWarn: 0.2 }
   };
   const round = (x, d = 0) => { const p = Math.pow(10, d); return Math.round(x * p) / p; };
   const toThousand = x => Math.round(x / 1000) * 1000;
@@ -126,8 +125,8 @@
     const add = (id, level, title, why, rule, fix, src) => out.push({ id, level, title, why, rule, fix, src });
     const f = (x, d = 1) => Number(x).toFixed(d);
     const d = r.ratio;
-    add("burden_ratio", d > R.burdenRange[1] ? "warn" : (d < R.burdenRange[0] ? "note" : "ok"), `共負比 ${f(d)}%`,
-      "共同負擔占更新後總價的比例。", `常見區間 ${R.burdenRange[0]}% 至 ${R.burdenRange[1]}%；超過上限要有強說明，低於下限要確認費用有沒有漏列。`, "先逐項對提列總表，再看更新後總價有沒有被喊高。", "審查方法論：共擔比例合理性（教學門檻）");
+    add("burden_ratio", "note", `共負比假設值 ${f(d)}%`,
+      "共同負擔占更新後總價的比例，這裡是你拉的假設值。", "實際共負比由實施者依提列標準提列、經審議會審議決定，每案不同；本站不給區間、不下結論。", "去共同負擔試算站照提列標準逐項算，再回來帶入。", "都市更新條例第 51 條、權利變換實施辦法第 19 條");
     const shopRatio = r.input.after.shopPrice / r.input.after.resPrice;
     if (r.input.after.hasShop) add("shop_ratio", (shopRatio < R.shopRange[0] || shopRatio > R.shopRange[1]) ? "note" : "ok", `店面與樓上單價倍數 ${f(shopRatio, 2)}`,
       "一樓店面單價除以樓上住宅均價。", `常態 ${R.shopRange[0]} 至 ${R.shopRange[1]} 倍；臨路條件特殊時可偏離，但要有案例支撐。`, "找同路段新成屋的一樓成交對照。", "更新後 B 值：產品類型分別估價（教學門檻）");
@@ -140,8 +139,8 @@
     const maxAdj = Math.max(...r.a.lots.map(l => Math.abs(l.adjSum)));
     add("a_spread", maxAdj > R.lotAdjMax ? "note" : "ok", `各宗調整率最大 ±${f(maxAdj, 1)}%`,
       "各宗與比準地的差異。", `調整幅度超過 ${R.lotAdjMax}% 的宗要有明確條件差異。`, "逐項看臨路、角地、地形的方向是否與現況一致。", "更新前 A 值：各宗單價差異是否有理由");
-    add("owner_share", r.ownerShare * 100 < R.ownerShareWarn ? "note" : "ok", `地主分回 ${f(r.ownerShare * 100)}%`,
-      "更新後總價扣掉共同負擔後，地主拿到的比例。", `低於 ${R.ownerShareWarn}% 時提醒檢視 B 值與 C 值。`, "先看共負比，再看更新後總價的市場支撐。", "分回比例與公平性（教學門檻）");
+    add("floor_eff", "note", `樓層別效用比：示範假設`,
+      "各戶占比用到的樓層別與位置別效用比。", "本站用的是教學示範值，不是標準。實務上依個案的比較案例與使用情況由三家估價師查估，無電梯棟不會出現高樓層加分。", "看估價報告書的效用比表與其依據。", "不動產估價技術規則第十二章；全聯會第六號公報");
     const sr = Math.abs(r.settle) / r.myValue;
     add("settle", sr > R.settleWarn ? "note" : "ok", `我家找補 ${Math.round(r.settle / 10000).toLocaleString("zh-TW")} 萬元`,
       "選配價值與應分配價值的差額。", `找補超過分回價值的 ${R.settleWarn * 100}% 時，通常是選配坪數與分回價值不匹配。`, "調整選配坪數或樓層，讓找補縮小。", "分回比例與公平性");
@@ -150,43 +149,5 @@
     return out;
   }
 
-  /* ---------- 共同負擔拆解（burden.html） ---------- */
-  function burden(inp, b, site, after) {
-    const R = RULES[inp.city || "tpe"];
-    const abovePing = b.farPing * D().extraRatio;
-    const belowPing = site.totalPing * inp.construction.digRate / 100 * inp.construction.floorsDown;
-    const construction = (abovePing + belowPing) * inp.construction.unit;
-    const items = {
-      construction,
-      adminMgmt: construction * inp.adminMgmt / 100,
-      salesMgmt: b.B * inp.salesMgmt / 100,
-      trustMgmt: b.B * inp.trustMgmt / 100,
-      interest: construction * inp.interest.loanRatio / 100 * inp.interest.rate / 100 * inp.interest.months / 12 / 2,
-      tax: b.B * inp.tax / 100,
-      bonusFee: b.B * inp.bonusFee / 100,
-      other: b.B * inp.other / 100
-    };
-    /* 風險管理費以其他費用合計為基數；另列實施者利潤者以總銷為基數 */
-    const baseForRisk = Object.values(items).reduce((x, y) => x + y, 0);
-    items.riskMgmt = baseForRisk * inp.riskMgmt / 100;
-    items.profit = b.B * inp.profit / 100;
-    const C = Object.values(items).reduce((x, y) => x + y, 0);
-    const checks = [];
-    const add = (id, level, title, why, rule, fix, src) => checks.push({ id, level, title, why, rule, fix, src });
-    const ratio = C / b.B * 100;
-    add("burden_ratio", ratio > R.burdenRange[1] ? "warn" : (ratio < R.burdenRange[0] ? "note" : "ok"), `共負比 ${ratio.toFixed(1)}%`, "十項加總除以更新後總價。", `常見區間 ${R.burdenRange[0]}% 至 ${R.burdenRange[1]}%。`, "看下面哪一項燈號亮。", "審查方法論（教學門檻）");
-    add("admin_public", inp.isPublic && inp.adminMgmt > 0 ? "warn" : "ok", `人事行政管理費 ${inp.adminMgmt}%${inp.isPublic ? "（公辦）" : ""}`, "公辦都更由公部門主導，沒有實施者人事成本。", "公辦都更不得提列人事行政管理費。", "改為零，或確認實施方式。", "費用提列總表");
-    add("admin_max", !inp.isPublic && inp.adminMgmt > R.adminMgmtMax ? "note" : "ok", `人事行政管理費率 ${inp.adminMgmt}%`, "依總工程費一定比例提列。", `教學門檻 ${R.adminMgmtMax}%，實際上限以提列總表為準。`, "對照提列總表的比例。", "費用提列總表");
-    add("sales_tier", inp.salesMgmt > R.salesMgmtMax ? "warn" : (inp.salesMgmt >= R.salesMgmtMax - 0.01 ? "note" : "ok"), `銷售管理費率 ${inp.salesMgmt}%`, "依總銷金額分段提列，級距愈高費率愈低。", `最高級距費率 ${R.salesMgmtMax}%；整筆套最高費率不符分段精神。`, "依總銷級距分段算一次。", "費用提列總表：銷售管理費");
-    add("risk", inp.riskMgmt > R.riskMgmtMax ? "warn" : (inp.riskMgmt > R.riskMgmtMax - 2 ? "note" : "ok"), `風險管理費率 ${inp.riskMgmt}%`, "實施者承擔風險的對價。", `得以上限提列，但需檢視是否實質承擔風險；教學門檻 ${R.riskMgmtMax}%。`, "看出資、保證、信託是誰在做。", "費用提列總表：風險管理費");
-    add("trust", inp.trustMgmt > 0 && !inp.hasTrust ? "warn" : "ok", `信託管理費率 ${inp.trustMgmt}%`, "有辦信託才有這筆費用。", "未實際辦理信託不得提列。", "附信託契約。", "費用提列總表");
-    add("interest_period", inp.interest.months > inp.interest.workMonths ? "warn" : "ok", `計息 ${inp.interest.months} 個月，工期 ${inp.interest.workMonths} 個月`, "利息只能算工程期間。", "計息期間不得超過實際工期，不得把銷售期納入。", "把計息月數改成工期月數。", "審查方法論：貸款利息");
-    add("profit", inp.profit > 0 ? "note" : "ok", `另列實施者利潤 ${inp.profit}%`, "臺北市的實施者報酬是以風險管理費提列。", "風險管理費之外另列利潤者，要說明與風險管理費的關係，避免重複。", "二擇一，或說明兩者分別對應什麼。", "審查方法論：實施者利潤");
-    const riskShare = items.riskMgmt / C * 100;
-    add("risk_share", riskShare > R.profitNote ? "note" : "ok", `風險管理費占共同負擔 ${riskShare.toFixed(1)}%`, "實施者報酬占全部成本的比重。", `超過 ${R.profitNote}% 時提醒對照同期核定案（教學門檻）。`, "看同期核定案的分布。", "審查方法論：實施者利潤");
-    add("other", inp.other > 3 ? "note" : "ok", `其他費用 ${inp.other}%`, "拆遷補償、安置、公益設施。", "每一項都要找得到計畫書對應頁數。", "逐項列示由誰負擔。", "審查方法論：共擔分攤邏輯");
-    return { items, C, ratio, checks, abovePing, belowPing };
-  }
-
-  window.RSC = { RULES, expandUnits, calcA, calcB, distribute, run, scenarios, sensitivity, check, burden, effAfter, toThousand };
+  window.RSC = { RULES, expandUnits, calcA, calcB, distribute, run, scenarios, sensitivity, check, effAfter, toThousand };
 })();
