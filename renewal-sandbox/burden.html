@@ -11,22 +11,22 @@
 <meta name="description" content="依臺北市與新北市的共同負擔提列標準逐項試算：營建單價表、拆除、鑽探、地籍整理、估價費、貸款利息期間與利率、印花稅與營業稅、人事行政管理費率、銷售管理費級距、風險管理費率表。填案件條件就算出共負比，可帶入分回試算。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">第 4 站</span>
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-crane"/></svg>第 4 站</span>
     <h1>共同負擔試算：照北市、新北的提列標準一項一項算</h1>
-    <p class="lede">共同負擔不是實施者說多少就是多少。臺北市有「費用提列總表」與「工程造價要項」，新北市有「提列共同負擔項目及金額基準」，每一項都有公式、費率或級距。這一站把兩套標準寫進規則庫，填案件條件就逐項算出金額與共負比，每一行都附公式與依據。</p>
+    <p class="lede">共同負擔不是實施者說多少就是多少。臺北市有「費用提列總表」與「工程造價要項」，新北市有「提列共同負擔項目及金額基準」，每一項都有公式、費率或級距。這一站把兩套標準寫進規則庫，填案件條件就逐項算出金額，每一行都附公式與依據。算出來的是依提列上限的示範金額，不是任何案件的共負比結論；實際共負比由審議會逐項審議決定，每案不同。</p>
     <div class="where"><span class="tag c">工程費用 A</span><span class="tag c">權利變換費用 D</span><span class="tag c">貸款利息 G</span><span class="tag c">稅捐 H</span><span class="tag c">管理費用 I</span></div>
   </div>
 </section>
 
 <section class="section" id="burden">
   <div class="container">
-    <div class="section-head reveal"><div><h2>案件試算</h2><p id="basis"></p></div>
+    <div class="section-head reveal"><div><h2>案件試算：依提列上限的示範</h2><p id="basis"></p></div>
       <div class="tools"><button class="btn ghost sm" id="reset">還原示範案</button><button class="btn ghost sm" id="share">複製分享連結</button><a class="btn accent sm" id="toCalc" href="calc.html">帶入分回試算</a></div></div>
     <div class="kpis reveal" id="kpi"></div>
     <div class="calc" style="margin-top:18px">
@@ -77,7 +77,7 @@
       </div>
       <div>
         <div class="card reveal"><h3>九大類金額</h3><div class="bars" id="bars" style="margin-top:12px"></div></div>
-        <div class="card reveal" style="margin-top:14px"><h3>燈號 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><div id="checks" style="margin-top:10px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>要確認的事 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><p class="muted" style="font-size:.82rem">不做判定，只列出每一項依據什麼、實務上要看什麼。</p><div id="checks" style="margin-top:10px"></div></div>
       </div>
     </div>
     <div class="card reveal" style="margin-top:18px"><h3>逐項金額與公式</h3><div id="items" style="margin-top:10px"></div></div>
@@ -95,11 +95,11 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/calc.js?v=6"></script>
-<script src="assets/burden.js?v=6"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
+<script src="assets/burden.js?v=7"></script>
 <script src="../assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=6"></script>
+<script src="assets/common.js?v=7"></script>
 <script>
 (function(){
   const D = window.RS, U = window.RSU, C = window.RSC, B = window.RSB, $ = U.$, $$ = U.$$;
@@ -123,10 +123,10 @@
     const r = B.run(S.city, c);
     const R = B.CITY[S.city];
     $("#basis").textContent = `${R.name}・${R.ver}。分母為${U.param("s") ? "試算頁帶來的基地" : "示範基地"}：更新後總價 B ${U.wanShort(c.Bval)}。`;
-    $("#kpi").innerHTML = `<div class="kpi main"><span>共負比 D ＝ C ÷ B</span><b>${r.ratio.toFixed(1)}%</b><small>地主分回 ${(100 - r.ratio).toFixed(1)}%</small></div><div class="kpi"><span>共同負擔 C</span><b>${U.wanShort(r.C)}</b></div><div class="kpi"><span>營建單價（調整後）</span><b>${U.fmt(r.unit)}</b><small>元/坪</small></div><div class="kpi"><span>貸款期間 × 年利率</span><b>${r.months.toFixed(1)} 月</b><small>${(r.r * 100).toFixed(2)}%</small></div>`;
+    $("#kpi").innerHTML = `<div class="kpi main"><span>共同負擔示範金額 C（各管理費率以上限代入）</span><b>${U.wanShort(r.C)}</b><small>占更新後總價約 ${r.ratio.toFixed(1)}%，示範值，非案件結論</small></div><div class="kpi"><span>營建單價（調整後）</span><b>${U.fmt(r.unit)}</b><small>元/坪</small></div><div class="kpi"><span>貸款期間 × 年利率</span><b>${r.months.toFixed(1)} 月</b><small>${(r.r * 100).toFixed(2)}%</small></div>`;
     const mx = Math.max(...Object.values(r.byGroup));
     $("#bars").innerHTML = Object.keys(r.groups).filter(g => r.byGroup[g]).map(g => `<div class="br"><span>${g} ${r.groups[g]}</span><div class="bar"><i style="width:${r.byGroup[g] / mx * 100}%"></i></div><b>${U.wanShort(r.byGroup[g])}<br><span class="muted" style="font-size:.7rem">占 C ${(r.byGroup[g] / r.C * 100).toFixed(1)}%</span></b></div>`).join("");
-    $("#sum").textContent = U.lamps(r.checks, $("#checks"));
+    U.lamps(r.checks, $("#checks")); $("#sum").textContent = `${r.checks.length} 項`;
     $("#items").innerHTML = U.table(["類", "項目", "金額", "公式與依據"], r.items.map(i => [i.g, i.t, U.wanShort(i.v), `<span style="font-size:.8rem;color:var(--ink-2)">${i.how}</span>`]));
     const u = new URL("calc.html", location.href); u.searchParams.set("d", r.ratio.toFixed(1)); if (U.param("s")) u.searchParams.set("s", U.param("s"));
     $("#toCalc").href = u.toString();

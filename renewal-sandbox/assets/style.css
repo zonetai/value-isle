@@ -385,3 +385,39 @@ select.inp{font-family:var(--sans)}
 .toc-item small{grid-column:2;color:var(--ink-3);font-size:.72rem}
 .toc-item .mono{color:var(--accent)}
 .toc-item.on{border-color:var(--accent);background:#e9f3f2}
+
+/* ============================================================
+   動畫與圖示
+   ============================================================ */
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growy{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes popnum{0%{transform:scale(.96);opacity:.5}100%{transform:none;opacity:1}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(31,111,107,.0)}50%{box-shadow:0 0 0 8px rgba(31,111,107,.12)}}
+.stagger>*{animation:fadeup .55s ease both}
+.stagger>*:nth-child(1){animation-delay:.05s}.stagger>*:nth-child(2){animation-delay:.15s}.stagger>*:nth-child(3){animation-delay:.25s}.stagger>*:nth-child(4){animation-delay:.35s}.stagger>*:nth-child(5){animation-delay:.45s}.stagger>*:nth-child(6){animation-delay:.55s}.stagger>*:nth-child(7){animation-delay:.65s}.stagger>*:nth-child(8){animation-delay:.75s}
+.stagger.reveal:not(.in)>*{animation-play-state:paused}
+.sec-ico{width:42px;height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--accent);background:color-mix(in srgb,var(--accent) 11%,#fff);margin:6px 0 8px}
+.chain4 a .ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 12%,#fff);margin-bottom:8px}
+.chain4 a{transition:.25s}
+.chain4 a:hover{transform:translateY(-3px)}
+.chain4 a:hover .ico{animation:glow 1.2s ease infinite}
+.kpi b{display:inline-block;animation:popnum .4s ease}
+.tornado .bar i{transition:left .45s ease,width .45s ease}
+.routes .card:hover .ico,.route a:hover .n{transform:scale(1.08)}
+.routes .ico,.route a .n{transition:transform .25s}
+.steps-flow .card .sec-ico{width:36px;height:36px;font-size:1.2rem;margin:4px 0 6px}
+.steps-flow .card.lit{animation:fadeup .5s ease both}
+/* 投影片內的動畫 */
+.slide .body>*{animation:fadeup .5s ease both}
+.slide .body>*:nth-child(1){animation-delay:.1s}.slide .body>*:nth-child(2){animation-delay:.3s}.slide .body>*:nth-child(3){animation-delay:.5s}
+.slide .sv .grow{transform-box:fill-box;transform-origin:left center;animation:growx .9s cubic-bezier(.2,.8,.3,1) both}
+.slide .sv .growy{transform-box:fill-box;transform-origin:center bottom;animation:growy .7s cubic-bezier(.2,.8,.3,1) both}
+.slide .sv .pop{transform-box:fill-box;transform-origin:center;animation:popnum .5s ease both}
+.slide .sv .pulse{animation:glow 1.6s ease infinite}
+.slide .nums>*,.slide .three>*,.slide ul.list>li{animation:fadeup .5s ease both}
+.slide .nums>*:nth-child(2),.slide .three>*:nth-child(2),.slide ul.list>li:nth-child(2){animation-delay:.15s}
+.slide .nums>*:nth-child(3),.slide .three>*:nth-child(3),.slide ul.list>li:nth-child(3){animation-delay:.3s}
+.slide ul.list>li:nth-child(4){animation-delay:.45s}.slide ul.list>li:nth-child(5){animation-delay:.6s}
+.slide .ico{width:44px;height:44px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--accent);background:color-mix(in srgb,var(--accent) 11%,#fff);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){.stagger>*,.slide .body>*,.slide .sv .grow,.slide .sv .growy,.slide .sv .pop,.kpi b,.slide .nums>*,.slide .three>*,.slide ul.list>li{animation:none}}

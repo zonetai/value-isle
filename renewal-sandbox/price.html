@@ -11,13 +11,13 @@
 <meta name="description" content="都市更新估價師在估什麼：比準地與兩種估價方法、各筆土地調整率、分宗與容積率、立體化地價與持分不均、更新後店面住宅車位的比準戶與市場支撐、一坪換一坪的迷思與分回速算式、三家估價離散度與八個紅旗訊號。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">第 2 站</span>
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-ruler"/></svg>第 2 站</span>
     <h1>市價怎麼決定：估價師在估什麼</h1>
     <p class="lede">都市更新不是換坪數，而是換價值。估價師像一個公平的秤重者，三家估價師同時看同一場比賽，誰都不能作弊。這一站講秤是怎麼做的：更新前每一宗、每一戶的價值從哪裡來，更新後的價格要有什麼支撐，為什麼「一坪換一坪」是個迷思。</p>
     <div class="where"><span class="tag a">比準地與調整率</span><span class="tag a">立體化地價</span><span class="tag b">更新後比準戶</span><span class="tag d">一坪換一坪</span><span class="tag">三家與紅旗</span></div>
@@ -27,7 +27,7 @@
 <section class="section">
   <div class="container">
     <div class="section-head reveal"><div><h2>三層均衡，一條流程</h2><p>權利變換的估價要同時擺平三組關係，流程固定。</p></div></div>
-    <div class="grid g3">
+    <div class="grid g3 stagger">
       <div class="card reveal"><span class="kicker">第一層</span><h3 style="margin-top:6px">地主與實施者之間</h3><p>更新後總值扣掉共同負擔，剩下的才是地主全體的。這一層看的是分配比例，共同負擔站在講。</p></div>
       <div class="card reveal"><span class="kicker">第二層</span><h3 style="margin-top:6px">單元內各宗土地之間</h3><p>臨大路的宗與巷內的宗，容積率高的宗與低的宗，各宗的平面地價不同。這一層決定「我家那一宗」值多少。</p></div>
       <div class="card reveal"><span class="kicker">第三層</span><h3 style="margin-top:6px">同一宗上下樓之間</h3><p>一樓店面、二樓、頂樓，同一宗地上的各戶怎麼分這一宗的地價。這一層叫立體化地價，決定「我家那一戶」值多少。</p></div>
@@ -72,7 +72,7 @@
     <div class="section-head reveal"><div><span class="tag a">更新前</span><h2 style="margin-top:6px">立體化地價：同一宗上下樓怎麼分</h2><p>素地 6,000 萬、區分建物總價 5,000 萬，各層的 A ÷ 5,000 不會剛好都是 25%。</p></div></div>
     <div class="grid g2">
       <div>
-        <div class="card reveal"><h3>比準戶 × 效用比</h3><p>同一棟先選一戶當比準戶，其他戶依樓層別效用比與位置別效用比（面積、採光、視野、車道、嫌惡設施）調整，得到各戶房地價值，再乘土地價值比率，得到各戶對土地的貢獻占比。</p><div id="posTbl" style="margin-top:10px"></div></div>
+        <div class="card reveal"><h3>比準戶 × 效用比</h3><p>同一棟先選一戶當比準戶，其他戶依樓層別效用比與位置別效用比（面積、採光、視野、車道、嫌惡設施）調整，得到各戶房地價值，再乘土地價值比率，得到各戶對土地的貢獻占比。樓層別效用比沒有固定表，由三家估價師依個案比較案例查估。</p><div id="posTbl" style="margin-top:10px"></div><p class="source">位置別效用比的項目與方向整理自教學簡報的示例，數值依個案查估，不是標準。</p></div>
         <div class="card reveal" style="margin-top:14px"><h3>持分不均、屋地不同人：五步驟</h3>
           <div class="step-list" style="margin-top:10px">
             <div class="card"><div><b>評估土地持分的合理性</b></div></div>
@@ -99,7 +99,7 @@
 <section class="section" id="after">
   <div class="container">
     <div class="section-head reveal"><div><span class="tag b">更新後</span><h2 style="margin-top:6px">更新後總價：比準戶要有市場支撐</h2><p>分回能不能兌現，看這些單價站不站得住。</p></div></div>
-    <div class="grid g3">
+    <div class="grid g3 stagger">
       <div class="card reveal"><h3>店面與住宅分開估</h3><p>更新後店面與住宅比準戶採比較法與收益法推估。收益法用直接資本化：P ＝ a ÷ r，a 是總租金收入加押金孳息減閒置損失，再扣地價稅、房屋稅、保險、管理、維修與折舊提存。</p><p>店面看面積、可視性（角間、邊間、中間）、面寬、商效（面大路或面巷）、用途、柱位；住宅看面積、採光、視野棟距、嫌惡設施。</p></div>
       <div class="card reveal"><h3>車位獨立估，露臺雨遮另計</h3><p>停車位獨立估算，選配車位時用（分回價值 − 選配車位總價）再換坪數。露臺不可登記，僅以主建物價格的三分之一或四分之一計價，備註欄載明單價、面積、總價；雨遮不計價。體感降溫陽台與露臺同樣不可登記，審議方向動態調整中。</p></div>
       <div class="card reveal"><h3>案例要近、要可比</h3><p>比較標的成交日期距價格日期一年內，放寬要敘明理由。實價登錄要篩掉單價過高過低、建商與地主合建案等不可比的交易。四樓迷思：有電梯的大樓，四樓成交均價跟二、三樓比，市場自己會說話。</p></div>
@@ -124,12 +124,12 @@
           <label class="fld"><span>獎勵<i class="u">% 法定</i></span><input class="inp" type="number" id="qBonus" value="50" step="5" min="0" max="50"></label>
           <label class="fld"><span>銷坪比</span><input class="inp" type="number" id="qSell" value="1.58" step="0.01" min="1"></label>
           <label class="fld"><span>條件係數</span><input class="inp" type="number" id="qCond" value="1.00" step="0.01" min="0.5" max="1.5"></label>
-          <label class="fld"><span>共負比<i class="u">%</i></span><input class="inp" type="number" id="qRatio" value="42.5" step="0.5" min="0" max="80"></label>
+          <label class="fld"><span>共負比假設<i class="u">%</i></span><input class="inp" type="number" id="qRatio" value="42.5" step="0.5" min="0" max="80"></label>
           <label class="fld"><span>更新前權狀<i class="u">坪</i></span><input class="inp" type="number" id="qOld" value="28.6" step="0.1" min="0"></label>
           <label class="fld"><span>合建倍數<i class="u">原產權 ×</i></span><input class="inp" type="number" id="qJoint" value="1.16" step="0.01" min="0.5"></label>
         </div>
         <div class="kpis" id="qKpi" style="margin-top:12px"></div>
-        <p class="source" style="margin-top:10px">速算式只看量體與比例，實際分配依更新前價值比例。範例為三樓戶、土地 8.3 坪、權狀 28.6 坪：可蓋 44.3 坪，權變扣共負比後約 25.5 坪；坊間合建約原產權 1.16 倍 33.2 坪；自建 44.3 坪但要自付造價。</p>
+        <p class="source" style="margin-top:10px">速算式只看量體與比例，共負比是假設值、由審議決定，實際分配依更新前價值比例。範例為三樓戶、土地 8.3 坪、權狀 28.6 坪：可蓋 44.3 坪，權變扣共負比後約 25.5 坪；坊間合建約原產權 1.16 倍 33.2 坪；自建 44.3 坪但要自付造價。</p>
       </div>
       <div>
         <div class="card reveal"><h3>兩個地主，同一筆分回</h3>
@@ -157,10 +157,10 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/calc.js?v=6"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
 <script src="../assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=6"></script>
+<script src="assets/common.js?v=7"></script>
 <script>
 (function(){
   const D = window.RS, U = window.RSU, $ = U.$, $$ = U.$$;

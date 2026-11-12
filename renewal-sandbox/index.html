@@ -12,14 +12,14 @@
 <meta name="description" content="都市更新權利變換分配的試算與審查網站：更新前權值、更新後總價、共同負擔、分回四個數字怎麼串，填自家條件三情境看分回坪數與找補，共同負擔逐項拆解，審議委員的檢核清單。中泰不動產智庫整理。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
 <header class="hero">
   <div class="container">
     <div>
-      <span class="kicker">中泰不動產智庫・價值島姊妹站</span>
+      <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg>中泰不動產智庫・價值島姊妹站</span>
       <h1>一塊地要更新，<br>分回多少，<span>算給你看。</span></h1>
       <p class="lede">都更談到最後，爭的都是四個數字：更新前每一戶值多少、蓋好之後整棟值多少、蓋這棟樓要花多少、剩下的怎麼分。這個沙盤把估價師的計算鏈攤開：市價怎麼決定、共同負擔照北市與新北的標準怎麼算、分回為什麼不是一坪換一坪，你可以填自己家的條件走一遍。</p>
       <div class="hero-stats" id="heroStats"></div>
@@ -45,14 +45,14 @@
 <section class="section">
   <div class="container">
     <div class="section-head reveal"><div><h2>你是誰，就從哪裡進</h2><p>三條路線走的站一樣，順序不同。</p></div></div>
-    <div class="routes" id="routes"></div>
+    <div class="routes stagger" id="routes"></div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
     <div class="section-head reveal"><div><h2>四個數字，一條鏈</h2><p>每一站講其中一個數字。點方塊進去。</p></div></div>
-    <div class="chain4 reveal" id="chain4"></div>
+    <div class="chain4 reveal stagger" id="chain4"></div>
     <div class="formula reveal" style="margin-top:14px">各戶分回價值 ＝ （<span class="b">更新後總價 B</span> − <span class="c">共同負擔 C</span>）× <span class="a">我家 A 值</span> ÷ <span class="a">全部 A 值合計</span><br><span style="color:#bbb;font-size:.84rem">分回坪數 ＝ 分回價值 ÷ 選配那一戶的單價；選配價值與分回價值的差額就是找補。</span></div>
   </div>
 </section>
@@ -60,7 +60,7 @@
 <section class="section">
   <div class="container">
     <div class="section-head reveal"><div><h2>三個常見誤會</h2><p>點開看為什麼。</p></div></div>
-    <div class="myths" id="myths"></div>
+    <div class="myths stagger" id="myths"></div>
   </div>
 </section>
 
@@ -68,7 +68,7 @@
   <div class="container">
     <div class="card reveal" style="margin-bottom:22px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;border-left:5px solid var(--accent)"><div style="flex:1;min-width:240px"><span class="kicker">第一次來</span><h3 style="margin-top:4px">十分鐘看懂權利變換</h3><p>二十二張投影片把流程、四個數字、更新前後的價值、共同負擔、分回與程序講一遍，可自動播放、附講稿。</p></div><a class="btn accent" href="intro.html">開始播放</a></div>
     <div class="section-head reveal"><div><h2>五站</h2><p>每站末尾都有下一站；造訪紀錄留在你的瀏覽器裡。</p></div><a class="btn ghost" href="law.html">直接去法規依據</a></div>
-    <div class="route" id="route"></div>
+    <div class="route stagger" id="route"></div>
   </div>
 </section>
 
@@ -90,13 +90,13 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/calc.js?v=6"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
 <script src="../assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=6"></script>
+<script src="assets/common.js?v=7"></script>
 <script>
 (function(){
-  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$;
+  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
   const P = U.progress();
   const names = Object.fromEntries(D.pages.map(p => [p.href, p.short]));
 
@@ -104,7 +104,7 @@
   $("#routes").innerHTML = D.routes.map((r, i) => `<div class="card reveal" style="transition-delay:${i * 80}ms"><div class="ico">${U.icon(r.ico)}</div><h3>${r.t}</h3><p>${r.s}</p><div class="path">${r.steps.map((s, j) => `${j ? "<i>然後</i>" : ""}<span>${names[s]}</span>`).join("")}</div><a class="btn sm" href="${r.first}">${r.firstLabel}</a></div>`).join("");
 
   /* 四方塊 */
-  $("#chain4").innerHTML = D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("");
+  $("#chain4").innerHTML = D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="ico">${U.icon(c.ico)}</div><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("");
 
   /* 誤會 */
   $("#myths").innerHTML = D.myths.map((m, i) => `<div class="card myth reveal" style="transition-delay:${i * 80}ms"><span class="kicker">誤會 ${i + 1}</span><div class="q" style="margin-top:6px">${m.q}</div><div class="hint">點一下看為什麼</div><div class="ans">${m.a}<div style="margin-top:10px"><a class="btn ghost sm" href="${m.page}">去那一站</a></div></div></div>`).join("");
@@ -116,7 +116,8 @@
   /* 示範數字與天平 */
   const base = { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };
   const r0 = C.run(base);
-  $("#heroStats").innerHTML = `<div><b>${U.wanShort(r0.a.sumA)}</b><span>更新前權值合計 A</span></div><div><b>${U.wanShort(r0.b.B)}</b><span>更新後總價 B</span></div><div><b>${U.wanShort(r0.C)}</b><span>共同負擔 C</span></div>`;
+  $("#heroStats").innerHTML = `<div><b data-v="${r0.a.sumA}">0</b><span>更新前權值合計 A（示範）</span></div><div><b data-v="${r0.b.B}">0</b><span>更新後總價 B（示範）</span></div><div><b data-v="${r0.C}">0</b><span>共同負擔 C（示範假設）</span></div>`;
+  $$("#heroStats b").forEach(b => U.countUp(b, +b.dataset.v, U.wanShort, 1400));
 
   const svg = $("#balance");
   function draw(ratio, price) {

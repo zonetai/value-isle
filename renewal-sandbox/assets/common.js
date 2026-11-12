@@ -99,11 +99,11 @@
   U.flip = (sel) => $$(sel).forEach(c => c.addEventListener("click", e => { if (e.target.closest("a,input,button")) return; c.classList.toggle("open"); }));
   /* 燈號清單 */
   U.lamps = (list, mount) => {
-    const lv = { warn: "要有說明", note: "先查", ok: "通過" };
+    const lv = { warn: "要說明", note: "要確認", ok: "已納入" };
     mount.innerHTML = list.map(c => `<div class="chk ${c.level}"><span class="pill ${c.level}">${lv[c.level]}</span><b>${c.title}</b><div class="more"><div>看什麼：${c.why}</div><div>規則：${c.rule}</div><div>怎麼修：${c.fix}</div><cite>${c.src}</cite></div><button class="lnk" type="button">展開</button></div>`).join("");
     mount.querySelectorAll(".chk").forEach(el => el.querySelector(".lnk").onclick = () => { el.classList.toggle("open"); el.querySelector(".lnk").textContent = el.classList.contains("open") ? "收合" : "展開"; });
     const n = list.filter(c => c.level === "warn").length, m = list.filter(c => c.level === "note").length;
-    return `${n} 項要有說明、${m} 項先查、${list.length - n - m} 項通過`;
+    return `${n ? n + " 項要說明、" : ""}${m} 項要確認、${list.length - n - m} 項已納入`;
   };
   /* 數字輸入列 */
   U.field = (id, label, val, unit = "", step = "any", min = null) => `<label class="fld" for="${id}"><span>${label}${unit ? `<i class="u">${unit}</i>` : ""}</span><input class="inp" type="number" id="${id}" value="${val}" step="${step}"${min !== null ? ` min="${min}"` : ""}></label>`;

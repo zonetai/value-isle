@@ -11,13 +11,13 @@
 <meta name="description" content="填自己家的土地持分、建物坪數、樓層與基地條件，保守、基準、樂觀三情境並排看都更分回坪數、分回價值與找補。每個數字可展開看公式，輸入值可編成連結分享，列印即一頁摘要。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
 <section class="page-hero">
   <div class="container">
-    <span class="kicker">第 3 站</span>
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-calc"/></svg>第 3 站</span>
     <h1>分回試算：填自己家的條件，看三種情境</h1>
     <p class="lede">預載示範基地：臺北市住三、四宗合併、四十戶。先選一戶當「我家」，改成自己的坪數與樓層，再改基地與更新後的假設。每改一格立刻重算；數字旁邊可以展開看怎麼算的。</p>
     <div class="where"><span class="tag">我家</span><span class="tag">基地與各宗</span><span class="tag">更新後假設</span><span class="tag">三情境</span><span class="tag">燈號</span><span class="tag">敏感度</span></div>
@@ -66,13 +66,13 @@
           <label class="switch" style="grid-column:1/-1"><input type="checkbox" id="hasShop">一樓規劃店面</label>
         </div>
         <div class="grp">共同負擔</div>
-        <div class="sliders"><label><span>共負比 D<output id="ratioOut"></output></span><input type="range" id="ratio" min="20" max="60" step="0.5"></label></div>
+        <div class="sliders"><label><span>共負比（假設值）<output id="ratioOut"></output></span><input type="range" id="ratio" min="20" max="60" step="0.5"></label></div><p class="source">共負比由審議決定、每案不同，這裡只是讓你拉著看分回怎麼變的假設值，本站不給區間。</p>
         <p class="source">想照北市、新北的提列標準逐項算，去〈共同負擔試算〉算完按「帶入分回試算」。</p>
       </div>
       <div>
         <div class="card reveal"><h3>三情境</h3><p class="muted" style="font-size:.82rem">固定變動三個參數：更新後均價、共負比、獎勵容積。</p><div class="scen" id="scen" style="margin-top:12px"></div></div>
         <div class="card reveal" style="margin-top:14px"><h3>這個數字怎麼來的</h3><div class="steps" id="steps" style="margin-top:10px"></div></div>
-        <div class="card reveal" style="margin-top:14px"><h3>燈號 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><p class="muted" style="font-size:.82rem">每項展開三層：看什麼、規則或區間、怎麼修。門檻標明教學門檻者非審議標準。</p><div id="checks" style="margin-top:10px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>要確認的事 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><p class="muted" style="font-size:.82rem">每項展開三層：看什麼、依據什麼、怎麼查。共負比與效用比都是示範假設，不做判定。</p><div id="checks" style="margin-top:10px"></div></div>
         <div class="card reveal" style="margin-top:14px"><h3>哪個參數最敏感</h3><p class="muted" style="font-size:.82rem">每個參數上下各動一次，看我家分回坪數的變化。</p><div class="tornado" id="tornado" style="margin-top:12px"></div></div>
       </div>
     </div>
@@ -81,10 +81,10 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=6"></script>
-<script src="assets/calc.js?v=6"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
 <script src="../assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=6"></script>
+<script src="assets/common.js?v=7"></script>
 <script>
 (function(){
   const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
@@ -149,18 +149,18 @@
       st(`${lot.id} 合併前單價`, U.fmt(lot.unitBefore) + " 元/坪", `${U.fmt(S.site.baseUnit)} × (1 ${lot.adjSum >= 0 ? "+" : "−"} ${Math.abs(lot.adjSum)}%)，取千元`) +
       st("合併增值係數", a.coef.toFixed(4), `${U.wanShort(a.mergedTotal)} ÷ ${U.wanShort(a.sumBefore)}`) +
       st(`${lot.id} 合併後地價`, U.wanShort(lot.totalAfter), `${U.fmt(lot.unitBefore)} × ${lot.ping} 坪 × ${a.coef.toFixed(4)}`) +
-      st("我家在宗內的占比", U.pct(r.my.share, 2), S.mode === "land" ? `土地持分 ${r.my.landPing} 坪 ÷ 宗內合計` : `建物 ${r.my.bldgPing} 坪 × 效用比 ${r.my.eff.toFixed(2)}${r.my.factor !== 1 ? ` × 店面 ${r.my.factor}` : ""} ÷ 宗內合計`) +
+      st("我家在宗內的占比", U.pct(r.my.share, 2), S.mode === "land" ? `土地持分 ${r.my.landPing} 坪 ÷ 宗內合計` : `建物 ${r.my.bldgPing} 坪 × 樓層別效用比（示範假設）${r.my.factor !== 1 ? " × 店面係數（示範假設）" : ""} ÷ 宗內合計`) +
       st("我家 A 值", U.wanShort(r.my.A), `占全部 A（${U.wanShort(a.sumA)}）的 ${U.pct(r.my.pct, 2)}`, "sum") +
       st("容積樓地板", b.farPing.toFixed(0) + " 坪", `${a.totalPing} 坪 × ${S.site.farLegal}% × (1 + ${S.site.bonus}%)`) +
       st("銷售坪數", b.sellPing.toFixed(0) + " 坪", `× ${D.extraRatio} ÷ (1 − ${S.after.publicRatio}%)，銷坪比 ${b.sellRatio.toFixed(2)}`) +
       st("更新後總價 B", U.wanShort(b.B), `店面 ${U.wanShort(b.S_shop)} ＋ 住宅 ${U.wanShort(b.S_res)} ＋ 車位 ${U.wanShort(b.S_park)}`, "sum") +
-      st("共同負擔 C", U.wanShort(r.C), `B × ${S.burdenRatio}%`) +
+      st("共同負擔 C", U.wanShort(r.C), `B × 共負比假設值 ${S.burdenRatio}%`) +
       st("地主分回合計", U.wanShort(r.landValue), `B − C，占 ${U.pct(r.ownerShare)}`) +
       st("我家分回價值", U.wanShort(r.myValue), `${U.wanShort(r.landValue)} × ${U.pct(r.my.pct, 2)}`, "sum") +
-      st("選配單價", U.fmt(r.pickPrice) + " 元/坪", r.input.pick.use === "shop" ? "店面單價" : `住宅均價 × 樓層效用比 ${C.effAfter(r.input.pick.floor, S.after).toFixed(2)}`) +
+      st("選配單價", U.fmt(r.pickPrice) + " 元/坪", r.input.pick.use === "shop" ? "店面單價" : "住宅均價 × 更新後樓層效用比（示範假設）") +
       st("分回坪數", r.pingBack.toFixed(2) + " 坪", `${U.wanShort(r.myValue)} ÷ ${U.fmt(r.pickPrice)}`, "sum") +
       st(`選 ${r.pickPing} 坪的找補`, (r.settle >= 0 ? "補 " : "領 ") + U.wanShort(Math.abs(r.settle)), `${r.pickPing} × ${U.fmt(r.pickPrice)} − ${U.wanShort(r.myValue)}`) +
-      st("分回價值 ÷ 更新前 A 值", r.multiple.toFixed(2) + " 倍", "常見一點五到兩倍；低於一要回頭看 B 與 C");
+      st("分回價值 ÷ 更新前 A 值", r.multiple.toFixed(2) + " 倍", "示範假設下的倍數，不是標準，每案不同");
 
     $("#sum").textContent = U.lamps(C.check(r), $("#checks"));
 
