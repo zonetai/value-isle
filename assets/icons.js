@@ -57,7 +57,18 @@
     next:     `<path d="M18 5.5v13"/><path ${S} d="M6 6.2v11.6a.8.8 0 0 0 1.2.7L15 13a1.2 1.2 0 0 0 0-2L7.2 5.5a.8.8 0 0 0-1.2.7z"/>`,
     search:   `<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/>`,
     close:    `<path d="M6 6l12 12M18 6 6 18"/>`,
-    menu:     `<path d="M4 7h16M4 12h16M4 17h16"/>`
+    menu:     `<path d="M4 7h16M4 12h16M4 17h16"/>`,
+    /* 互動 */
+    rail:     `<rect ${F} x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 10.5h12M9.5 13.8h.01M14.5 13.8h.01M8.5 16.5 6 20.5M15.5 16.5l2.5 4M7.2 18.6h9.6"/>`,
+    book:     `<path ${F} d="M5 4.5h11a2 2 0 0 1 2 2V20H7a2 2 0 0 1-2-2z"/><path d="M5 18a2 2 0 0 1 2-2h11M9 8.5h5.5M9 11.5h4"/>`,
+    compass:  `<circle cx="12" cy="12" r="8.5"/><path ${F} d="m15.5 8.5-2 5-5 2 2-5z"/>`,
+    branch:   `<path d="M6 4v6a4 4 0 0 0 4 4h8M6 10v10"/><path d="m15 11 3 3-3 3"/><circle ${F} cx="6" cy="4" r="1.6"/>`,
+    undo:     `<path d="M8 5 4 9l4 4"/><path d="M4 9h10a5.5 5.5 0 0 1 0 11h-4"/>`,
+    check:    `<path d="m5 12.5 4.5 4.5L19 7.5"/>`,
+    shuffle:  `<path d="M4 7h3c5 0 5 10 10 10h3M4 17h3c1.6 0 2.7-1 3.6-2.4M13.4 9.4C14.3 8 15.4 7 17 7h3"/><path d="m18 4.5 2.5 2.5L18 9.5M18 14.5l2.5 2.5-2.5 2.5"/>`,
+    up:       `<path d="M12 19V5M6 11l6-6 6 6"/>`,
+    panel:    `<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M14.5 5v14"/><path ${F} d="M14.5 5H18a2.5 2.5 0 0 1 2.5 2.5v9A2.5 2.5 0 0 1 18 19h-3.5z"/>`,
+    pin:      `<path ${F} d="M12 21s6.5-5.6 6.5-10.5a6.5 6.5 0 0 0-13 0C5.5 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>`
   };
 
   const sprite = document.createElementNS("http://www.w3.org/2000/svg", "svg");

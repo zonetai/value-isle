@@ -14,7 +14,7 @@
 <meta name="description" content="一塊地的價格，從四層看起：國際海象、政策氣候、市場潮位、個別條件。中泰不動產智庫整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=14">
+<link rel="stylesheet" href="assets/style.css?v=18">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -42,17 +42,30 @@
   <div class="scene-tools">
     <button data-tool="labels" class="on"><span><svg class="ic"><use href="#i-tag"/></svg></span>標示</button>
     <button data-tool="currents" class="on"><span><svg class="ic"><use href="#i-current"/></svg></span>海流</button>
+    <button data-tool="spots" title="島上可以點開的勘查點"><span><svg class="ic"><use href="#i-book"/></svg></span>勘查 <em id="spotBadge"></em></button>
     <button data-tool="pause"><span><svg class="ic"><use href="#i-pause"/></svg></span><b>暫停</b></button>
     <button data-tool="bird"><span><svg class="ic"><use href="#i-target"/></svg></span>俯視</button>
-    <button data-tool="home"><span><svg class="ic"><use href="#i-isle"/></svg></span>全景</button>
+    <button data-tool="home" title="指針跟著視角轉，點一下回到全景"><span><svg class="ic compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="none" stroke="currentColor" stroke-width="1.5"/><g id="compassNeedle"><path d="M12 3.6 14.5 12h-5z" fill="#e4572e"/><path d="M12 20.400 9.5 12h5z" fill="currentColor" opacity=".32"/></g></svg></span>全景</button>
     <button data-tool="tour"><span><svg class="ic"><use href="#i-play"/></svg></span>估價師帶路</button>
   </div>
+
+  <!-- 勘查手冊：島上所有可以點開的地方 -->
+  <div class="spot-list" id="spotList"></div>
+
+  <!-- 情境推演：一件事發生，四層怎麼連動 -->
+  <div class="whatif" id="whatif">
+    <span class="wi-label"><svg class="ic"><use href="#i-branch"/></svg>如果…</span>
+    <div class="wi-chips" id="wiChips"></div>
+  </div>
+
+  <!-- 勘查筆記與情境推演共用的說明卡 -->
+  <div class="scene-card" id="sceneCard" aria-live="polite"></div>
 
   <!-- 左：介紹 -->
   <div class="hero-panel left">
     <span class="kicker">中泰不動產智庫</span>
-    <h1>一塊地的價格，<br>從四層看起。</h1>
-    <p class="lede">估價師看價格，不只看成交。外海的國際海象、天上的政策氣候、岸邊的市場潮位，最後才落到島上這塊地本身的條件。拖動旋轉島嶼，點任一層的標示，或點島上走動的人聽一句估價小知識。</p>
+    <h1>一塊地的價格，<br><em>從四層看起。</em></h1>
+    <p class="lede">估價師看價格，不只看成交。外海的國際海象、天上的政策氣候、岸邊的市場潮位，最後才落到島上這塊地本身的條件。點島上的建物與船看勘查筆記，或在下方選一個「如果…」，看四層怎麼連動。</p>
     <div class="layer-meter" id="layerMeter"></div>
     <div class="note" id="seasonNote"></div>
     <div class="cta">
@@ -63,7 +76,8 @@
   </div>
 
   <!-- 右：索引 -->
-  <aside class="hero-panel right">
+  <aside class="hero-panel right" id="indexPanel">
+    <button class="panel-toggle" id="idxToggle" aria-label="收合觀測索引"><svg class="ic"><use href="#i-panel"/></svg></button>
     <span class="kicker">觀測索引</span>
     <h2>四股力量，<br>一塊地的價格。</h2>
     <p class="sub" id="indexSub"></p>
@@ -78,7 +92,7 @@
     <div class="ctl"><button data-t="prev" aria-label="上一站"><svg class="ic"><use href="#i-prev"/></svg></button><button data-t="next" aria-label="下一站"><svg class="ic"><use href="#i-next"/></svg></button><button data-t="exit">離開 <svg class="ic"><use href="#i-close"/></svg></button></div>
   </div>
 
-  <a class="scene-hint" id="ticker" href="daily.html"><span class="tk-hint">拖曳旋轉 ・ 滾輪縮放 ・ 點標示看細節 ・ 點路人聽小知識</span></a>
+  <a class="scene-hint" id="ticker" href="daily.html"><span class="tk-hint">拖曳旋轉 ・ 滾輪縮放 ・ 點建物與船看勘查筆記 ・ 點海面起水波 ・ 按 1–4 切換四層</span></a>
 </header>
 
 <!-- ================= 四層概覽 ================= -->
@@ -107,21 +121,30 @@
         <div style="margin-top:10px"><span class="tag intl">一般因素</span><span class="tag policy">一般因素</span><span class="tag market">區域因素</span><span class="tag ind">個別因素</span></div>
       </div>
     </div>
+
+    <!-- 估價小卡：一次一句，可以一直換 -->
+    <div class="factdeck reveal" id="factDeck">
+      <div class="fd-side"><span class="kicker">估價小卡</span><small id="fdCount"></small></div>
+      <p class="fd-text" id="fdText"></p>
+      <button class="btn ghost sm" id="fdNext"><svg class="ic"><use href="#i-shuffle"/></svg>換一張</button>
+    </div>
   </div>
 </section>
 
-<script src="assets/data.js?v=14"></script>
-<script src="assets/knowledge.js?v=14"></script>
-<script src="assets/icons.js?v=14"></script>
-<script src="assets/common.js?v=14"></script>
+<script src="assets/data.js?v=18"></script>
+<script src="assets/knowledge.js?v=18"></script>
+<script src="assets/icons.js?v=18"></script>
+<script src="assets/common.js?v=18"></script>
 <script>
 (function(){
-  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$;
+  const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, KN = window.KN || {};
   const allItems = D.layers.flatMap(l => l.items);
-  if (matchMedia("(pointer:coarse)").matches) $("#ticker .tk-hint").textContent = "左右拖曳旋轉 ・ 雙指縮放 ・ 點標示看細節 ・ 點路人聽小知識";
+  const layerOf = id => D.layers.find(l => l.id === id);
+  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  if (matchMedia("(pointer:coarse)").matches) $("#ticker .tk-hint").textContent = "左右拖曳旋轉 ・ 雙指縮放 ・ 點建物與船看勘查筆記 ・ 點路人聽小知識";
   $("#indexSub").textContent = `${D.layers.length} 個層次 ／ ${allItems.length} 個觀測項目 ／ 每項附「對估價的影響」`;
 
-  /* 索引 */
+  /* ---------- 索引 ---------- */
   let openLayer = null; const newCount = {};
   function renderIndex(filter = "") {
     const q = filter.trim().toLowerCase();
@@ -131,10 +154,10 @@
       if (q && !items.length) return;
       const row = document.createElement("div");
       row.className = "layer-row" + (openLayer === l.id ? " on" : "");
-      row.style.setProperty("--c", l.color);
+      row.style.setProperty("--c", l.color); row.title = l.name;
       const g = D.gauges.find(x => x.id === l.id);
       row.innerHTML = `<span class="n">${g ? VI.icon(g.ico) : ""}</span><span class="t">${l.name}<small>${newCount[l.id] ? `<em>近期 ${newCount[l.id]} 則動態</em>・` : ""}${l.desc.split("。")[0]}</small></span><span class="cnt">${items.length} 項</span>`;
-      row.onclick = () => { window.ISLAND ? ISLAND.select(l.id) : toggle(l.id); };
+      row.onclick = () => { window.ISLAND ? (ISLAND.spotClear(true), ISLAND.select(l.id)) : toggle(l.id); };
       list.appendChild(row);
       if (openLayer === l.id || q) items.forEach((i, idx) => {
         const r = document.createElement("div"); r.className = "item-row"; r.style.setProperty("--c", l.color); r.style.animationDelay = (idx * 40) + "ms";
@@ -147,28 +170,109 @@
   function toggle(id) { openLayer = openLayer === id ? null : id; renderIndex($("#searchInput").value); }
   document.addEventListener("island:select", e => { openLayer = e.detail.layer; renderIndex($("#searchInput").value); });
   $("#searchInput").addEventListener("input", e => renderIndex(e.target.value));
-  document.addEventListener("keydown", e => { if (e.key === "/" && document.activeElement.tagName !== "INPUT") { e.preventDefault(); $("#searchInput").focus(); } });
   renderIndex();
 
-  /* 工具列 */
+  /* 索引面板可以收成一條，讓島露出來（寬螢幕才有） */
+  const hero = $(".island-hero");
+  const setMini = (m, save) => { hero.classList.toggle("idx-mini", m); $("#idxToggle").setAttribute("aria-label", m ? "展開觀測索引" : "收合觀測索引"); $("#idxToggle").title = m ? "展開觀測索引" : "收合觀測索引"; if (save) store.set("vi-idx-mini", m ? "1" : "0"); };
+  { const s = store.get("vi-idx-mini", null); setMini(s === null ? innerWidth < 1380 : s === "1"); }
+  $("#idxToggle").onclick = () => setMini(!hero.classList.contains("idx-mini"), true);
+
+  /* ---------- 四個儀表（情境推演時顯示增減） ---------- */
+  const meterW = D.gauges.map(() => 0);
+  function renderMeter(d) {
+    const S = D.seasons[VI.getSeason()];
+    const vals = S.gauges.map((v, i) => Math.max(0, Math.min(100, v + (d ? d[i] : 0))));
+    $("#layerMeter").innerHTML = D.gauges.map((g, i) => `<div style="--c:${g.color}"><span>${VI.icon(g.ico)}${g.name}</span><span class="bar"><i style="width:${meterW[i]}%"></i></span><b>${vals[i]}${d && d[i] ? `<em class="${d[i] > 0 ? "up" : "dn"}">${d[i] > 0 ? "+" : "−"}${Math.abs(d[i])}</em>` : ""}</b></div>`).join("");
+    requestAnimationFrame(() => requestAnimationFrame(() => $$("#layerMeter .bar i").forEach((b, i) => { b.style.width = vals[i] + "%"; meterW[i] = vals[i]; })));
+  }
+
+  /* ---------- 說明卡（勘查筆記／情境推演共用） ---------- */
+  const card = $("#sceneCard"); let cardMode = null, curSc = null;
+  const openCard = (mode, color, html) => { cardMode = mode; card.style.setProperty("--c", color); card.innerHTML = `<button class="close" aria-label="關閉">${VI.icon("close")}</button>` + html; card.classList.remove("on"); void card.offsetWidth; card.classList.add("on"); };
+  const closeCard = () => { card.classList.remove("on"); cardMode = null; };
+
+  /* ---------- 勘查手冊：點島上的東西看筆記，看過的會記下來 ---------- */
+  const SP = D.spots || {}, spIds = Object.keys(SP);
+  let seen = []; try { seen = JSON.parse(store.get("vi-spots", "[]")).filter(id => SP[id]); } catch (e) { seen = []; }
+  function renderSpotList() {
+    $("#spotBadge").textContent = `${seen.length}/${spIds.length}`;
+    $("#spotList").innerHTML = `<div class="sl-head"><b>${VI.icon("book")}勘查手冊</b><span>${seen.length} / ${spIds.length} 處看過了</span><button class="sl-close" aria-label="關閉">${VI.icon("close")}</button></div><div class="sl-bar"><i style="width:${seen.length / spIds.length * 100}%"></i></div>` +
+      D.layers.map(l => `<div class="sl-group" style="--c:${l.color}"><small>${l.name}</small><div>${spIds.filter(id => SP[id].layer === l.id).map(id => `<button class="chip ${seen.includes(id) ? "seen" : ""}" data-spot="${id}">${seen.includes(id) ? VI.icon("check") : ""}${SP[id].t}</button>`).join("")}</div></div>`).join("") +
+      `<p class="sl-tip">點名稱，鏡頭會帶你過去；也可以直接點島上的建物、船和站點。</p>`;
+    $$("#spotList [data-spot]").forEach(b => b.onclick = () => { toggleList(false); window.ISLAND && ISLAND.spot(b.dataset.spot); });
+    $("#spotList .sl-close").onclick = () => toggleList(false);
+  }
+  function toggleList(on) { const el = $("#spotList"); if (on === undefined) on = !el.classList.contains("on"); el.classList.toggle("on", on); $('[data-tool="spots"]').classList.toggle("on", on); }
+  function showSpot(id) {
+    const s = SP[id], L = layerOf(s.layer), fresh = !seen.includes(id);
+    if (fresh) { seen.push(id); store.set("vi-spots", JSON.stringify(seen)); renderSpotList(); }
+    if (curSc) { curSc = null; renderChips(); renderMeter(); }
+    openCard("spot", L.hex, `<div class="sc-top"><span class="tag ${L.cls}">${L.name}</span><span class="sc-prog">${VI.icon("book")}勘查手冊 ${seen.length} / ${spIds.length}</span></div>
+      <h4>${s.t}</h4>
+      <div class="sc-two"><div><b>現場看到</b><p>${s.see}</p></div><div><b>估價怎麼處理</b><p>${s.adj}</p></div></div>
+      <div class="sc-foot"><button class="btn sm" data-a="next">${seen.length < spIds.length ? "去下一處還沒看的" : "下一處"}</button><button class="btn ghost sm" data-a="layer">${L.name}的觀測項目</button></div>`);
+    card.querySelector(".close").onclick = () => ISLAND.spotClear();
+    card.querySelector('[data-a="layer"]').onclick = () => VI.openDrawer(s.layer);
+    card.querySelector('[data-a="next"]').onclick = () => { const rest = spIds.filter(x => !seen.includes(x)); ISLAND.spot(rest[0] || spIds[(spIds.indexOf(id) + 1) % spIds.length]); };
+    if (fresh && seen.length === spIds.length) VI.toast(`${spIds.length} 處都看過了，你已經走完一趟現場勘查。`, 4200);
+  }
+  document.addEventListener("island:spot", e => { if (e.detail.id) showSpot(e.detail.id); else if (cardMode === "spot") closeCard(); });
+  renderSpotList();
+
+  /* ---------- 情境推演 ---------- */
+  function renderChips() {
+    $("#wiChips").innerHTML = (D.scenarios || []).map(s => `<button class="${s.id === curSc ? "on" : ""}" data-sc="${s.id}" title="如果${s.t}">${VI.icon(s.ico)}${s.s || s.t}</button>`).join("");
+    $$("#wiChips button").forEach(b => b.onclick = () => setScenario(b.dataset.sc));
+  }
+  function clearScenario() { if (!curSc) return; curSc = null; renderChips(); renderMeter(); if (cardMode === "sc") closeCard(); window.ISLAND && ISLAND.scenario(null); }
+  function setScenario(id) {
+    const sc = D.scenarios.find(s => s.id === id); if (!sc || !window.ISLAND) return;
+    if (curSc === id) { clearScenario(); return; }
+    curSc = id; ISLAND.scenario(sc); renderChips(); renderMeter(sc.d);
+    openCard("sc", layerOf(sc.layer).hex, `<div class="sc-top"><span class="kicker">${VI.icon("branch")}情境推演</span><button class="sc-reset" data-a="reset">${VI.icon("undo")}還原</button></div>
+      <h4>如果${sc.t}</h4>
+      <div class="sc-deltas">${D.gauges.map((g, i) => `<span style="--c:${g.color}" class="${sc.d[i] > 0 ? "up" : sc.d[i] < 0 ? "dn" : "flat"}">${g.name}<b>${sc.d[i] ? (sc.d[i] > 0 ? "+" : "−") + Math.abs(sc.d[i]) : "不變"}</b></span>`).join("")}</div>
+      <div class="sc-two"><div><b>會發生什麼</b><p>${sc.text}</p></div><div><b>估價師怎麼讀</b><p>${sc.read}</p></div></div>
+      <small class="sc-note">${D.scenarioNote}</small>`);
+    card.querySelector(".close").onclick = clearScenario;
+    card.querySelector('[data-a="reset"]').onclick = clearScenario;
+  }
+  renderChips();
+
+  /* ---------- 工具列 ---------- */
+  const startTour = () => { if (!window.ISLAND) return; if (curSc) { curSc = null; renderChips(); renderMeter(); } closeCard(); toggleList(false); ISLAND.startTour(); };
   $$(".scene-tools button").forEach(b => b.onclick = () => {
     const t = b.dataset.tool; if (!window.ISLAND) return;
     if (t === "labels" || t === "currents" || t === "pause") b.classList.toggle("on");
     if (t === "labels") ISLAND.labels(b.classList.contains("on"));
     if (t === "currents") ISLAND.currents(b.classList.contains("on"));
     if (t === "pause") { const p = b.classList.contains("on"); ISLAND.pause(p); b.querySelector("span").innerHTML = VI.icon(p ? "play" : "pause"); b.querySelector("b").textContent = p ? "繼續" : "暫停"; }
+    if (t === "spots") toggleList();
     if (t === "bird") ISLAND.bird();
-    if (t === "home") ISLAND.home();
-    if (t === "tour") ISLAND.startTour();
+    if (t === "home") { ISLAND.spotClear(true); ISLAND.home(); }
+    if (t === "tour") startTour();
   });
-  $("#btnTour").onclick = () => window.ISLAND && ISLAND.startTour();
+  $("#btnTour").onclick = startTour;
   $$("#tour .ctl button").forEach(b => b.onclick = () => { if (!window.ISLAND) return; ({ prev: ISLAND.tourPrev, next: ISLAND.tourNext, exit: ISLAND.stopTour })[b.dataset.t](); });
 
-  /* 季節文字 */
+  /* ---------- 鍵盤：/ 搜尋、1–4 切換四層、G 勘查手冊、T 帶路、H 全景、Esc 收起 ---------- */
+  document.addEventListener("keydown", e => {
+    if (e.metaKey || e.ctrlKey || e.altKey || (e.target.closest && e.target.closest("input,textarea,select"))) return;
+    if (e.key === "/") { e.preventDefault(); if (hero.classList.contains("idx-mini")) setMini(false, true); $("#searchInput").focus(); return; }
+    if (!window.ISLAND) return;
+    const n = "1234".indexOf(e.key), key = e.key.toLowerCase();
+    if (n >= 0 && e.key.length === 1) { ISLAND.spotClear(true); ISLAND.select(D.layers[n].id); }
+    else if (key === "g") toggleList();
+    else if (key === "t") startTour();
+    else if (key === "h") { ISLAND.spotClear(true); ISLAND.home(); }
+    else if (e.key === "Escape") { toggleList(false); if (curSc) clearScenario(); else ISLAND.spotClear(); }
+  });
+
+  /* ---------- 季節文字 ---------- */
   VI.onSeason((s, S) => {
     $("#seasonNote").textContent = S.note;
-    $("#layerMeter").innerHTML = D.gauges.map((g, i) => `<div style="--c:${g.color}"><span>${VI.icon(g.ico)}${g.name}</span><span class="bar"><i></i></span><b>${S.gauges[i]}</b></div>`).join("");
-    requestAnimationFrame(() => requestAnimationFrame(() => $$("#layerMeter .bar i").forEach((b, i) => b.style.width = S.gauges[i] + "%")));
+    if (curSc) clearScenario(); else renderMeter();
     $("#verdictTitle").innerHTML = `本季判讀：${VI.icon(S.icon)}${S.name}`;
     $("#verdictText").textContent = S.verdict;
   });
@@ -182,15 +286,28 @@
   VI.loadDaily(DAILY => {
     if (!DAILY || !DAILY.briefs.length) return;
     const items = DAILY.briefs.slice(0, 6), el = $("#ticker"); let i = -1;
-    const show = () => { i = (i + 1) % items.length; const b = items[i], L = D.layers.find(l => l.id === b.layer) || D.layers[0]; el.innerHTML = `<span class="tk-live"></span><b>每日觀測</b><span class="tk-date">${b.d.slice(5).replace("-", "/")}</span><span class="tk-dot" style="background:${L.hex}"></span><span class="tk-text">${VI.esc(b.t)}</span>`; el.classList.remove("tk-in"); void el.offsetWidth; el.classList.add("tk-in"); };
-    setTimeout(() => { show(); setInterval(show, 5200); }, 6500);
+    const show = () => { i = (i + 1) % items.length; const b = items[i], L = layerOf(b.layer) || D.layers[0]; el.innerHTML = `<span class="tk-live"></span><b>每日觀測</b><span class="tk-date">${b.d.slice(5).replace("-", "/")}</span><span class="tk-dot" style="background:${L.hex}"></span><span class="tk-text">${VI.esc(b.t)}</span>`; el.classList.remove("tk-in"); void el.offsetWidth; el.classList.add("tk-in"); };
+    setTimeout(() => { show(); setInterval(show, 5200); }, 9000);
   });
 
-  /* 四層卡 */
-  $("#layerCards").innerHTML = D.layers.map(l => `<a class="card layer-card reveal" href="${l.page}" style="--c:${l.color}"><span class="n">${l.n}</span><h3>${l.name}</h3><p>${l.desc}</p><div class="go">${l.page.startsWith("daily.html") ? "看最新動態" : l.items.length + " 個觀測項目"}</div></a>`).join("");
+  /* ---------- 四層卡：每張有一小幅會動的插圖 ---------- */
+  const wave = (y, h) => `M-40 ${y}q10-6 20 0${"t20 0".repeat(15)}v${h}h-320z`;
+  const ART = {
+    policy: `<circle cx="198" cy="27" r="13" fill="currentColor" opacity=".85"/><g class="a-drift"><path d="M34 46h46a11 11 0 0 0 0-22 16 16 0 0 0-30-5 13.500 13.500 0 0 0-16 27z" fill="#fff"/></g><g class="a-drift slow"><path d="M112 70h38a9 9 0 0 0 0-18 13 13 0 0 0-24.500-3.500A10.800 10.800 0 0 0 112 70z" fill="#fff" opacity=".8"/></g><g class="a-float"><ellipse cx="150" cy="24" rx="11" ry="13" fill="currentColor"/><path d="M143.500 35.500h13l-3.500 8h-6z" fill="currentColor" opacity=".55"/><rect x="146.500" y="45.500" width="7" height="5" rx="1" fill="currentColor"/></g>`,
+    intl: `<path class="a-wave" d="${wave(56, 30)}" fill="currentColor" opacity=".22"/><g class="a-sail"><path d="M58 54h70l-8 12H67z" fill="currentColor"/><rect x="70" y="43" width="12" height="11" fill="#fff"/><rect x="84" y="38" width="12" height="16" fill="currentColor" opacity=".5"/><rect x="98" y="43" width="12" height="11" fill="#fff"/><rect x="113" y="33" width="8" height="21" fill="currentColor"/></g><path class="a-wave fast" d="${wave(68, 20)}" fill="currentColor" opacity=".5"/>`,
+    market: `<path d="M24 54h124v5H24z" fill="currentColor" opacity=".5"/><path d="M40 59v20M72 59v20M104 59v20M136 59v20" stroke="currentColor" stroke-width="3" opacity=".5"/><rect x="156" y="8" width="16" height="70" rx="8" fill="#fff" stroke="currentColor" stroke-width="2"/><rect class="a-tide" x="160" y="44" width="8" height="30" rx="4" fill="currentColor"/><path d="M178 20h9M178 32h5M178 44h9M178 56h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="a-wave" d="${wave(70, 18)}" fill="currentColor" opacity=".3"/>`,
+    ind: `<path d="M8 77h224" stroke="currentColor" stroke-width="2" opacity=".35"/><rect x="30" y="45" width="36" height="32" fill="#fff" stroke="currentColor" stroke-width="2"/><path d="M38 54h7M51 54h7M38 64h7M51 64h7" stroke="currentColor" stroke-width="3.500"/><rect x="78" y="17" width="25" height="60" fill="currentColor"/><path d="M84 26h13M84 34h13M84 42h13M84 50h13M84 58h13M84 66h13" stroke="#fff" stroke-width="2" opacity=".65"/><rect x="114" y="37" width="28" height="40" fill="currentColor" opacity=".42"/><path d="M186 77V58h36v19M186 67h36" stroke="currentColor" stroke-width="2" fill="none" opacity=".55"/><path d="M172 77V19M158 24h54M172 14l-14 10M172 14l40 10" stroke="currentColor" stroke-width="2.500" fill="none" stroke-linecap="round" stroke-linejoin="round"/><g class="a-load"><path d="M203 24v15" stroke="currentColor" stroke-width="1.500"/><rect x="197.500" y="39" width="11" height="8" fill="currentColor"/></g>`
+  };
+  $("#layerCards").innerHTML = D.layers.map(l => `<a class="card layer-card reveal" href="${l.page}" style="--c:${l.color}"><div class="lc-art"><svg viewBox="0 0 240 84" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${ART[l.id] || ""}</svg></div><div class="lc-body"><span class="n">${l.n}</span><h3>${l.name}</h3><p>${l.desc}</p><div class="go">${l.page.startsWith("daily.html") ? "看最新動態" : l.items.length + " 個觀測項目"}</div></div></a>`).join("");
+
+  /* ---------- 估價小卡 ---------- */
+  const facts = D.facts.concat(KN.facts || []); let fi = Math.floor(Math.random() * facts.length), fseen = 0;
+  const showFact = () => { const el = $("#fdText"); fseen++; el.classList.remove("flip"); void el.offsetWidth; el.textContent = facts[fi]; el.classList.add("flip"); $("#fdCount").textContent = `第 ${fseen} 張 ／ 共 ${facts.length} 張`; fi = (fi + 1 + Math.floor(Math.random() * (facts.length - 1))) % facts.length; };
+  $("#fdNext").onclick = showFact; $("#fdText").onclick = showFact; showFact();
+
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=14"></script>
+<script type="module" src="assets/island.js?v=18"></script>
 </body>
 </html>

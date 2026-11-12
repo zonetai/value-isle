@@ -135,6 +135,62 @@
     el.textContent = `資料整理至 ${d}`;
   });
 
+  /* ---------- 閱讀進度與回頁首 ---------- */
+  const prog = document.createElement("i"); prog.className = "nav-progress"; nav.appendChild(prog);
+  const toTop = document.createElement("button"); toTop.className = "to-top"; toTop.setAttribute("aria-label", "回到頁首"); toTop.innerHTML = VI.icon("up"); document.body.appendChild(toTop);
+  toTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  let ticking = false;
+  const onScroll = () => { ticking = false; const max = document.documentElement.scrollHeight - innerHeight, y = scrollY; prog.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`; nav.classList.toggle("scrolled", y > 8); toTop.classList.toggle("on", y > 700); };
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+
+  /* ---------- 內頁頁首：層次浮水印與波浪收邊 ---------- */
+  (function () {
+    const ph = $(".page-hero"); if (!ph) return;
+    const mark = { "weather.html": "cloudsun", "market.html": "tide", "policy.html": "gavel", "global.html": "ship", "notes.html": "deed", "roles.html": "talk", "drill.html": "target", "about.html": "isle" }[here];
+    if (mark && !ph.classList.contains("daily-hero")) ph.insertAdjacentHTML("beforeend", `<span class="ph-mark" aria-hidden="true">${VI.icon(mark)}</span>`);
+    const w = (y, a) => `M0 ${y}q60 ${-a} 120 0${"t120 0".repeat(13)}V46H0z`;
+    ph.insertAdjacentHTML("beforeend", `<svg class="ph-wave" viewBox="0 0 1440 46" preserveAspectRatio="none" aria-hidden="true"><path d="${w(19, 13)}" fill="currentColor" opacity=".13"/><path d="${w(28, 10)}" fill="#fbf7f1"/></svg>`);
+  })();
+
+  /* ---------- 名詞小註：內文第一次出現的估價名詞加虛線，滑過或點一下看白話解釋 ---------- */
+  const GL = (D.glossary || []).map(g => ({ g, keys: g.k || g.t.split(" / ").map(p => /因素$/.test(g.t) && !/因素$/.test(p) ? p + "因素" : p) }));
+  const GL_SKIP = "a,button,h1,h2,h3,h4,summary,label,input,textarea,select,script,style,svg,.gl,.gl-pop,.nav,footer,.glossary,.quiz,.pin,.chip,.tag,.kicker,.toast,.layer-row,.item-row,.tl-player,[data-nogloss]";
+  const GL_SCOPE = ".card,.page-hero,.section-head,.hero-panel,.scene-card,.tour,.drawer .panel,.layer-daily";
+  function gloss() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: n => { const p = n.parentElement; return n.nodeValue.length < 3 || !p || p.closest(GL_SKIP) || !p.closest(GL_SCOPE) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const scope = node.parentElement.closest(GL_SCOPE), text = node.nodeValue; let best = null;
+      GL.forEach((e, i) => { if (scope.querySelector(`.gl[data-g="${i}"]`)) return; e.keys.forEach(key => { const at = text.indexOf(key); if (at >= 0 && (!best || at < best.at)) best = { at, key, i }; }); });
+      if (!best) return;
+      const span = document.createElement("span"); span.className = "gl"; span.dataset.g = best.i; span.tabIndex = 0; span.textContent = best.key;
+      const after = node.splitText(best.at); after.nodeValue = after.nodeValue.slice(best.key.length); node.parentNode.insertBefore(span, after);
+    });
+  }
+  if (GL.length) {
+    const pop = document.createElement("div"); pop.className = "gl-pop"; pop.setAttribute("role", "tooltip"); document.body.appendChild(pop);
+    const show = el => {
+      const e = GL[+el.dataset.g]; if (!e) return;
+      pop.innerHTML = `<b>${VI.esc(e.g.t)}<small>名詞小註</small></b>${VI.esc(e.g.d)}`; pop.classList.add("on");
+      const r = el.getBoundingClientRect(), pw = pop.offsetWidth, phh = pop.offsetHeight, vw = document.documentElement.clientWidth;
+      const x = Math.max(8, Math.min(r.left + r.width / 2 - pw / 2, vw - pw - 8)), above = r.top - phh - 8 > 64;
+      pop.style.left = (x + scrollX) + "px"; pop.style.top = ((above ? r.top - phh - 8 : r.bottom + 8) + scrollY) + "px";
+    };
+    const hide = () => pop.classList.remove("on");
+    const glOf = e => e.target && e.target.closest ? e.target.closest(".gl") : null;
+    document.addEventListener("mouseover", e => { const el = glOf(e); if (el) show(el); });
+    document.addEventListener("mouseout", e => { if (glOf(e)) hide(); });
+    document.addEventListener("focusin", e => { const el = glOf(e); if (el) show(el); });
+    document.addEventListener("focusout", e => { if (glOf(e)) hide(); });
+    document.addEventListener("click", e => { const el = glOf(e); if (el) show(el); else hide(); });
+    addEventListener("scroll", hide, { passive: true });
+    /* 內容是各頁用 JS 畫出來的，畫面有新增節點就重新掃一次（每次掃描每個名詞每張卡只標一處，會自己收斂） */
+    let glT = null;
+    const quiet = "#island-labels,#ticker,.gl-pop,.toast,.loader,.scene-tip";
+    new MutationObserver(ms => { if (glT) return; if (ms.some(m => m.addedNodes.length && !(m.target.closest && m.target.closest(quiet)))) glT = setTimeout(() => { glT = null; gloss(); }, 160); }).observe(document.body, { childList: true, subtree: true });
+    window.addEventListener("DOMContentLoaded", () => setTimeout(gloss, 80));
+  }
+
   /* ---------- 初始化季節（不彈提示） ---------- */
   document.body.dataset.season = VI.getSeason();
   window.addEventListener("DOMContentLoaded", () => VI.setSeason(VI.getSeason(), true));
