@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/intro.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>十分鐘看懂權利變換｜權變沙盤</title>
+<meta name="description" content="用二十二張投影片、十分鐘，把都市更新權利變換的概念講一遍：流程、四個數字、更新前權值怎麼算、更新後總價、共同負擔、分配與找補、一坪換一坪的迷思、三家估價師、同意書、救濟、稅與紅旗訊號。可自動播放、附講稿。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<section class="page-hero" style="padding-bottom:24px">
+  <div class="container">
+    <span class="kicker">投影片導覽</span>
+    <h1>十分鐘看懂權利變換</h1>
+    <p class="lede">二十二張投影片，每張約半分鐘。可以按右鍵、空白鍵或點畫面右半邊翻頁，也可以按「自動播放」讓它自己走，講稿在畫面下方。看完再去各站細讀。</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:24px" id="deckWrap">
+  <div class="container">
+    <div class="deck" id="deck" tabindex="0" aria-label="投影片">
+      <div class="deck-top">
+        <span class="deck-count mono" id="count">1 / 22</span>
+        <span class="deck-title" id="secName"></span>
+        <span class="deck-time mono" id="time">10:00</span>
+      </div>
+      <div class="deck-stage" id="stage"></div>
+      <div class="deck-prog"><i id="prog"></i></div>
+      <div class="deck-ctl">
+        <button class="btn ghost sm" id="prev">上一張</button>
+        <button class="btn sm" id="play">自動播放</button>
+        <button class="btn ghost sm" id="next">下一張</button>
+        <label class="switch" style="margin-left:auto"><input type="checkbox" id="showNote" checked>顯示講稿</label>
+        <button class="btn ghost sm" id="full">全螢幕</button>
+      </div>
+      <div class="deck-note" id="note"></div>
+    </div>
+    <div class="deck-toc card reveal" style="margin-top:18px"><h3>目錄</h3><div id="toc" style="margin-top:10px"></div></div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=6"></script>
+<script src="assets/calc.js?v=6"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=6"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
+  const base = { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };
+  const r0 = C.run(base);
+  const W = x => U.wanShort(x);
+
+  /* ---------- 小圖 ---------- */
+  const svgBar = (rows) => `<svg viewBox="0 0 520 ${rows.length * 44 + 10}" class="sv"><g>${rows.map((r, i) => `<text x="0" y="${i * 44 + 24}" class="lbl">${r.t}</text><rect x="120" y="${i * 44 + 8}" width="${r.w * 3.8}" height="24" rx="6" fill="${r.c}"/><text x="${126 + r.w * 3.8}" y="${i * 44 + 25}" class="val">${r.v}</text>`).join("")}</g></svg>`;
+  const svgSplit = () => `<svg viewBox="0 0 520 150" class="sv">
+    <rect x="10" y="30" width="500" height="36" rx="8" fill="#2a8c5c" opacity=".85"/><text x="260" y="54" text-anchor="middle" class="valw">更新後總值 B　10 億</text>
+    <rect x="10" y="90" width="250" height="36" rx="8" fill="#b86a2a" opacity=".9"/><text x="135" y="114" text-anchor="middle" class="valw">共同負擔 C　5 億</text>
+    <rect x="262" y="90" width="248" height="36" rx="8" fill="#1f6f6b"/><text x="386" y="114" text-anchor="middle" class="valw">地主分配 5 億</text>
+    <text x="260" y="145" text-anchor="middle" class="lbl">依更新前價值比例，分給每一戶</text></svg>`;
+  const svgLots = () => { const lots = r0.a.lots; return `<svg viewBox="0 0 520 200" class="sv">
+    <rect x="10" y="20" width="500" height="18" rx="4" fill="#dfd7c8"/><text x="260" y="14" text-anchor="middle" class="lbl">20 公尺道路</text>
+    ${lots.map((l, i) => { const x = 10 + i * 125, top = i < 2; return `<rect x="${x}" y="${top ? 46 : 110}" width="118" height="${top ? 56 : 70}" rx="8" fill="${top ? "#dcecea" : "#f4efe4"}" stroke="#1f6f6b" stroke-width="${l.id === r0.my.lot ? 3 : 1}"/><text x="${x + 59}" y="${top ? 70 : 140}" text-anchor="middle" class="lbl">${l.id}・${l.ping} 坪</text><text x="${x + 59}" y="${top ? 90 : 160}" text-anchor="middle" class="val">${l.adjSum >= 0 ? "+" : "−"}${Math.abs(l.adjSum)}%　${Math.round(l.unitBefore / 1e4)} 萬</text>`; }).join("")}
+    <rect x="10" y="184" width="500" height="10" rx="3" fill="#dfd7c8"/><text x="260" y="180" text-anchor="middle" class="lbl">6 到 8 公尺巷</text></svg>`; };
+  const svgFloors = () => { const eff = D.effBefore; return `<svg viewBox="0 0 520 200" class="sv">${[5, 4, 3, 2, 1].map((f, i) => `<rect x="150" y="${10 + i * 36}" width="220" height="32" rx="4" fill="${f === 1 ? "#f0bd8a" : "#dcecea"}" stroke="#1f6f6b"/><text x="260" y="${31 + i * 36}" text-anchor="middle" class="lbl">${f} 樓　效用比 ${eff[f].toFixed(2)}${f === 1 ? "（店面另乘 1.8）" : ""}</text>`).join("")}<text x="440" y="100" class="lbl" text-anchor="middle">同一宗的地價</text><text x="440" y="118" class="lbl" text-anchor="middle">依各戶占比分</text></svg>`; };
+  const svgAB = () => `<svg viewBox="0 0 520 190" class="sv">${[["A 地主", 60, 60, "成立"], ["B 地主", 80, 60, "少 20 坪"]].map((a, i) => { const y = 20 + i * 85; return `<text x="0" y="${y + 20}" class="lbl">${a[0]}</text><text x="0" y="${y + 40}" class="val">土地 30 坪</text><rect x="110" y="${y}" width="${a[1] * 3}" height="24" rx="6" fill="#dfd7c8"/><text x="${116 + a[1] * 3}" y="${y + 17}" class="val">更新前建物 ${a[1]} 坪</text><rect x="110" y="${y + 32}" width="${a[2] * 3}" height="24" rx="6" fill="#1f6f6b"/><text x="${116 + a[2] * 3}" y="${y + 49}" class="val">分回 ${a[2]} 坪　${a[3]}</text>`; }).join("")}</svg>`;
+  const svgFlow = (items, hi) => `<svg viewBox="0 0 520 90" class="sv">${items.map((t, i) => { const x = 10 + i * (500 / items.length); return `<rect x="${x}" y="20" width="${500 / items.length - 8}" height="44" rx="8" fill="${i === hi ? "#1f6f6b" : "#fff"}" stroke="#1f6f6b"/><text x="${x + (500 / items.length - 8) / 2}" y="47" text-anchor="middle" class="${i === hi ? "valw" : "lbl"}">${t}</text>`; }).join("")}</svg>`;
+
+  /* ---------- 投影片 ---------- */
+  const S = [
+    { sec: "開場", t: "十分鐘看懂權利變換", k: "從一家人的老房子，到一整棟新大樓，誰出什麼、分到什麼", body: `<p class="big">都市更新不是換坪數，<br>而是換價值。</p><p>估價師像一個公平的秤重者，三家估價師同時看同一場比賽，誰都不能作弊。接下來十分鐘，講秤是怎麼做的。</p>`, note: "這一輪會講都更的流程、權利變換的四個數字、更新前的價值怎麼算、更新後的價格要有什麼支撐、共同負擔怎麼來、分回為什麼不是一坪換一坪，最後講程序與稅。", d: 25 },
+    { sec: "為什麼是都更", t: "這是一個不得不的課題", body: `<div class="nums"><div><b>59%</b><span>全國屋齡 30 年以上住宅</span></div><div><b>73%</b><span>臺北市</span></div><div><b>約 4%</b><span>自辦更新占核定案</span></div></div><p>高齡建物存量、防災需求、居住品質，都更是雙北未來二十年的主旋律。</p>`, note: "六成的房子超過三十年，臺北市七成多。這不是要不要的問題，是怎麼做、誰來做、怎麼分的問題。", d: 25 },
+    { sec: "流程", t: "都更流程全景", body: svgFlow(["事業概要", "事業計畫", "權利變換", "審議", "核定", "施工登記"], 2) + `<p>事業計畫談的是「要不要一起做、容積有多少」，權利變換談的是「做完怎麼分」。估價師在權利變換階段進場，三家查估。</p>`, note: "從劃定更新單元、簽同意書、送事業計畫，到權利變換計畫、審議、核定，再到拆遷施工與登記。今天的重點在中間那一格：權利變換。", d: 25 },
+    { sec: "流程", t: "公辦、民辦、自辦", body: `<div class="three"><div><b>公辦</b><p>政府主導、住都中心或市府專案。程序嚴謹、時程長。</p></div><div><b>民辦</b><p>建商當實施者。市場主流，整合彈性大。</p></div><div><b>自辦</b><p>地主組更新會。自主性最高，但只占核定案約 4%，專業靠外部。</p></div></div>`, note: "三條路的差別在誰當實施者、誰承擔風險。實施方式也會改變共同負擔的費率，後面會提到。", d: 25 },
+    { sec: "權利變換", t: "權利變換是什麼", body: svgSplit() + `<p>全體所有權人把更新前的土地權利折成比例投進去，蓋好之後扣掉成本，再依同一個比例把房地分回來。</p>`, note: "一句話：合資開發。更新後總值十億，扣掉共同負擔五億，剩下五億依更新前的價值比例分給每一戶。共同負擔比例就是共同負擔除以更新後總值。", d: 30 },
+    { sec: "四個數字", t: "A、B、C 與分回", body: `<div class="chain4 small">${D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("")}</div><div class="formula" style="margin-top:12px;font-size:.9rem">各戶分回價值 ＝ （B − C）× 我家 A ÷ ΣA</div>`, note: "整個權利變換只用四個數字就講完。A 是更新前每戶值多少，B 是蓋好之後整棟值多少，C 是蓋這棟樓要花多少，B 減 C 之後依 A 的占比分回。", d: 30 },
+    { sec: "更新前 A", t: "三層均衡", body: `<div class="three"><div><b>地主與實施者</b><p>更新後總值扣共同負擔，剩下才是地主的。</p></div><div><b>各宗土地之間</b><p>臨大路與巷內、容積率高與低，各宗平面地價不同。</p></div><div><b>同一宗上下樓</b><p>一樓店面、二樓、頂樓怎麼分這一宗的地價，叫立體化地價。</p></div></div>`, note: "估價要同時擺平三組關係。第一層看比例，第二層看我家那一宗，第三層看我家那一戶。", d: 25 },
+    { sec: "更新前 A", t: "比準地與各宗調整率", body: svgLots() + `<p>先定一塊比準地，用比較法與土地開發分析法估出素地價。各宗依臨路、面寬、角地、地形、容積率與它比，調整率相加，再乘合併增值係數。</p>`, note: "示範基地四宗。臨二十公尺路的宗一加四趴，巷內地形不整的宗四減五趴。土地原則以法定容積評估，原容積與專屬獎勵只反映在帶來獎勵的那一宗。", d: 35 },
+    { sec: "更新前 A", t: "立體化地價：同一宗上下樓", body: svgFloors() + `<p>選一戶當比準戶，其他戶依樓層別與位置別效用比調整，得到各戶房地價值，再算出各戶對土地的貢獻占比。</p>`, note: "無電梯公寓愈高愈便宜，一樓店面另外估。素地六千萬、區分建物總價五千萬，各層除以五千萬不會剛好都是百分之二十五。持分不均、屋地不同人，要依技術規則第一二五、一二六條找補。", d: 35 },
+    { sec: "更新前 A", t: "哪些算、哪些不算", body: `<ul class="list"><li>違章建築不評估；裝潢不列入，室內皆以一般屋況評估。</li><li>法定空地視為「有地無屋者」，合併整宗評估。</li><li>地下室看產權：有建物無持分要拆算找補，僅使用事實原則不計。</li><li>陽台已補登計入，未補登只能酌予考量。整合前先補登。</li><li>既成巷道：可廢巷不折減，不可廢巷要加調整項。</li></ul>`, note: "這一頁是地主最常問的。簡單講，權利價值看的是登記的產權與土地貢獻，不看你花了多少錢裝潢。", d: 30 },
+    { sec: "更新後 B", t: "更新後總價要有市場支撐", body: `<div class="three"><div><b>店面</b><p>比較法與收益法；面寬、可視性、商效。</p></div><div><b>住宅</b><p>比準戶 × 樓層效用比；採光、視野、車道。</p></div><div><b>車位</b><p>獨立估算，與同區新案一致。</p></div></div><p>比較案例成交日期距價格日期一年內；篩掉合建案與異常交易。露臺以三分之一到四分之一計價，雨遮不計。</p>`, note: "分回能不能兌現，看更新後的單價站不站得住。B 值被喊高，共負比會變漂亮，但地主分到的是價值不是比例。", d: 30 },
+    { sec: "共同負擔 C", t: "共同負擔有標準", body: svgBar([{ t: "工程費用", w: 72, v: "約七成", c: "#b86a2a" }, { t: "管理費用", w: 20, v: "約兩成", c: "#d9a06a" }, { t: "權變費用", w: 3, v: "", c: "#e8c9a6" }, { t: "利息稅捐", w: 5, v: "", c: "#e8c9a6" }]) + `<p>臺北市有費用提列總表與工程造價要項，新北市有提列基準。每一項都有公式、費率或級距，不是實施者說多少就是多少。</p>`, note: "工程費用占最大宗，依構造、樓層查造價表。管理費用裡的人事行政、銷售、風險管理費各有費率與上限。共同負擔站可以照兩市標準逐項算。", d: 30 },
+    { sec: "共同負擔 C", t: "共負比 D ＝ C ÷ B", body: `<div class="nums"><div><b>30～45%</b><span>業界常見區間</span></div><div><b>＞45%</b><span>要有強說明</span></div><div><b>＜40%</b><span>對地主有利</span></div></div><p>近年臺北市核定案多在四成到四成五，地主分配約五成五到六成。比例不等於價值：先看 B 有沒有市場支撐，再看比例。</p>`, note: "共負比是地主最愛問的數字，但它只是比例。分母被喊高，比例就好看。看比例之前先看分母。", d: 25 },
+    { sec: "分回", t: "分配、選配、找補", body: `<div class="three"><div><b>分配</b><p>地主全體分回 B − C；每戶拿（B − C）× 自己的 A ÷ 全部 A。</p></div><div><b>選配</b><p>用分回價值去換房子。選高樓層單價高、坪數少。</p></div><div><b>找補</b><p>選配價值比分回多，補錢；少，領錢。找補總額很大通常代表分配不公。</p></div></div>`, note: "分回的是價值，不是坪數。同一筆分回價值，選的樓層不同，拿到的坪數可以差一成。", d: 25 },
+    { sec: "分回", t: "一坪換一坪？先弄清楚換的是什麼", body: svgAB() + `<p>重建以土地貢獻價值為主。產權換產權，不是產權換室內。現況建物使用空間愈大，分配結果愈不理想。</p>`, note: "兩個地主土地都三十坪，更新前價值一樣，分回就一樣六十坪。原本建物六十坪的覺得一坪換一坪成立，八十坪的覺得少算了，差別只在原本的建物面積。", d: 30 },
+    { sec: "分回", t: "分回速算式", body: `<div class="formula" style="font-size:.95rem">分回權狀坪 ≈ 持有土地 × 法定容積率 × 獎勵倍數 × 銷坪比 × 條件係數 × （1 − 共負比）</div><p style="margin-top:12px">例：三樓戶土地 8.3 坪、權狀 28.6 坪。8.3 × 225% × 1.5 × 1.58 ≈ 44.3 坪可蓋；扣共負比 42.5% 約 25.5 坪。坊間合建約原產權 1.16 倍 33.2 坪；自建 44.3 坪但自付造價。</p><p>分回好不好看三件事：個別條件是否優於他人、是否在高房價地區、持有土地面積夠不夠多。</p>`, note: "速算式只看量體與比例，實際依更新前價值比例分配。但它能讓你在三十秒內知道數量級。合建賣的是談判力，權變賣的是制度信任。", d: 35 },
+    { sec: "程序", t: "三家估價師怎麼來", body: svgFlow(["實施者與地主共同指定", "無法共同指定", "實施者指定一家", "名單公開隨機抽二家"], 3) + `<p>都市更新條例第 50 條。抽籤前不能先篩名單，內政部營建署 111 年函釋說得很清楚：先篩再抽與「隨機」不符，重來。</p>`, note: "這是制度對市場信任的第一道設計。三家估價師、同一個評價基準日、報告書公開審議。", d: 25 },
+    { sec: "程序", t: "評價基準日與三家離散度", body: `<ul class="list"><li>評價基準日由實施者定，限於權利變換計畫報核日前六個月內；三家相同。</li><li>三家更新前總值差距 5% 內是常態；5% 到 10% 追問差在哪一宗；整體超過 20% 或單一參數超過 30% 是紅旗。</li><li>審議看的不是答案，而是基礎資料對不對、價格差異有沒有理由、修正邏輯一不一致、分配結果能不能說服住戶。</li></ul>`, note: "離散度本身不是錯，重點是差在哪一宗、哪一個調整項，以及三家的基礎資料是不是同一套。", d: 25 },
+    { sec: "程序", t: "同意書：分送、併送、何時能撤", body: `<div class="three"><div><b>分送</b><p>事業計畫與權變計畫分別報核。門檻分別算、彈性高、時程長。</p></div><div><b>併送</b><p>一次到位、時程短，但同意書效力範圍更廣。</p></div><div><b>撤銷</b><p>公展計畫的分配比率低於簽同意書時，得於公展期滿前撤銷。期滿即不得撤。</p></div></div>`, note: "兩種比率：各所有權人應分配權利價值除以地主分配總值，以及地主分配總值除以更新後總值。任一下降都構成撤銷事由，但時點在公展期滿前。", d: 25 },
+    { sec: "程序", t: "核定之後還有救濟", body: svgFlow(["核定發布", "二個月內書面異議", "三個月內核復", "不服得行政救濟"], 1) + `<p>都市更新條例第 53 條。差額以現金相互找補；異議期間事業原則不停止。接到電話先看日期。</p>`, note: "核定不是終點。兩個月內異議、三個月內核復，特殊情形得延長三個月。", d: 20 },
+    { sec: "稅與風險", t: "稅與八個紅旗訊號", body: `<div class="grid g2"><div><b>稅</b><ul class="list"><li>以土地建物抵付共同負擔：免徵土增稅與契稅。</li><li>分配取得後第一次移轉：減徵四成。</li><li>更新期間地價稅免徵，更新後地價稅房屋稅減半二年。</li></ul></div><div><b>紅旗</b><ul class="list">${D.redFlags.slice(0, 8).map(f => `<li>${f.t}</li>`).join("")}</ul></div></div>`, note: "稅是被低估的決策變數。紅旗訊號出現三個以上，就要嚴肅評估退場。估價爭議不是估價師的技術問題，是你的時間與金錢的風險訊號。", d: 30 },
+    { sec: "結語", t: "制度看得懂，風險看得見，決定才做得穩", body: `<p class="big">都市更新不是換坪數，<br>而是換價值。</p><div class="tools" style="margin-top:16px"><a class="btn accent" href="calc.html">填自己家的條件試算</a><a class="btn ghost" href="burden.html">照標準算共同負擔</a><a class="btn ghost" href="price.html">市價怎麼決定</a><a class="btn ghost" href="law.html">法規依據</a></div>`, note: "十分鐘到。想真的算自己家的，去分回試算；想逐項對共同負擔，去共同負擔試算；想看法條，去法規依據。本站內容為教學用整理，實際案件以三家估價報告與審議決議為準。", d: 20 }
+  ];
+  const total = S.reduce((a, s) => a + s.d, 0);
+
+  let i = Math.max(0, Math.min(S.length - 1, (parseInt(location.hash.slice(1)) || 1) - 1)), playing = false, timer = null, left = 0, tick = null;
+  const stage = $("#stage"), note = $("#note");
+  function show(n, dir = 1) {
+    i = Math.max(0, Math.min(S.length - 1, n)); const s = S[i];
+    stage.innerHTML = `<div class="slide" style="animation:slidein .4s ease"><span class="kicker">${s.sec}</span><h2>${s.t}</h2>${s.k ? `<p class="k">${s.k}</p>` : ""}<div class="body">${s.body}</div></div>`;
+    note.textContent = s.note;
+    $("#count").textContent = `${i + 1} / ${S.length}`;
+    $("#secName").textContent = s.sec;
+    const done = S.slice(0, i).reduce((a, x) => a + x.d, 0);
+    $("#prog").style.width = (done / total * 100) + "%";
+    left = s.d; drawTime(done);
+    $$("#toc button").forEach((b, j) => b.classList.toggle("on", j === i));
+    history.replaceState(null, "", "#" + (i + 1));
+    if (playing) arm();
+  }
+  function drawTime(done) { const rem = Math.max(0, total - done - (S[i].d - left)); const m = Math.floor(rem / 60), sec = rem % 60; $("#time").textContent = `${m}:${String(sec).padStart(2, "0")}`; }
+  function arm() { clearInterval(tick); clearTimeout(timer); const done = S.slice(0, i).reduce((a, x) => a + x.d, 0); tick = setInterval(() => { left = Math.max(0, left - 1); drawTime(done); }, 1000); timer = setTimeout(() => { if (i < S.length - 1) show(i + 1); else stop(); }, S[i].d * 1000); }
+  function stop() { playing = false; clearInterval(tick); clearTimeout(timer); $("#play").textContent = "自動播放"; $("#play").classList.add("ghost"); }
+  function play() { playing = true; $("#play").textContent = "暫停"; $("#play").classList.remove("ghost"); arm(); }
+  $("#play").onclick = () => playing ? stop() : play();
+  $("#prev").onclick = () => show(i - 1);
+  $("#next").onclick = () => show(i + 1);
+  stage.addEventListener("click", e => { if (e.target.closest("a,button")) return; const r = stage.getBoundingClientRect(); show(e.clientX - r.left > r.width / 2 ? i + 1 : i - 1); });
+  document.addEventListener("keydown", e => { if (e.target.closest("input,select,textarea")) return; if (["ArrowRight", " ", "PageDown"].includes(e.key)) { e.preventDefault(); show(i + 1); } if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(i - 1); } if (e.key === "Home") show(0); if (e.key === "End") show(S.length - 1); });
+  let tx = null; stage.addEventListener("touchstart", e => tx = e.touches[0].clientX, { passive: true }); stage.addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) show(dx < 0 ? i + 1 : i - 1); tx = null; });
+  $("#showNote").onchange = e => note.style.display = e.target.checked ? "" : "none";
+  $("#full").onclick = () => { const d = $("#deck"); if (document.fullscreenElement) document.exitFullscreen(); else if (d.requestFullscreen) d.requestFullscreen(); };
+  $("#toc").innerHTML = `<div class="toc-grid">${S.map((s, j) => `<button type="button" class="toc-item" data-i="${j}"><span class="mono">${String(j + 1).padStart(2, "0")}</span>${s.t}<small>${s.sec}・${s.d} 秒</small></button>`).join("")}</div>`;
+  $$("#toc button").forEach(b => b.onclick = () => { show(+b.dataset.i); $("#deck").scrollIntoView({ behavior: "smooth", block: "start" }); });
+  show(i);
+  U.reveal();
+})();
+</script>
+</body>
+</html>

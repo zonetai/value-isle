@@ -31,7 +31,7 @@
 
 ## 姊妹站：權變沙盤（`renewal-sandbox/`）
 
-都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。五站：計算鏈、市價怎麼決定、分回試算、共同負擔試算、法規依據；首頁依地主、實施者、專業服務者三條路線進站。架構與分期見 `renewal-sandbox/PLAN.md`。
+都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。五站：計算鏈、市價怎麼決定、分回試算、共同負擔試算、法規依據；首頁依地主、實施者、專業服務者三條路線進站。另有「十分鐘看懂權利變換」投影片導覽（`intro.html`，22 張、可自動播放、附講稿，投影片內容在該頁的 `S` 陣列）。架構與分期見 `renewal-sandbox/PLAN.md`。
 
 - `renewal-sandbox/assets/data.js`：全站內容（示範基地、燈號文字、審查清單、辭典）
 - `renewal-sandbox/assets/calc.js`：A、B、C 與分回的計算引擎、三情境、敏感度、燈號；規則庫 `RULES` 與計算分離
