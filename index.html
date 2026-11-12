@@ -14,7 +14,7 @@
 <meta name="description" content="一塊地的價格，從四層看起：國際海象、政策氣候、市場潮位、個別條件。中泰不動產智庫整理的互動式觀測站。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=18">
+<link rel="stylesheet" href="assets/style.css?v=20">
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -131,10 +131,10 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=18"></script>
-<script src="assets/knowledge.js?v=18"></script>
-<script src="assets/icons.js?v=18"></script>
-<script src="assets/common.js?v=18"></script>
+<script src="assets/data.js?v=20"></script>
+<script src="assets/knowledge.js?v=20"></script>
+<script src="assets/icons.js?v=20"></script>
+<script src="assets/common.js?v=20"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, KN = window.KN || {};
@@ -175,7 +175,7 @@
   /* 索引面板可以收成一條，讓島露出來（寬螢幕才有） */
   const hero = $(".island-hero");
   const setMini = (m, save) => { hero.classList.toggle("idx-mini", m); $("#idxToggle").setAttribute("aria-label", m ? "展開觀測索引" : "收合觀測索引"); $("#idxToggle").title = m ? "展開觀測索引" : "收合觀測索引"; if (save) store.set("vi-idx-mini", m ? "1" : "0"); };
-  { const s = store.get("vi-idx-mini", null); setMini(s === null ? innerWidth < 1380 : s === "1"); }
+  { const s = store.get("vi-idx-mini", null); setMini(s === null ? innerWidth < 1500 : s === "1"); }
   $("#idxToggle").onclick = () => setMini(!hero.classList.contains("idx-mini"), true);
 
   /* ---------- 四個儀表（情境推演時顯示增減） ---------- */
@@ -221,24 +221,42 @@
   renderSpotList();
 
   /* ---------- 情境推演 ---------- */
+  /* 目前方向：每日觀測（daily.js 的 outlook）依公開資料判讀，各情境附依據 */
+  let OUT = null; const esc = VI.esc;
+  const leanCls = l => ({ "正在發生": "hot", "已發生": "hot", "較可能": "warm", "可能性各半": "mid", "較不可能": "cold" }[l] || "mid");
+  const outOf = id => OUT && OUT.items && OUT.items[id] ? OUT.items[id] : null;
   function renderChips() {
-    $("#wiChips").innerHTML = (D.scenarios || []).map(s => `<button class="${s.id === curSc ? "on" : ""}" data-sc="${s.id}" title="如果${s.t}">${VI.icon(s.ico)}${s.s || s.t}</button>`).join("");
+    $("#wiChips").innerHTML = (D.scenarios || []).map(s => { const o = outOf(s.id); return `<button class="${s.id === curSc ? "on" : ""}" data-sc="${s.id}" title="如果${s.t}${o ? "｜目前：" + esc(o.lean) : ""}">${VI.icon(s.ico)}${s.s || s.t}${o ? `<i class="lean-dot ${leanCls(o.lean)}"></i>` : ""}</button>`; }).join("");
     $$("#wiChips button").forEach(b => b.onclick = () => setScenario(b.dataset.sc));
   }
   function clearScenario() { if (!curSc) return; curSc = null; renderChips(); renderMeter(); if (cardMode === "sc") closeCard(); window.ISLAND && ISLAND.scenario(null); }
   function setScenario(id) {
     const sc = D.scenarios.find(s => s.id === id); if (!sc || !window.ISLAND) return;
     if (curSc === id) { clearScenario(); return; }
-    curSc = id; ISLAND.scenario(sc); renderChips(); renderMeter(sc.d);
+    curSc = id; ISLAND.scenario(sc); renderChips(); renderMeter(sc.d); const o = outOf(id);
     openCard("sc", layerOf(sc.layer).hex, `<div class="sc-top"><span class="kicker">${VI.icon("branch")}情境推演</span><button class="sc-reset" data-a="reset">${VI.icon("undo")}還原</button></div>
       <h4>如果${sc.t}</h4>
+      ${o ? `<div class="sc-lean"><span class="lean ${leanCls(o.lean)}">目前：${esc(o.lean)}</span><span>${esc(o.now)}</span></div>` : ""}
       <div class="sc-deltas">${D.gauges.map((g, i) => `<span style="--c:${g.color}" class="${sc.d[i] > 0 ? "up" : sc.d[i] < 0 ? "dn" : "flat"}">${g.name}<b>${sc.d[i] ? (sc.d[i] > 0 ? "+" : "−") + Math.abs(sc.d[i]) : "不變"}</b></span>`).join("")}</div>
-      <div class="sc-two"><div><b>會發生什麼</b><p>${sc.text}</p></div><div><b>估價師怎麼讀</b><p>${sc.read}</p></div></div>
-      <small class="sc-note">${D.scenarioNote}</small>`);
+      <p>${sc.text}</p>
+      <div class="sc-foot"><button class="btn sm" data-a="basis">${VI.icon("deed")}${o ? `看依據（${o.basis.length} 則）` : "估價師怎麼讀"}</button><small class="sc-note">${D.scenarioNote}</small></div>`);
+    card.querySelector('[data-a="basis"]').onclick = () => showBasis(sc);
     card.querySelector(".close").onclick = clearScenario;
     card.querySelector('[data-a="reset"]').onclick = clearScenario;
   }
+  function showBasis(sc) {
+    const o = outOf(sc.id), link = b => b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener"><b>${esc(b.t)}</b><small>${esc(b.src || "")}${b.d ? "・" + esc(b.d) : ""} ↗</small></a>` : `<a><b>${esc(b.t)}</b><small>${esc(b.src || "")}${b.d ? "・" + esc(b.d) : ""}</small></a>`;
+    VI.openPanel(`<span class="kicker">${VI.icon("branch")}情境推演</span><h3>如果${sc.t}</h3>
+      ${o ? `<div class="sc-lean" style="margin-top:10px"><span class="lean ${leanCls(o.lean)}">目前：${esc(o.lean)}</span></div><p class="ob-now">${esc(o.now)}</p>
+      <h4 class="ob-h">關鍵條件</h4><ul class="ob-why">${(o.why || []).map(w => `<li>${esc(w)}</li>`).join("")}</ul>
+      <h4 class="ob-h">目前的數據與出處</h4><div class="ob-basis">${(o.basis || []).map(link).join("")}</div>` : ""}
+      <h4 class="ob-h">發生之後，四層怎麼連動</h4><p style="margin:0;color:var(--ink-2);font-size:.92rem">${sc.text}</p>
+      <div class="sc-deltas" style="margin-top:12px">${D.gauges.map((g, i) => `<span style="--c:${g.color}" class="${sc.d[i] > 0 ? "up" : sc.d[i] < 0 ? "dn" : "flat"}">${g.name}<b>${sc.d[i] ? (sc.d[i] > 0 ? "+" : "−") + Math.abs(sc.d[i]) : "不變"}</b></span>`).join("")}</div>
+      <div class="why"><b>估價師怎麼讀：</b>${sc.read}</div>
+      <p class="disclaimer">${OUT && OUT.updated ? `方向判讀整理至 ${esc(OUT.updated)}。` : ""}${esc((OUT && OUT.note) || D.scenarioNote)}</p>`, layerOf(sc.layer).hex);
+  }
   renderChips();
+  VI.loadDaily(DAILY => { OUT = DAILY && DAILY.outlook ? DAILY.outlook : null; renderChips(); });
 
   /* ---------- 工具列 ---------- */
   const startTour = () => { if (!window.ISLAND) return; if (curSc) { curSc = null; renderChips(); renderMeter(); } closeCard(); toggleList(false); ISLAND.startTour(); };
@@ -308,6 +326,6 @@
   VI.reveal();
 })();
 </script>
-<script type="module" src="assets/island.js?v=18"></script>
+<script type="module" src="assets/island.js?v=20"></script>
 </body>
 </html>

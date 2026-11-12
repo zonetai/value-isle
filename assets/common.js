@@ -85,6 +85,8 @@
     });
     if(focusTitle){ const el = [...p.querySelectorAll(".items .card")].find(c => c.querySelector("b").textContent === focusTitle); el && setTimeout(() => el.scrollIntoView({block:"center",behavior:"smooth"}), 120); }
   };
+  /* 通用側欄：內容由呼叫端給（情境推演的依據用） */
+  VI.openPanel = (html, color) => { const p = drawer.querySelector(".panel"); p.style.setProperty("--c", color || "var(--accent)"); p.innerHTML = `<button class="close" aria-label="關閉">${VI.icon("close")}</button>` + html; drawer.classList.add("open"); p.scrollTop = 0; p.querySelector(".close").onclick = VI.closeDrawer; };
   VI.closeDrawer = () => drawer.classList.remove("open");
   document.addEventListener("keydown", e => { if(e.key === "Escape") VI.closeDrawer(); });
 
