@@ -11,6 +11,7 @@ window.RS = {
 
   pages: [
     { href: "index.html",  label: "首頁",   short: "首頁" },
+    { href: "intro.html",  label: "導覽",   short: "十分鐘看懂權利變換" },
     { href: "chain.html",  label: "計算鏈", short: "四個數字怎麼串", n: "01", desc: "更新前權值、更新後總價、共同負擔、分回。先把這四個數字的關係看懂，後面每一站都在講其中一個。" },
     { href: "price.html",  label: "市價",   short: "市價怎麼決定", n: "02", desc: "比準地、調整率、立體化地價、更新後比準戶與市場支撐。估價師在估什麼，一坪換一坪為什麼是迷思。" },
     { href: "calc.html",   label: "試算",   short: "分回試算", n: "03", desc: "填自己家的條件，三種情境並排看分回坪數與找補。每個數字都可以展開看公式。" },
