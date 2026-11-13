@@ -5,6 +5,7 @@ import { DATA } from "@/data/site";
 import { DAILY } from "@/data/daily";
 import type { Brief } from "@/data/daily-types";
 import { md } from "@/lib/site";
+import { G } from "./Gloss";
 import { Icon } from "./Icon";
 
 /* ============================================================
@@ -143,12 +144,12 @@ export function GlobalExplorer() {
     const src = n as unknown as (typeof SOURCES)[number];
     tags = [...src.tags]; color = src.color; card = src.card ?? null;
     const c = card !== null ? CARDS[card] : undefined;
-    head = <><span className="kicker">外部力量</span><h3><Icon name={src.ico} />{src.name}</h3><p>{c ? c.s : src.now}</p></>;
+    head = <><span className="kicker">外部力量</span><h3><Icon name={src.ico} />{src.name}</h3><p><G>{c ? c.s : src.now}</G></p></>;
   } else {
     SOURCES.filter((s) => t.S.has(s.id)).forEach((s) => (tags = tags.concat(s.tags)));
     color = cur.k === "c" ? "#2f8fb4" : "#5f9d4c";
     const node = n as unknown as { name: string; sub: string; d?: string };
-    head = <><span className="kicker">{cur.k === "c" ? "傳導管道" : "估價參數 · " + node.sub}</span><h3>{node.name}</h3><p>{node.d || node.sub}</p></>;
+    head = <><span className="kicker">{cur.k === "c" ? "傳導管道" : "估價參數 · " + node.sub}</span><h3>{node.name}</h3><p><G>{node.d || node.sub}</G></p></>;
   }
   const news = briefsFor(tags).slice(0, 3);
   const showCard = (i: number) => { setLitCard(i); cardRefs.current[i]?.scrollIntoView({ block: "center", behavior: "smooth" }); };
@@ -186,8 +187,8 @@ export function GlobalExplorer() {
             <div className="ico"><Icon name={c.ico} /></div>
             <span className="from">{c.from}</span>
             <h3>{c.t}</h3>
-            <p>{c.s}</p>
-            <div className="path">{c.path.map((p) => <span key={p}>{p}</span>)}</div>
+            <p><G>{c.s}</G></p>
+            <div className="path">{c.path.map((p) => <span key={p}><G>{p}</G></span>)}</div>
           </div>
         ))}
       </div>

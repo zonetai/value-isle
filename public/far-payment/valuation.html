@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
+<meta name="theme-color" content="#c06a1a">
+<link rel="canonical" href="https://zonetai.com/value-isle/far-payment/valuation.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>04 估價邏輯與試算｜容積代金學堂</title>
+<meta name="description" content="容積代金的估價邏輯：雙情境、土地開發分析法、示範案試算器、敏感度分析與容移前量體重建。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=2">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">第 4 站</span>
+    <h1>估價邏輯與試算：同一基地、兩套情境、一個差額</h1>
+    <p class="lede">問題不在現況交易價格，而在容量改變後的未來開發成果。所以以土地開發分析法為主，比較法、收益法輔助；兩個情境各算一次土地價格，差額就是移入容積的經濟價值。這一站可以親手改參數。</p>
+    <div class="where"><span class="tag">容積價值概念</span><span class="tag">雙情境</span><span class="tag">示範案試算器</span><span class="tag">敏感度</span><span class="tag">量體重建</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>容積價值的兩個觀念</h2></div></div>
+    <div class="grid g3">
+      <div class="card reveal"><span class="kicker">觀念 1</span><h3 style="margin-top:6px">最高最有效利用</h3><p>容積價值 ＝ 土地開發價值 ≒ 土地價格。土地的價格，就是它能蓋出來的東西扣掉成本與利潤後剩下的錢。</p></div>
+      <div class="card reveal"><span class="kicker">觀念 2</span><h3 style="margin-top:6px">邊際效益遞減</h3><p>容積越多，每坪容積的單價越低。所以邊際容積通常比平均容積便宜，代金市價比多半低於 1。</p></div>
+      <div class="card reveal" style="border-color:var(--accent)"><span class="kicker">例題</span><h3 style="margin-top:6px">容積單價 ＞＝＜ 80 萬？</h3><p>基地 100 坪、住三 225%、地價 180 萬元/坪：容積單價 ＝ 180 × 100 ÷（225% × 100）＝ <b>80 萬元/坪</b>。這是平均容積單價；申請容積移轉時，多出來那一份值多少，要看邊際。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>核心邏輯：兩個開發情境的比較</h2><p>移入容積的經濟價值 ＝ 兩個情境之間的增額差異。</p></div></div>
+    <div class="grid g2">
+      <div class="card reveal" style="border-left:5px solid var(--c-before)"><span class="tag before">情境 A</span><h3 style="margin-top:8px">未含容積移入</h3><p>依法定容積＋其他獎勵開發。基地容積包含法定容積、其他都市計畫獎勵、都更獎勵或海砂屋獎勵等非移入容積，且為<b>實際設計額度，非上限額度</b>：容移前不是把獎勵算滿。</p></div>
+      <div class="card reveal" style="border-left:5px solid var(--c-after)"><span class="tag after">情境 B</span><h3 style="margin-top:8px">含容積移入</h3><p>依移入後容積開發。除上述非移入容積外，加計容積移轉、TOD 獎勵、增額容積等須估價者；為基地最後審定之總樓地板面積。</p></div>
+    </div>
+    <div class="formula reveal" style="margin-top:14px">容積代金 ＝ <span class="a">含容積移入之基地價格</span> − <span class="b">未含容積移入之基地價格</span><br><span class="muted" style="color:#bbb;font-size:.84rem">容移、TOD 獎勵容積、增額容積一併申請者，以一段式計算複合容積價金，再依申請比例拆分各項金額（113.12.13 分段估價原則）。</span></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="reveal" id="farTable"></div>
+      <div class="reveal" id="methodTable"></div>
+    </div>
+    <p class="source">資料來源：臺北市容積代金估價報告書範本（113 年修正版）p.4、p.16；臺北代金估價通案原則研析（115 年度學員版）p.20–22。開發後產品非當地最高最有效使用時：看是否為都計或都審要求，再決定要不要考量其價格影響。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>小試身手：公式練習</h2></div></div>
+    <div class="grid g2">
+      <div class="card reveal">
+        <h3>條件設定</h3>
+        <div class="kv" style="margin-top:10px"><b>接受基地</b><span>臺北市精華地段，1,000 ㎡（約 302.5 坪）</span><b>移入容積量</b><span>2,000 ㎡（約 605 坪）</span><b>含容積移入之基地價格</b><span>60 億元</span><b>未含容積移入之基地價格</b><span>48 億元</span></div>
+        <p style="margin-top:12px">請算：一、容積代金金額；二、容積平均單價（元/坪）。提示：1 ㎡ ≈ 0.3025 坪。</p>
+        <div class="guess" id="warmGuess" style="margin-top:10px"><button data-v="99">約 99 萬/坪</button><button data-v="198">約 198 萬/坪</button><button data-v="400">約 400 萬/坪</button><button data-v="60">約 60 萬/坪</button></div>
+      </div>
+      <div class="card reveal" id="warmAns" style="opacity:.35;transition:.4s">
+        <h3>步驟拆解</h3>
+        <div class="formula" style="margin-top:10px;font-size:.9rem">代金 ＝ 60 億 − 48 億 ＝ <em>12 億元</em><br>坪數 ＝ 2,000 ㎡ × 0.3025 ＝ 605 坪<br>單價 ＝ 1,200,000,000 ÷ 605 ≈ <em>1,983,471 元/坪 ≈ 198 萬元/坪</em></div>
+        <p>容積平均單價 198 萬元/坪，對照同區土地單價，就是這筆移入容積的「市價比」概念的起點。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="calc">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>示範案試算器：把公式走一次</h2><p>V ＝ S ÷(1＋R)÷(1＋i) −(C＋M)；單價取位至千位；總價＝單價 × 土地坪數。預載 114 上期末考計算題（新北市板橋區模擬案），每改一格立刻重算並檢核。</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="loadBase">還原示範案</button><a class="btn ghost sm" href="review.html#flaw">去找碴大賽</a></div></div>
+    <div class="kpis reveal" id="kpi"></div>
+    <div class="calc" style="margin-top:18px">
+      <div class="card reveal">
+        <h3 id="caseName"></h3>
+        <div class="grid g2" style="margin-top:10px">
+          <label class="pair" style="grid-template-columns:1fr;gap:4px"><span>適用規則</span><select class="inp" id="city"><option value="tpe">臺北市</option><option value="ntpc">新北市</option></select></label>
+          <div id="fCommon" class="grid g2" style="grid-column:1/-1"></div>
+        </div>
+        <div id="fScen"></div>
+      </div>
+      <div>
+        <div class="card reveal"><h3>計算過程</h3><div id="steps" style="margin-top:10px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>檢核燈號 <span id="sum" style="font-weight:400"></span></h3><p class="muted" style="font-size:.82rem">每項可展開三層提示：先指出該看哪裡，再給規定與出處，最後給修正方向。門檻依課程教材整理，非審議依據。</p><div id="checks" style="margin-top:10px"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>先猜再拉：售價漲 5%，代金漲多少？</h2><p>容移前後同步調整，其餘參數不變。</p></div></div>
+    <div class="grid g2">
+      <div class="card reveal"><h3>先表決</h3><p>示範案住宅售價同步 +5%，代金大約變動多少？</p>
+        <div class="guess" id="sensGuess" style="margin-top:10px"><button data-v="5">A 約 5%</button><button data-v="10">B 約 10%</button><button data-v="2">C 約 2%</button><button data-v="0">D 不變</button></div>
+        <div class="q-exp" id="sensExp">答案是 B。土地價格是殘值，代金又是兩個殘值的差，所以售價的小變動會被放大。右邊的拉桿可以親手驗證。</div>
+        <div class="reveal" style="margin-top:14px" id="sensTable"></div>
+      </div>
+      <div class="card reveal"><h3>拉動參數，看代金怎麼變</h3>
+        <div class="sliders" id="sensCtl" style="margin-top:10px"></div>
+        <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-top:14px" id="sensOut"></div>
+        <div style="margin-top:8px"><button class="btn ghost sm" id="sensReset">歸零</button></div>
+        <h3 style="margin-top:20px">哪個參數最敏感</h3>
+        <div class="tornado" id="tornado" style="margin-top:10px"></div>
+        <p class="muted" style="font-size:.8rem;margin-top:8px">龍捲風圖：每支參數上下各動一格（售價、造價、車位 ±5%；利潤率、綜合利率 ±1 個百分點），代金的變動幅度。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>容移前量體怎麼重建：削頂，地下層二選一</h2><p>業主只給移入後方案，估價師要自己重建容移前情境。不是重新設計一棟樓，而是把容移後方案削去頂層；地下層則先決定減樓層還是縮開挖率。</p></div></div>
+    <div class="massing">
+      <div><svg id="massSvg" viewBox="0 0 520 360" role="img" aria-label="容移前後量體示意"></svg></div>
+      <div class="card reveal">
+        <h3>地上層：削頂</h3>
+        <div class="sliders" style="margin-top:10px"><label><span>移入容積占容移後地上容積<output id="massPctOut">21%</output></span><input type="range" id="massPct" min="5" max="50" step="1" value="21"></label></div>
+        <ul style="margin:10px 0 0;padding-left:18px;font-size:.88rem;color:var(--ink-2);line-height:1.8"><li>實設建蔽率相同：各樓層面積不變，減少的容積只能從頂層扣除。</li><li>銷坪比維持相同：容移前後的可售面積比例一致。</li><li>頂樓特殊設計盡量保留：樓高、樓中樓、露臺、公共設施依比例調整。</li><li>兩種以上產品：地面層店鋪除外，依各產品銷售面積比例調整。</li></ul>
+        <h3 style="margin-top:18px">地下層：二選一</h3>
+        <div class="seg" id="massMode" style="margin-top:8px"><button class="on" data-m="A">方案 A 減少地下樓層</button><button data-m="B">方案 B 縮減開挖率</button></div>
+        <div class="sliders" style="margin-top:10px" id="massDigWrap"><label><span>容移前開挖率（容移後 65%）<output id="massDigOut">65%</output></span><input type="range" id="massDig" min="45" max="65" step="1" value="65"></label></div>
+        <div class="note" id="massNote" style="margin-top:10px"></div>
+        <p class="muted" style="font-size:.8rem;margin-top:10px">車位至少滿足法定；滿足法車後的剩餘空間視為增設車位。B1 機車位減少、地下最後一層盡量保留；估價師得依個案說明後調整。</p>
+      </div>
+    </div>
+    <p class="source">資料來源：臺北市容積代金估價報告書範本（113 年修正版）p.8、p.56–57；臺北代金估價通案原則研析（115 年度學員版）p.25–27。</p>
+    <div style="margin-top:18px"><a class="btn sm" href="template.html">下一站：範本精讀</a></div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=2"></script>
+<script src="assets/calc.js?v=2"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=2"></script>
+<script>
+(function(){
+  const D = window.FP, C = window.CALC, U = window.FPU, $ = U.$, $$ = U.$$, nf = U.fmt;
+  $("#farTable").innerHTML = `<h3 style="margin-bottom:8px">容移前後的容積怎麼認定</h3>` + U.table(["方法", "情境", "勘估標的", "比較標的"], [["比較法", "容移後", "允建容積率", "允建容積率"], ["比較法", "容移前", "允建容積率 − 移入容積率", "允建容積率"], ["土地開發分析法", "容移後", "實設容積率", "—"], ["土地開發分析法", "容移前", "實設容積率 − 移入容積率", "—"]]);
+  $("#methodTable").innerHTML = `<h3 style="margin-bottom:8px">估價方法怎麼選</h3>` + U.table(["開發後產品", "土開法", "比較法", "收益法"], D.methodTable.map(m => [m.p, m.dev, m.comp, m.inc])) + `<p class="muted" style="font-size:.8rem;margin-top:6px">√ 必須採用；○ 與 ▲ 可選擇採用，適用性 ○ ＞ ▲；必須採兩種方式評估。營運性不動產：若第一種方法採收益法，第二種建議土開法並以比較法評估售價；若第一種採土開法並以收益法評估售價，第二種建議比較法。</p>`;
+
+  /* 暖身 */
+  $$("#warmGuess button").forEach(b => b.onclick = () => { $$("#warmGuess button").forEach(x => x.classList.remove("right", "wrong")); b.classList.add(b.dataset.v === "198" ? "right" : "wrong"); if (b.dataset.v !== "198") $$("#warmGuess button").find(x => x.dataset.v === "198").classList.add("right"); $("#warmAns").style.opacity = 1; U.mark("warm"); });
+
+  /* 試算器 */
+  const F_COMMON = [["landM2", "土地面積", "㎡"], ["inM2", "移入樓地板面積", "㎡"], ["farLegal", "法定容積率", "%"], ["farBef", "容移前允建容積率", "%"], ["farAft", "容移後允建容積率", "%"], ["legalPark", "容移前法定車位數（0＝不檢核）", "個"]];
+  const F_SCEN = [
+    ["量體", [["floorsUp", "地上樓層", "層"], ["floorsDown", "地下樓層", "層"], ["digRate", "開挖率", "%"], ["bcr", "實設建蔽率", "%"], ["regArea", "總登記面積（含車位）", "坪"]]],
+    ["銷售", [["resArea", "住宅銷售面積", "坪"], ["resPrice", "住宅平均單價", "元/坪"], ["shopArea", "店面銷售面積", "坪"], ["shopPrice", "店面平均單價", "元/坪"], ["parkN", "銷售車位數", "個"], ["parkPrice", "車位平均單價", "元/個"]]],
+    ["成本與報酬", [["cost", "營造施工費", "元/坪"], ["design", "規劃設計費（占營造費）", "%"], ["adv", "廣告銷售費（占總銷）", "%"], ["mgmt", "管理費（占總銷）", "%"], ["tax", "稅捐（占總銷）", "%"], ["years", "土地開發年期", "年"], ["R", "利潤率", "%"], ["i", "資本利息綜合利率", "%"]]]
+  ];
+  let state = C.clone(D.demo), hintLv = {};
+  try { const s = localStorage.getItem("fp-calc"); if (s) state = JSON.parse(s); } catch (e) {}
+  const save = () => { try { localStorage.setItem("fp-calc", JSON.stringify(state)); } catch (e) {} };
+  $("#fCommon").innerHTML = F_COMMON.map(([k, l, u]) => `<label class="pair" style="grid-template-columns:1fr;gap:4px"><span>${l}<i class="u">${u}</i></span><input data-k="${k}" type="number" inputmode="decimal" step="any"></label>`).join("");
+  $("#fScen").innerHTML = F_SCEN.map(([g, fs]) => `<div class="grp">${g}</div><div class="pair head"><span></span><b class="a">容移後</b><b class="b">容移前</b></div>` + fs.map(([k, l, u]) => `<div class="pair"><span>${l}<i class="u">${u}</i></span><input data-s="aft" data-k="${k}" type="number" inputmode="decimal" step="any" aria-label="容移後${l}"><input data-s="bef" data-k="${k}" type="number" inputmode="decimal" step="any" aria-label="容移前${l}"></div>`).join("")).join("");
+  $$("#calc input[data-k]").forEach(el => el.addEventListener("input", () => { const v = parseFloat(el.value); if (isNaN(v)) return; if (el.dataset.s) state[el.dataset.s][el.dataset.k] = v; else state[el.dataset.k] = v; save(); render(); }));
+  $("#city").addEventListener("change", e => { state.city = e.target.value; save(); render(); });
+  function fill() { F_COMMON.forEach(([k]) => $(`#fCommon input[data-k="${k}"]`).value = state[k]); F_SCEN.forEach(([, fs]) => fs.forEach(([k]) => { $(`input[data-s="aft"][data-k="${k}"]`).value = state.aft[k]; $(`input[data-s="bef"][data-k="${k}"]`).value = state.bef[k]; })); $("#city").value = state.city; $("#caseName").textContent = state.name; }
+  $("#loadBase").onclick = () => { state = C.clone(D.demo); hintLv = {}; save(); fill(); render(); U.toast("已還原示範案"); };
+
+  function render() {
+    const { r, checks } = C.check(state), R = C.RULES[state.city];
+    $("#kpi").innerHTML = [["容積代金", nf(r.fee) + " 元", "容移後總價 − 容移前總價"], ["基地單價（元/坪）", `${nf(r.a.unit)}<small>← ${nf(r.b.unit)}</small>`, "容移後 ← 容移前"], ["代金市價比", r.mktRatio.toFixed(4), "代金容積單價 ÷ 容移後容積單價"], ["代金房價比", r.priceRatio.toFixed(4), "代金容積單價 ÷ 住宅均價"]].map(([t, v, s], i) => `<div class="kpi${i ? "" : " main"}"><span>${t}</span><b>${v}</b><span style="margin-top:2px">${s}</span></div>`).join("");
+    $("#steps").innerHTML = U.table(["", "總銷 S", "直接成本 C", "間接成本 M", "土地總價 V", "單價(元/坪)", "決定總價"], ["a", "b"].map(k => { const x = r[k]; return [`<span class="tag ${k === "a" ? "after" : "before"}">${k === "a" ? "容移後" : "容移前"}</span>`, nf(x.S), nf(x.direct), nf(x.M), nf(x.V), nf(x.unit), nf(x.total)]; }), "num") + `<p class="muted" style="font-size:.78rem;margin-top:6px">${R.name}｜${R.ver}。S ＝ 住宅坪 × 單價 ＋ 店面 ＋ 車位；C ＝ 營造費 × 總登記面積；M ＝ 設計費 × C ＋（廣銷＋管理＋稅捐）× S。</p>`;
+    const cnt = { warn: 0, note: 0, ok: 0 }; checks.forEach(c => cnt[c.level]++);
+    $("#sum").innerHTML = `<span class="pill warn">警訊 ${cnt.warn}</span><span class="pill note">請說明 ${cnt.note}</span><span class="pill ok">符合 ${cnt.ok}</span>`;
+    $("#checks").innerHTML = checks.map(c => { const lv = hintLv[c.id] || 0, hs = [c.why, c.rule, c.fix];
+      return `<div class="chk ${c.level} ${lv ? "open" : ""}"><b style="font-weight:500">${c.title}</b><div class="more">${hs.slice(0, lv).map((h, i) => `<p style="margin:0 0 4px"><span class="tag">提示 ${i + 1}</span>${h}${i === 1 ? `<cite>依據：${c.src}</cite>` : ""}</p>`).join("")}</div>${lv < 3 ? `<button class="lnk" data-h="${c.id}">${lv ? "再給一層提示" : (c.level === "ok" ? "為什麼要檢核這項" : "給我提示")}（${lv}/3）</button>` : ""}</div>`; }).join("");
+    $$("#checks .lnk").forEach(b => b.onclick = () => { hintLv[b.dataset.h] = (hintLv[b.dataset.h] || 0) + 1; render(); });
+    renderSens(r);
+  }
+
+  /* 敏感度 */
+  const SENS = [["price", "住宅均價", "%", 5], ["cost", "營造施工費", "%", 5], ["park", "車位單價", "%", 5], ["R", "利潤率", "pp", 1], ["i", "資本利息綜合利率", "pp", 1]];
+  $("#sensCtl").innerHTML = SENS.map(([k, l, u, st]) => `<label><span>${l}<output id="sv_${k}">0</output></span><input type="range" id="s_${k}" min="${u === "%" ? -20 : -3}" max="${u === "%" ? 20 : 3}" step="${u === "%" ? 1 : 0.25}" value="0"></label>`).join("");
+  $$("#sensCtl input").forEach(el => el.addEventListener("input", () => render()));
+  $("#sensReset").onclick = () => { $$("#sensCtl input").forEach(e => e.value = 0); render(); };
+  function shifted(d) { const c = C.clone(state); for (const s of [c.aft, c.bef]) { s.resPrice *= 1 + (d.price || 0) / 100; s.shopPrice *= 1 + (d.price || 0) / 100; s.cost *= 1 + (d.cost || 0) / 100; s.parkPrice *= 1 + (d.park || 0) / 100; s.R += d.R || 0; s.i += d.i || 0; } return C.calc(c).fee; }
+  function renderSens(r) {
+    const d = {}; SENS.forEach(([k, , u]) => { d[k] = parseFloat($("#s_" + k).value); $("#sv_" + k).textContent = (d[k] > 0 ? "+" : "") + d[k] + (u === "%" ? "%" : " pp"); });
+    const f = shifted(d), ch = (f - r.fee) / r.fee * 100;
+    $("#sensOut").innerHTML = `<b class="mono" style="font-size:1.5rem;color:var(--c-fee)">${nf(f)} 元</b><span class="${ch < 0 ? "dn" : "up"}">${ch >= 0 ? "+" : ""}${ch.toFixed(1)}%</span><span class="muted" style="font-size:.8rem">原代金 ${nf(r.fee)} 元</span>`;
+    const rows = SENS.map(([k, l, u, st]) => { const lo = (shifted({ [k]: -st }) - r.fee) / r.fee * 100, hi = (shifted({ [k]: st }) - r.fee) / r.fee * 100; return { l: `${l} ±${st}${u}`, lo, hi, w: Math.max(Math.abs(lo), Math.abs(hi)) }; }).sort((a, b) => b.w - a.w);
+    const mx = Math.max(...rows.map(x => x.w), 1);
+    $("#tornado").innerHTML = rows.map(x => { const L = Math.min(x.lo, x.hi), H = Math.max(x.lo, x.hi); return `<div class="tr"><span>${x.l}</span><div class="bar"><i style="left:${50 + L / mx * 48}%;width:${(H - L) / mx * 48}%"></i></div><b>${L.toFixed(1)}% ～ +${H.toFixed(1)}%</b></div>`; }).join("");
+  }
+  $$("#sensGuess button").forEach(b => b.onclick = () => { $$("#sensGuess button").forEach(x => x.classList.remove("right", "wrong")); b.classList.add(b.dataset.v === "10" ? "right" : "wrong"); if (b.dataset.v !== "10") $$("#sensGuess button").find(x => x.dataset.v === "10").classList.add("right"); $("#sensExp").classList.add("show"); U.mark("sens");
+    const base = C.calc(D.demo).fee, row = (t, d) => { const c0 = C.clone(D.demo); for (const s of [c0.aft, c0.bef]) { s.resPrice *= 1 + (d.price || 0) / 100; s.cost *= 1 + (d.cost || 0) / 100; s.R += d.R || 0; s.i += d.i || 0; } const f = C.calc(c0).fee; return [t, nf(f), `<span class="${f < base ? "dn" : "up"}">${f >= base ? "+" : ""}${((f - base) / base * 100).toFixed(1)}%</span>`]; };
+    $("#sensTable").innerHTML = U.table(["情境（示範案）", "代金（元）", "變動"], [["原始", nf(base), ""], row("住宅售價 +5%", { price: 5 }), row("住宅售價 −5%", { price: -5 }), row("營造施工費 +5%", { cost: 5 }), row("利潤率 +1 個百分點", { R: 1 }), row("綜合利率 +1 個百分點", { i: 1 })], "num"); });
+  fill(); render();
+
+  /* 量體重建 */
+  const ms = $("#massSvg"); let mode = "A";
+  function drawMass() {
+    const pct = +$("#massPct").value, dig = +$("#massDig").value; $("#massPctOut").textContent = pct + "%"; $("#massDigOut").textContent = dig + "%";
+    const nA = 14, cut = Math.max(1, Math.round(nA * pct / 100)), nB = nA - cut, FH = 14, G = 250, FW = 150, xB = 50, xA = 300;
+    const down = mode === "A" ? 3 : 4, wA = FW * .65, wB = mode === "A" ? wA : FW * dig / 100;
+    let s = `<rect x="0" y="${G}" width="520" height="110" fill="#f0eadb"/><line x1="0" y1="${G}" x2="520" y2="${G}" stroke="#cbbfa8"/>`;
+    const tower = (x, n, col, gold, w, d) => { let t = ""; for (let i = 0; i < n; i++) t += `<rect x="${x}" y="${G - FH * (i + 1)}" width="${FW}" height="${FH - 1.5}" rx="1.5" fill="${i >= gold ? "#e2a24a" : col}" opacity=".92"/>`; for (let i = 0; i < d; i++) t += `<rect x="${x + (FW - w) / 2}" y="${G + 4 + i * 18}" width="${w}" height="16" rx="1.5" fill="#b9b1a2" opacity=".85"/>`; return t; };
+    s += tower(xB, nB, "#5f7bc0", 99, wB, down) + tower(xA, nA, "#2a8c5c", nB, wA, 4);
+    s += `<text class="lbl" x="${xB + FW / 2}" y="${G + 100}" text-anchor="middle">容移前 ${nB}F／B${down}${mode === "B" ? `／${dig}%` : "／65%"}</text><text class="lbl" x="${xA + FW / 2}" y="${G + 100}" text-anchor="middle">容移後 ${nA}F／B4／65%</text>`;
+    s += `<text class="sub" x="${xA + FW + 6}" y="${G - FH * nA + 8}">削去 ${cut} 層</text><path d="M${xA + FW + 4},${G - FH * nA} h6 v${FH * cut} h-6" fill="none" stroke="#c06a1a" stroke-width="1.5"/>`;
+    s += `<text class="sub" x="${xB}" y="${G - FH * nA - 8}">銷坪比、建蔽率不變；少掉的容積從頂層扣</text>`;
+    ms.innerHTML = s;
+    const cutPct = (65 - dig) / 65 * 100;
+    $("#massNote").innerHTML = mode === "A" ? `<b>方案 A：</b>減少一層地下樓層（B4 → B3），開挖率維持與容移後相同的 65%。注意法定車位數與縮減後其他公設的規劃。` : (cutPct > 10 ? `<b>方案 B：</b>開挖率縮至 ${dig}%，縮減幅度 ${cutPct.toFixed(1)}% 已超過容移後開挖率的 10%（65% 不宜低於 58.5%）。範本：超過時改以刪減一層為原則。` : `<b>方案 B：</b>開挖率縮至 ${dig}%，縮減幅度 ${cutPct.toFixed(1)}%，在 10% 原則內（65% 不宜低於 58.5%）。地下樓層維持 B4。`);
+    $("#massNote").style.borderColor = mode === "B" && cutPct > 10 ? "var(--warn)" : "var(--accent)";
+    $("#massDigWrap").style.display = mode === "B" ? "" : "none";
+  }
+  $$("#massMode button").forEach(b => b.onclick = () => { mode = b.dataset.m; $$("#massMode button").forEach(x => x.classList.toggle("on", x === b)); drawMass(); });
+  $("#massPct").addEventListener("input", drawMass); $("#massDig").addEventListener("input", drawMass); drawMass();
+  U.reveal();
+})();
+</script>
+</body>
+</html>

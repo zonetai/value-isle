@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { G } from "./Gloss";
 import { Icon } from "./Icon";
 
 export type PolicyEvent = { when: string; cat: string; t: string; s: string; i: string; src?: string; url?: string; future?: boolean };
@@ -80,8 +81,8 @@ export function PolicyTimeline({ events }: { events: PolicyEvent[] }) {
               <div className="when">{p.when}</div>
               <div className="card">
                 <span className="tag" style={{ background: colorOf(p.cat), color: "#fff" }}>{p.cat}</span> <b>{p.t}</b>
-                <p>{p.s}</p>
-                <div className="impact">{p.i}</div>
+                <p><G>{p.s}</G></p>
+                <div className="impact"><G>{p.i}</G></div>
                 {p.url && <div className="src"><a href={p.url} target="_blank" rel="noopener">{p.src} ↗</a></div>}
               </div>
             </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DATA } from "@/data/site";
 import { type Season } from "@/lib/site";
+import { G } from "./Gloss";
 import { Icon } from "./Icon";
 import { useSite } from "./SiteProvider";
 
@@ -30,7 +31,7 @@ export function VerdictText() {
   return (
     <>
       <h3 id="verdictTitle">本季判讀：<Icon name={S.icon} />{S.name}</h3>
-      <p id="verdictText">{S.verdict}</p>
+      <p id="verdictText"><G>{S.verdict}</G></p>
     </>
   );
 }
@@ -63,7 +64,7 @@ export function Gauges() {
             <span className="state">{g.states[v < 40 ? 0 : v < 65 ? 1 : 2]}</span>
             <div className="dial"><Dial v={vals ? vals[i] : null} /></div>
             <div className="scale"><span>{g.lo}</span><span>{g.hi}</span></div>
-            <p>{g.text}</p>
+            <p><G>{g.text}</G></p>
           </div>
         );
       })}

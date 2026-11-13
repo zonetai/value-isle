@@ -13,6 +13,23 @@ export function Nav() {
   const { season, setSeason } = useSite();
   const [open, setOpen] = useState(false);
   const links = useRef<HTMLDivElement>(null);
+  const nav = useRef<HTMLElement>(null), prog = useRef<HTMLElement>(null), toTop = useRef<HTMLButtonElement>(null);
+
+  /* 閱讀進度條、捲動後導覽列加陰影、捲過 700px 出現「回到頁首」（直接改 class，不重畫元件） */
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      ticking = false;
+      const max = document.documentElement.scrollHeight - innerHeight, y = scrollY;
+      if (prog.current) prog.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+      nav.current?.classList.toggle("scrolled", y > 8);
+      toTop.current?.classList.toggle("on", y > 700);
+    };
+    const handler = () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } };
+    addEventListener("scroll", handler, { passive: true });
+    onScroll();
+    return () => removeEventListener("scroll", handler);
+  }, [path]);
 
   /* 換頁就收起選單；點選單外面或按 Esc 也收起 */
   useEffect(() => setOpen(false), [path]);
@@ -26,7 +43,9 @@ export function Nav() {
   }, [open]);
 
   return (
-    <nav className="nav">
+    <>
+    <nav className="nav" ref={nav}>
+      <i className="nav-progress" ref={prog} />
       <div className="container">
         <Link className="brand" href="/">
           <Logo className="logo" />
@@ -56,5 +75,7 @@ export function Nav() {
         </div>
       </div>
     </nav>
+    <button className="to-top" ref={toTop} aria-label="回到頁首" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}><Icon name="up" /></button>
+    </>
   );
 }

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/index.html">
+<meta property="og:url" content="https://zonetai.com/value-isle/renewal-sandbox/index.html">
+<script>/* 同一份內容只讓搜尋引擎收錄官網；GitHub Pages 的副本標為不收錄 */(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>權變沙盤｜把自己家的條件填進去，看估價師怎麼算分回</title>
+<meta name="description" content="都市更新權利變換分配的試算與審查網站：更新前權值、更新後總價、共同負擔、分回四個數字怎麼串，填自家條件三情境看分回坪數與找補，共同負擔逐項拆解，審議委員的檢核清單。中泰不動產智庫整理。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <div>
+      <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg>中泰不動產智庫・價值島姊妹站</span>
+      <h1>一塊地要更新，<br>分回多少，<span>算給你看。</span></h1>
+      <p class="lede">都更談到最後，爭的都是四個數字：更新前每一戶值多少、蓋好之後整棟值多少、蓋這棟樓要花多少、剩下的怎麼分。這個沙盤把估價師的計算鏈攤開：市價怎麼決定、共同負擔照北市與新北的標準怎麼算、分回為什麼不是一坪換一坪，你可以填自己家的條件走一遍。</p>
+      <div class="hero-stats" id="heroStats"></div>
+      <div class="cta">
+        <a class="btn accent" href="calc.html"><svg class="ic" aria-hidden="true"><use href="#i-calc"/></svg>填自己家的條件試算</a>
+        <a class="btn ghost" href="intro.html">十分鐘投影片導覽</a>
+        <a class="btn ghost" href="chain.html">先看四個數字怎麼串</a>
+      </div>
+    </div>
+    <div>
+      <div class="balance">
+        <svg id="balance" viewBox="0 0 400 230" role="img" aria-label="分配天平：左盤是更新後總價，右盤是共同負擔加地主分回"></svg>
+        <div class="balance-ctl">
+          <label><span>共負比<output id="bdOut">38%</output></span><input type="range" id="bd" min="25" max="55" value="38" step="1"></label>
+          <label><span>更新後均價<output id="bpOut">90 萬/坪</output></span><input type="range" id="bp" min="60" max="130" value="90" step="5"></label>
+        </div>
+        <div class="balance-cap" id="balanceCap"><b>示範基地</b><span>拉動兩個參數，看地主分回的價值怎麼變。</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>你是誰，就從哪裡進</h2><p>三條路線走的站一樣，順序不同。</p></div></div>
+    <div class="routes stagger" id="routes"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>四個數字，一條鏈</h2><p>每一站講其中一個數字。點方塊進去。</p></div></div>
+    <div class="chain4 reveal stagger" id="chain4"></div>
+    <div class="formula reveal" style="margin-top:14px">各戶分回價值 ＝ （<span class="b">更新後總價 B</span> − <span class="c">共同負擔 C</span>）× <span class="a">我家 A 值</span> ÷ <span class="a">全部 A 值合計</span><br><span style="color:#bbb;font-size:.84rem">分回坪數 ＝ 分回價值 ÷ 選配那一戶的單價；選配價值與分回價值的差額就是找補。</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>三個常見誤會</h2><p>點開看為什麼。</p></div></div>
+    <div class="myths stagger" id="myths"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="card reveal" style="margin-bottom:22px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;border-left:5px solid var(--accent)"><div style="flex:1;min-width:240px"><span class="kicker">第一次來</span><h3 style="margin-top:4px">十分鐘看懂權利變換</h3><p>二十二張投影片把流程、四個數字、更新前後的價值、共同負擔、分回與程序講一遍，可自動播放、附講稿。</p></div><a class="btn accent" href="intro.html">開始播放</a></div>
+    <div class="section-head reveal"><div><h2>五站</h2><p>每站末尾都有下一站；造訪紀錄留在你的瀏覽器裡。</p></div><a class="btn ghost" href="law.html">直接去法規依據</a></div>
+    <div class="route stagger" id="route"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid g2">
+      <div class="card reveal">
+        <h3 style="font-family:var(--serif);font-size:1.3rem;margin-top:6px">估價師怎麼看分配</h3>
+        <p>權利變換不是「一坪換一坪」的交易，而是一次全體所有權人的合資開發：大家把更新前的土地權利折成比例投進去，蓋好之後扣掉成本，再依同一個比例把房地分回來。所以估價師真正在算的是<b>比例</b>，更新前的絕對價格高或低，對分回的影響遠小於各宗、各戶之間的相對差異。</p>
+        <p>估價師像一個公平的秤重者，三家估價師同時看同一場比賽。秤怎麼做的在〈市價怎麼決定〉，秤的依據在〈法規依據〉。</p>
+      </div>
+      <div class="card reveal">
+        <h3 style="font-family:var(--serif);font-size:1.3rem;margin-top:6px">和價值島、代金學堂的關係</h3>
+        <p>價值島從四層看一塊地的價格，代金學堂講政府怎麼賣「蓋更高的權利」，權變沙盤講更新單元裡的人怎麼分「蓋好的房子」。三站都由中泰不動產智庫整理，立場中立。</p>
+        <p>本站試算結果為教學用，不構成估價意見或審議依據。實際案件以三家估價報告與審議決議為準。</p>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn ghost sm" href="../index.html"><svg class="ic" aria-hidden="true"><use href="#i-isle"/></svg>去價值島</a><a class="btn ghost sm" href="../far-payment/index.html">去代金學堂</a><a class="btn ghost sm" href="about.html">關於本站</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=7"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$, $$ = U.$$;
+  const P = U.progress();
+  const names = Object.fromEntries(D.pages.map(p => [p.href, p.short]));
+
+  /* 路線 */
+  $("#routes").innerHTML = D.routes.map((r, i) => `<div class="card reveal" style="transition-delay:${i * 80}ms"><div class="ico">${U.icon(r.ico)}</div><h3>${r.t}</h3><p>${r.s}</p><div class="path">${r.steps.map((s, j) => `${j ? "<i>然後</i>" : ""}<span>${names[s]}</span>`).join("")}</div><a class="btn sm" href="${r.first}">${r.firstLabel}</a></div>`).join("");
+
+  /* 四方塊 */
+  $("#chain4").innerHTML = D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="ico">${U.icon(c.ico)}</div><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("");
+
+  /* 誤會 */
+  $("#myths").innerHTML = D.myths.map((m, i) => `<div class="card myth reveal" style="transition-delay:${i * 80}ms"><span class="kicker">誤會 ${i + 1}</span><div class="q" style="margin-top:6px">${m.q}</div><div class="hint">點一下看為什麼</div><div class="ans">${m.a}<div style="margin-top:10px"><a class="btn ghost sm" href="${m.page}">去那一站</a></div></div></div>`).join("");
+  U.flip(".myth");
+
+  /* 四站 */
+  $("#route").innerHTML = D.pages.filter(p => p.n).map((p, i) => `<a class="card reveal ${P["seen:" + p.href] ? "seen" : ""}" href="${p.href}" style="transition-delay:${i * 60}ms"><span class="n">${p.n}</span><h3>${p.short}</h3><p>${p.desc}</p><div class="go">進入這一站</div></a>`).join("");
+
+  /* 示範數字與天平 */
+  const base = { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };
+  const r0 = C.run(base);
+  $("#heroStats").innerHTML = `<div><b data-v="${r0.a.sumA}">0</b><span>更新前權值合計 A（示範）</span></div><div><b data-v="${r0.b.B}">0</b><span>更新後總價 B（示範）</span></div><div><b data-v="${r0.C}">0</b><span>共同負擔 C（示範假設）</span></div>`;
+  $$("#heroStats b").forEach(b => U.countUp(b, +b.dataset.v, U.wanShort, 1400));
+
+  const svg = $("#balance");
+  function draw(ratio, price) {
+    const r = C.run({ ...base, burdenRatio: ratio, after: { ...base.after, resPrice: price * 1e4, shopPrice: price * 1e4 * 16 / 9 } });
+    const B = r.b.B, Cv = r.C, L = r.landValue;
+    const tilt = Math.max(-9, Math.min(9, (Cv - L) / B * 24));
+    const hA = Math.round(60 * L / B), hC = Math.round(60 * Cv / B);
+    svg.innerHTML = `
+      <defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8fd1cc"/><stop offset="1" stop-color="#1f6f6b"/></linearGradient></defs>
+      <rect x="190" y="60" width="20" height="150" rx="6" fill="#dfd7c8"/>
+      <rect x="130" y="206" width="140" height="10" rx="5" fill="#dfd7c8"/>
+      <g class="beam" style="transform:rotate(${tilt}deg)">
+        <rect x="40" y="66" width="320" height="8" rx="4" fill="#4b4740"/>
+        <circle cx="200" cy="70" r="9" fill="#1c1b18"/>
+        <g class="pan"><line x1="80" y1="70" x2="80" y2="120" stroke="#4b4740" stroke-width="2"/><rect x="30" y="120" width="100" height="6" rx="3" fill="#4b4740"/>
+          <rect x="40" y="${120 - hA - 2}" width="80" height="${hA}" rx="4" fill="url(#g1)"/>
+          <text x="80" y="140" text-anchor="middle" class="lbl">地主分回</text><text x="80" y="153" text-anchor="middle" class="val">${U.wanShort(L)}</text></g>
+        <g class="pan"><line x1="320" y1="70" x2="320" y2="120" stroke="#4b4740" stroke-width="2"/><rect x="270" y="120" width="100" height="6" rx="3" fill="#4b4740"/>
+          <rect x="280" y="${120 - hC - 2}" width="80" height="${hC}" rx="4" fill="#f0bd8a"/>
+          <text x="320" y="140" text-anchor="middle" class="lbl">共同負擔</text><text x="320" y="153" text-anchor="middle" class="val">${U.wanShort(Cv)}</text></g>
+      </g>
+      <text x="200" y="195" text-anchor="middle" class="sub">更新後總價 B ＝ ${U.wanShort(B)}</text>
+      <text x="200" y="225" text-anchor="middle" class="lbl">地主分回 ${(r.ownerShare * 100).toFixed(0)}%　共負比 ${ratio}%</text>`;
+    $("#balanceCap").innerHTML = `<b>示範基地・四宗四十戶</b><span>共負比 ${ratio}%、更新後均價 ${price} 萬/坪時，示範戶（${D.demo.me}，更新前 ${r.my.bldgPing} 坪）分回約 <b style="color:#fff;font-size:1rem">${r.pingBack.toFixed(1)} 坪</b>。均價變動主要影響分回「價值」，分回「坪數」跟著共負比與獎勵容積走。</span>`;
+  }
+  const bd = $("#bd"), bp = $("#bp");
+  const upd = () => { $("#bdOut").textContent = bd.value + "%"; $("#bpOut").textContent = bp.value + " 萬/坪"; draw(+bd.value, +bp.value); };
+  bd.oninput = bp.oninput = upd; upd();
+  U.reveal();
+})();
+</script>
+</body>
+</html>

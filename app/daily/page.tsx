@@ -1,4 +1,6 @@
+import { G } from "@/components/Gloss";
 import { DailyView } from "@/components/DailyView";
+import { HeroWave } from "@/components/LayerBlocks";
 import { DAILY } from "@/data/daily";
 import { pageMeta } from "@/lib/site";
 
@@ -12,7 +14,7 @@ export default function DailyPage() {
           <div>
             <span className="kicker">燈塔日誌</span>
             <h1>每日觀測</h1>
-            <p>這裡是四層動態的總覽。同樣的內容也會出現在各自的頁面：政策的進「政策」頁並接上時間軸，國際的進「國際」頁，市場的進「市場潮位」頁；個案層級的動態留在這裡。每則附「對估價的影響」與原始出處；只整理、不預測，也不評論哪一方好壞。</p>
+            <p><G>{"這裡是四層動態的總覽。同樣的內容也會出現在各自的頁面：政策的進「政策」頁並接上時間軸，國際的進「國際」頁，市場的進「市場潮位」頁；個案層級的動態留在這裡。每則附「對估價的影響」與原始出處；只整理、不預測，也不評論哪一方好壞。"}</G></p>
             <div className="daily-meta">
               <span className="live"><i />更新至 <b>{DAILY.updated}</b></span>
               <span>{DAILY.schedule}</span>
@@ -28,6 +30,7 @@ export default function DailyPage() {
             <path className="lh-wave" d="M0 190 Q 20 182 40 190 T 80 190 T 120 190 T 160 190 T 200 190 T 240 190" fill="none" stroke="#2f8fb4" strokeWidth="3" />
           </svg>
         </div>
+        <HeroWave />
       </section>
       <section className="section" style={{ paddingTop: 28 }}>
         <div className="container">

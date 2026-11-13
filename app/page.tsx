@@ -1,6 +1,9 @@
+import { G } from "@/components/Gloss";
 import Link from "next/link";
+import { FactDeck } from "@/components/FactDeck";
 import { FlowChain } from "@/components/FlowChain";
 import { IslandHero } from "@/components/IslandHero";
+import { LAYER_ART } from "@/components/layerArt";
 import { VerdictText } from "@/components/SeasonParts";
 import { DATA } from "@/data/site";
 import { pageMeta } from "@/lib/site";
@@ -16,16 +19,21 @@ export default function HomePage() {
       <section className="section">
         <div className="container">
           <div className="section-head reveal">
-            <div><h2>四層力量，各有一頁</h2><p>每一層都整理成獨立頁面：資料、動畫、以及「對估價的影響」。</p></div>
+            <div><h2>四層力量，各有一頁</h2><p><G>{"每一層都整理成獨立頁面：資料、動畫、以及「對估價的影響」。"}</G></p></div>
             <Link className="btn ghost" href="/weather">先看今天的估價氣象</Link>
           </div>
           <div className="layer-cards" id="layerCards">
             {DATA.layers.map((l) => (
               <Link key={l.id} className="card layer-card reveal" href={l.page} style={{ "--c": l.color } as React.CSSProperties}>
-                <span className="n">{l.n}</span>
-                <h3>{l.name}</h3>
-                <p>{l.desc}</p>
-                <div className="go">{l.page.startsWith("/daily") ? "看最新動態" : l.items.length + " 個觀測項目"}</div>
+                <div className="lc-art">
+                  <svg viewBox="0 0 240 84" preserveAspectRatio="xMidYMid slice" aria-hidden="true" dangerouslySetInnerHTML={{ __html: LAYER_ART[l.id] ?? "" }} />
+                </div>
+                <div className="lc-body">
+                  <span className="n">{l.n}</span>
+                  <h3>{l.name}</h3>
+                  <p>{l.desc}</p>
+                  <div className="go">{l.page.startsWith("/daily") ? "看最新動態" : l.items.length + " 個觀測項目"}</div>
+                </div>
               </Link>
             ))}
           </div>
@@ -46,6 +54,9 @@ export default function HomePage() {
               <div style={{ marginTop: 10 }}><span className="tag intl">一般因素</span><span className="tag policy">一般因素</span><span className="tag market">區域因素</span><span className="tag ind">個別因素</span></div>
             </div>
           </div>
+
+          {/* 估價小卡：一次一句，可以一直換 */}
+          <FactDeck />
         </div>
       </section>
     </>

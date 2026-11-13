@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { DATA } from "@/data/site";
 import { layerOf } from "@/lib/site";
+import { G } from "./Gloss";
 import { Icon } from "./Icon";
 
 const ROLES = DATA.roles;
@@ -34,8 +35,8 @@ function Detail({ i }: { i: number }) {
     <>
       <div>
         <span className="kicker"><Icon name={r.ico} />{r.t}{r.group === "pro" ? " 怎麼用這座島" : " 的看價路線"}</span>
-        <ol className="route">{r.steps.map((s, k) => <li key={s} data-n={k + 1}>{s}</li>)}</ol>
-        <div style={{ marginTop: 10, fontSize: ".84rem", color: "var(--ink-3)" }}>{r.svc}</div>
+        <ol className="route">{r.steps.map((s, k) => <li key={s} data-n={k + 1}><G>{s}</G></li>)}</ol>
+        <div style={{ marginTop: 10, fontSize: ".84rem", color: "var(--ink-3)" }}><G>{r.svc}</G></div>
         <div style={{ marginTop: 14, display: "flex", gap: 6, flexWrap: "wrap" }}>
           {r.layers.map((id) => <Link key={id} className="chip" href={layerOf(id).page}>{layerOf(id).name}</Link>)}
         </div>
@@ -70,9 +71,9 @@ export function RoleExplorer() {
       <div key={i} id={`r${i}`} className={on === i ? "card role-card on" : "card role-card"} onClick={() => pick(i)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(i); } }} aria-expanded={on === i}>
         <div className="ico"><Icon name={r.ico} /></div>
         <h3>{r.t}</h3>
-        <p>{r.s}</p>
+        <p><G>{r.s}</G></p>
         <div className="layers">{r.layers.map((id) => <span key={id} className={`tag ${layerOf(id).cls}`}>{layerOf(id).name}</span>)}</div>
-        <div className="svc">{r.svc}</div>
+        <div className="svc"><G>{r.svc}</G></div>
       </div>
     );
   };

@@ -1,5 +1,6 @@
 "use client";
 
+import { G } from "./Gloss";
 import { useEffect, useState } from "react";
 import { DATA } from "@/data/site";
 import { DAILY } from "@/data/daily";
@@ -58,8 +59,8 @@ export function DailyView() {
                   <article className="card brief" key={b.url + b.t} style={{ "--c": L.hex, animationDelay: `${i * 50}ms` } as React.CSSProperties}>
                     <div className="meta"><span className={`tag ${L.cls}`}>{L.name}</span>{b.tag && <span className="tag">{b.tag}</span>}</div>
                     <h3>{b.t}</h3>
-                    <p>{b.s}</p>
-                    {b.i && <div className="impact">{b.i}</div>}
+                    <p><G>{b.s}</G></p>
+                    {b.i && <div className="impact"><G>{b.i}</G></div>}
                     <div className="src"><SrcLink src={b.src} url={b.url} /></div>
                   </article>
                 );
@@ -83,14 +84,14 @@ function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
         <div className="meta"><span className={`tag ${L.cls}`}>{L.name}</span><span className="mono">{t.date}</span></div>
         <h2>{t.title}</h2>
         <div className="status">{t.status}</div>
-        <p>{t.summary}</p>
+        <p><G>{t.summary}</G></p>
       </div>
       {groups?.map((g) => (
         <div className="tgroup" key={g.name}>
           <h3>{g.name}</h3>
           <div className="tgrid">
             {g.items.map((it) => (
-              <div className="card titem" key={it.t}><b>{it.t}</b><p>{it.s}</p><div className="src"><SrcLink src={it.src} url={it.url} /></div></div>
+              <div className="card titem" key={it.t}><b>{it.t}</b><p><G>{it.s}</G></p><div className="src"><SrcLink src={it.src} url={it.url} /></div></div>
             ))}
           </div>
         </div>
@@ -104,20 +105,20 @@ function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
                 {th.positions.map((p) => (
                   <div className="p" key={p.who + p.say}>
                     <div className="who">{p.who}</div>
-                    <div className="say">{p.say}</div>
+                    <div className="say"><G>{p.say}</G></div>
                     <div className="src"><SrcLink src={p.src} url={p.url} />{p.date ? `　${p.date}` : ""}</div>
                   </div>
                 ))}
               </div>
               {th.note && <div className="tnote">{th.note}</div>}
-              {th.i && <div className="impact">{th.i}</div>}
+              {th.i && <div className="impact"><G>{th.i}</G></div>}
             </details>
           ))}
         </div>
       )}
       <div className="two-col" style={{ marginTop: 22 }}>
-        <div className="card"><span className="kicker">估價師怎麼讀</span><p style={{ margin: "8px 0 0", fontSize: ".95rem", color: "var(--ink-2)" }}>{t.appraiser}</p></div>
-        <div className="card"><span className="kicker">接下來看什麼</span><div className="bullets" style={{ marginTop: 10 }}>{(t.watch ?? []).map((w) => <div key={w}>{w}</div>)}</div></div>
+        <div className="card"><span className="kicker">估價師怎麼讀</span><p style={{ margin: "8px 0 0", fontSize: ".95rem", color: "var(--ink-2)" }}><G>{t.appraiser}</G></p></div>
+        <div className="card"><span className="kicker">接下來看什麼</span><div className="bullets" style={{ marginTop: 10 }}>{(t.watch ?? []).map((w) => <div key={w}><G>{w}</G></div>)}</div></div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export const metadata = pageMeta("估價小測＋估價師辭典", "題目來自
 export default function DrillPage() {
   return (
     <>
-      <PageHero title="估價小測 ＋ 估價師辭典">
+      <PageHero mark="target" title="估價小測 ＋ 估價師辭典">
         題目來自估價師的審查、都更審議與買房諮詢經驗。選一個主題練直覺，旁邊是常被問到的名詞。答題紀錄會留在你的瀏覽器裡。
       </PageHero>
       <section className="section" style={{ paddingTop: 28 }}>

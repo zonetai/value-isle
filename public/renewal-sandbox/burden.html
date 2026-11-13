@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/burden.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>04 共同負擔試算｜權變沙盤</title>
+<meta name="description" content="依臺北市與新北市的共同負擔提列標準逐項試算：營建單價表、拆除、鑽探、地籍整理、估價費、貸款利息期間與利率、印花稅與營業稅、人事行政管理費率、銷售管理費級距、風險管理費率表。填案件條件就算出共負比，可帶入分回試算。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-crane"/></svg>第 4 站</span>
+    <h1>共同負擔試算：照北市、新北的提列標準一項一項算</h1>
+    <p class="lede">共同負擔不是實施者說多少就是多少。臺北市有「費用提列總表」與「工程造價要項」，新北市有「提列共同負擔項目及金額基準」，每一項都有公式、費率或級距。這一站把兩套標準寫進規則庫，填案件條件就逐項算出金額，每一行都附公式與依據。算出來的是依提列上限的示範金額，不是任何案件的共負比結論；實際共負比由審議會逐項審議決定，每案不同。</p>
+    <div class="where"><span class="tag c">工程費用 A</span><span class="tag c">權利變換費用 D</span><span class="tag c">貸款利息 G</span><span class="tag c">稅捐 H</span><span class="tag c">管理費用 I</span></div>
+  </div>
+</section>
+
+<section class="section" id="burden">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>案件試算：依提列上限的示範</h2><p id="basis"></p></div>
+      <div class="tools"><button class="btn ghost sm" id="reset">還原示範案</button><button class="btn ghost sm" id="share">複製分享連結</button><a class="btn accent sm" id="toCalc" href="calc.html">帶入分回試算</a></div></div>
+    <div class="kpis reveal" id="kpi"></div>
+    <div class="calc" style="margin-top:18px">
+      <div class="card reveal">
+        <div class="grp">適用規則與實施方式</div>
+        <div class="fgrid">
+          <label class="fld"><span>縣市</span><select class="inp" id="city"><option value="tpe">臺北市</option><option value="ntpc">新北市</option></select></label>
+          <label class="fld"><span>實施方式</span><select class="inp" id="mode"><option value="developer">一般建商</option><option value="self">自組更新會</option><option value="public">公辦都更</option></select></label>
+          <label class="fld"><span>更新後總價 B<i class="u">萬元</i></span><input class="inp" type="number" id="Bval" step="100" min="0"></label>
+        </div>
+        <div class="grp">建物規劃</div>
+        <div class="fgrid">
+          <label class="fld"><span>構造</span><select class="inp" id="structure"><option value="RC">鋼筋混凝土 RC</option><option value="SRC">鋼骨鋼筋混凝土 SRC</option><option value="SC">鋼骨 SC</option></select></label>
+          <label class="fld" id="gradeFld"><span>建材等級<i class="u">北市</i></span><select class="inp" id="grade"><option value="2">第二級（中高級）</option><option value="3">第三級（高級）</option></select></label>
+          <label class="fld"><span>地上層數</span><input class="inp" type="number" id="floorsUp" step="1" min="1"></label>
+          <label class="fld"><span>地下層數</span><input class="inp" type="number" id="floorsDown" step="1" min="0"></label>
+          <label class="fld"><span>地上總樓地板<i class="u">坪</i></span><input class="inp" type="number" id="abovePing" step="1" min="0"></label>
+          <label class="fld"><span>地下總樓地板<i class="u">坪</i></span><input class="inp" type="number" id="belowPing" step="1" min="0"></label>
+          <label class="fld"><span>更新後戶數</span><input class="inp" type="number" id="units" step="1" min="1"></label>
+          <label class="fld"><span>更新前建物<i class="u">坪，拆除用</i></span><input class="inp" type="number" id="oldPing" step="1" min="0"></label>
+          <label class="fld"><span>物價調整<i class="u">% 指數增減率</i></span><input class="inp" type="number" id="cpi" step="0.1"></label>
+          <label class="fld"><span>智慧建築調整率<i class="u">%</i></span><select class="inp" id="smart"><option value="0">無</option><option value="0.7">銅級以下 0.70</option><option value="1.7">銀級 1.70</option><option value="3.85">黃金級以上 3.85</option></select></label>
+        </div>
+        <div class="grp">基地與產權</div>
+        <div class="fgrid">
+          <label class="fld"><span>基地面積<i class="u">㎡</i></span><input class="inp" type="number" id="siteM2" step="1" min="1"></label>
+          <label class="fld"><span>產權級別人數<i class="u">（門牌＋人數）÷2</i></span><input class="inp" type="number" id="owners" step="1" min="1"></label>
+          <label class="fld" id="pubFld"><span>公有土地比例<i class="u">% 北市</i></span><input class="inp" type="number" id="publicPct" step="1" min="0" max="100"></label>
+          <label class="fld" id="lvFld"><span>土地公告現值總值<i class="u">萬元 新北</i></span><input class="inp" type="number" id="landValue" step="100" min="0"></label>
+          <label class="fld"><span>鄰房鑑定戶數</span><input class="inp" type="number" id="neighbors" step="1" min="0"></label>
+          <label class="fld"><span>估價筆數<i class="u">更新前建物＋土地＋更新後戶</i></span><input class="inp" type="number" id="apprCount" step="1" min="1"></label>
+        </div>
+        <div class="grp">費用參數（萬元或 %）</div>
+        <div class="fgrid">
+          <label class="fld"><span>建築設計費率<i class="u">% 營建</i></span><input class="inp" type="number" id="designPct" step="0.5" min="0"></label>
+          <label class="fld"><span>都更規劃費</span><input class="inp" type="number" id="planFee" step="10" min="0"></label>
+          <label class="fld"><span>拆遷補償與安置</span><input class="inp" type="number" id="compensation" step="10" min="0"></label>
+          <label class="fld"><span>容積獎勵費用</span><input class="inp" type="number" id="bonusFee" step="10" min="0"></label>
+          <label class="fld"><span>公共設施費用</span><input class="inp" type="number" id="publicFacility" step="10" min="0"></label>
+          <label class="fld"><span>容積移轉費用</span><input class="inp" type="number" id="farTransfer" step="10" min="0"></label>
+          <label class="fld"><span>都計變更負擔</span><input class="inp" type="number" id="planChange" step="10" min="0"></label>
+          <label class="fld"><span>信託費用（契約）</span><input class="inp" type="number" id="trustFee" step="10" min="0"></label>
+          <label class="fld"><span>郵儲一年定存<i class="u">%</i></span><input class="inp" type="number" id="ownRate" step="0.05" min="0"></label>
+          <label class="fld"><span>五大銀行基準利率<i class="u">%</i></span><input class="inp" type="number" id="loanRate" step="0.05" min="0"></label>
+          <label class="switch" id="selfRiskFld" style="grid-column:1/-1"><input type="checkbox" id="selfRisk">新北：共負比低於 40%，風險管理費以 14% 提列</label>
+        </div>
+        <p class="source">教學簡化：建築設計費、規劃費、拆遷補償、信託以參數代入；地政規費、讓受不動產契據印花稅、公寓大廈管理基金未計。數值以主管機關現行公告為準。</p>
+      </div>
+      <div>
+        <div class="card reveal"><h3>九大類金額</h3><div class="bars" id="bars" style="margin-top:12px"></div></div>
+        <div class="card reveal" style="margin-top:14px"><h3>要確認的事 <span id="sum" style="font-weight:400;font-size:.84rem"></span></h3><p class="muted" style="font-size:.82rem">不做判定，只列出每一項依據什麼、實務上要看什麼。</p><div id="checks" style="margin-top:10px"></div></div>
+      </div>
+    </div>
+    <div class="card reveal" style="margin-top:18px"><h3>逐項金額與公式</h3><div id="items" style="margin-top:10px"></div></div>
+  </div>
+</section>
+
+<section class="section" id="rules">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>兩市提列標準對照</h2><p>規則庫裡的數字。版本與基準日寫在表頭，以主管機關現行公告為準。</p></div></div>
+    <div class="grid g2" id="ruleCards"></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card reveal"><h3>臺北市 建築物工程造價標準單價（元/㎡，113.02，物價基準日 112.11）</h3><div id="costTpe" style="margin-top:10px"></div><p class="source">第二級為中高級、第三級為高級建材設備。已含綠建築合格級與分戶樓板隔音。地下層：地上 1~6 層超過 B1、7~15 層超過 B2、16 層以上超過 B3 之超建層，依序加 30%、40%、50%、60%。樓層高度超過 3.2 公尺每 0.1 公尺加 1%。</p></div>
+      <div class="card reveal"><h3>新北市 建築物工程造價標準單價（元/坪，物價基準日 112.04）</h3><div id="costNtpc" style="margin-top:10px"></div><p class="source">依總樓地板面積級距遞減。新北市 114 年檢討報告以 113.12 物價試算，鋼筋混凝土造約高出 2.8 萬至 5.8 萬元/坪；報核時依評價基準日之營造工程物價指數調整，增減率絕對值超過 2.5% 的部分才調。</p></div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
+<script src="assets/burden.js?v=7"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=7"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, C = window.RSC, B = window.RSB, $ = U.$, $$ = U.$$;
+  /* 分母與量體：示範基地或試算頁帶來的基地 */
+  const calcS = (U.param("s") && U.dec(U.param("s"))) || { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };
+  const r0 = C.run(calcS);
+  const fresh = () => ({ city: calcS.city || "tpe", mode: "developer", Bval: Math.round(r0.b.B / 1e4),
+    structure: "RC", grade: 2, floorsUp: calcS.after.floors, floorsDown: 3,
+    abovePing: Math.round(r0.b.farPing * D.extraRatio), belowPing: Math.round(r0.a.totalPing * 0.65 * 3), units: r0.units.length, oldPing: Math.round(r0.units.reduce((s, u) => s + u.bldgPing, 0)),
+    cpi: 0, smart: 0, siteM2: Math.round(r0.a.totalPing * B.M2), owners: r0.units.length, publicPct: 0, landValue: Math.round(calcS.site.baseUnit * r0.a.totalPing * 0.35 / 1e4), neighbors: 60, apprCount: r0.units.length * 2 + calcS.site.lots.length,
+    designPct: 6, planFee: 300, compensation: 500, bonusFee: 100, publicFacility: 0, farTransfer: 0, planChange: 0, trustFee: 300, ownRate: 1.725, loanRate: 2.5, selfRisk: false });
+  let S = (U.param("b") && U.dec(U.param("b"))) || fresh();
+  const F = ["Bval", "floorsUp", "floorsDown", "abovePing", "belowPing", "units", "oldPing", "cpi", "siteM2", "owners", "publicPct", "landValue", "neighbors", "apprCount", "designPct", "planFee", "compensation", "bonusFee", "publicFacility", "farTransfer", "planChange", "trustFee", "ownRate", "loanRate"];
+  const SEL = ["city", "mode", "structure", "grade", "smart"];
+  function fill() { F.forEach(k => $("#" + k).value = S[k]); SEL.forEach(k => $("#" + k).value = S[k]); $("#selfRisk").checked = !!S.selfRisk; cityUI(); }
+  function read() { F.forEach(k => S[k] = +$("#" + k).value || 0); SEL.forEach(k => S[k] = $("#" + k).value); S.grade = +S.grade; S.smart = +S.smart; S.selfRisk = $("#selfRisk").checked; cityUI(); }
+  function cityUI() { const t = S.city === "tpe"; $("#gradeFld").style.opacity = t ? 1 : .4; $("#pubFld").style.opacity = t ? 1 : .4; $("#lvFld").style.opacity = t ? .4 : 1; $("#selfRiskFld").style.opacity = t ? .4 : 1; }
+
+  function render() {
+    const c = { ...S, totalPing: S.abovePing + S.belowPing, Bval: S.Bval * 1e4 };
+    const r = B.run(S.city, c);
+    const R = B.CITY[S.city];
+    $("#basis").textContent = `${R.name}・${R.ver}。分母為${U.param("s") ? "試算頁帶來的基地" : "示範基地"}：更新後總價 B ${U.wanShort(c.Bval)}。`;
+    $("#kpi").innerHTML = `<div class="kpi main"><span>共同負擔示範金額 C（各管理費率以上限代入）</span><b>${U.wanShort(r.C)}</b><small>占更新後總價約 ${r.ratio.toFixed(1)}%，示範值，非案件結論</small></div><div class="kpi"><span>營建單價（調整後）</span><b>${U.fmt(r.unit)}</b><small>元/坪</small></div><div class="kpi"><span>貸款期間 × 年利率</span><b>${r.months.toFixed(1)} 月</b><small>${(r.r * 100).toFixed(2)}%</small></div>`;
+    const mx = Math.max(...Object.values(r.byGroup));
+    $("#bars").innerHTML = Object.keys(r.groups).filter(g => r.byGroup[g]).map(g => `<div class="br"><span>${g} ${r.groups[g]}</span><div class="bar"><i style="width:${r.byGroup[g] / mx * 100}%"></i></div><b>${U.wanShort(r.byGroup[g])}<br><span class="muted" style="font-size:.7rem">占 C ${(r.byGroup[g] / r.C * 100).toFixed(1)}%</span></b></div>`).join("");
+    U.lamps(r.checks, $("#checks")); $("#sum").textContent = `${r.checks.length} 項`;
+    $("#items").innerHTML = U.table(["類", "項目", "金額", "公式與依據"], r.items.map(i => [i.g, i.t, U.wanShort(i.v), `<span style="font-size:.8rem;color:var(--ink-2)">${i.how}</span>`]));
+    const u = new URL("calc.html", location.href); u.searchParams.set("d", r.ratio.toFixed(1)); if (U.param("s")) u.searchParams.set("s", U.param("s"));
+    $("#toCalc").href = u.toString();
+  }
+
+  /* 規則對照卡 */
+  function ruleCards() {
+    const T = B.CITY.tpe, N = B.CITY.ntpc, f = x => Number(x).toLocaleString("zh-TW");
+    const tpeRisk = U.table(["基地面積㎡ ＼ 人數", "~5", "6~35", "36~75", "76~125", "126~"], T.riskTable.rows.map((row, i) => [[`500~1,000`, `1,000~2,000`, `2,000~3,000`, `3,000~4,000`, `4,000~5,000`, `5,000 以上`][i], ...row.map(v => v + "%")]), "num");
+    const ntpcRisk = U.table(["總樓地板坪 ＼ 產權筆數", "未滿 30", "30~100", "超過 100"], N.riskTable.rows.map((row, i) => [[`2,500 以下`, `2,500~7,500`, `7,500 以上`][i], ...row.map(v => v + "%")]), "num");
+    const ntpcAdmin = U.table(["基地㎡ ＼ 產權筆數", "未滿 30", "30~150", "超過 150"], N.adminTable.rows.map((row, i) => [[`未滿 1,500`, `1,500~2,500`, `2,500 以上`][i], ...row.map(v => v + "%")]), "num");
+    $("#ruleCards").innerHTML = `
+      <div class="card reveal"><h3>臺北市（${T.ver}）</h3>
+        <div class="kv" style="margin-top:10px">
+          <b>人事行政管理費</b><span>（A+B+C+D+E+F+G）× 5%；公有土地 25% 以上 4.5%、50% 以上 3.5%、75% 以上 3%；公辦不提列；自組更新會改稱更新會運作費用</span>
+          <b>廣告銷售管理費</b><span>實施者實際獲配價值累加：30 億以下 6%、30~50 億 4.5%、超過 50 億 3%</span>
+          <b>風險管理費</b><span>（A+B+C+D+E+F+G+H 不含營業稅+I）× 下表費率；貸款期間超過 36 個月每月加基數 2%，上限 16%；公辦逕以上限</span>
+          <b>貸款利息</b><span>利率＝自有 30% × 郵儲一年定存＋融資 70% × 五大銀行基準利率（更新會得全部融資）；拆遷補償與容移費用全額計息，其餘折半；期間：核定至開工 6 個月＋地下每層 2.5 個月＋地上每層 1.2 個月＋使照後 6 個月</span>
+          <b>固定單價</b><span>鑽探 75,000 元/孔、外接管線 75,000 元/戶、地籍整理 20,000 元/戶、拆除 RC 4~5 樓 1,050 元/㎡；估價費每家 40 萬＋筆數 × 0.5 萬（逾 100 筆部分 0.45）</span>
+          <b>稅捐</b><span>印花稅承攬契據 1‰、讓受不動產契據 1‰；營業稅依財政部 109.9.14 令釋公式</span>
+        </div>
+        <div style="margin-top:10px"><span class="kicker">風險管理費率表</span>${tpeRisk}</div></div>
+      <div class="card reveal"><h3>新北市（${N.ver}）</h3>
+        <div class="kv" style="margin-top:10px">
+          <b>行政作業費 F1</b><span>更新單元內土地公告現值總值 × 2.5%</span>
+          <b>信託費用 F2</b><span>更新會全額；一般建商契約金額之 50%（資金信託全額、土地信託折半）</span>
+          <b>人事行政管理費 F3</b><span>（A+C+G）× 下表費率；含人事、行政、總務與整合費；公有土地達 90% 酌減</span>
+          <b>銷售管理費 F4</b><span>實施者實際獲配價值累加：25 億以下 6%、25~50 億 5.5%、超過 50 億 5%</span>
+          <b>風險管理費 F5</b><span>（A+C+D+F1+F2+F3+G+H）× 下表費率；共負比低於 40%、更新會或非折價抵付之代執行機構得以 14%</span>
+          <b>貸款利息</b><span>利率同北市邏輯（自有比率依實際）；期間不得長於實際施工期間加 12 個月；施工：地下一層 4 個月、每多一層加 2 個月，地上每層 1 個月；逆打工法地下每層減 1.5 個月</span>
+        </div>
+        <div style="margin-top:10px"><span class="kicker">人事行政管理費率表</span>${ntpcAdmin}</div>
+        <div style="margin-top:10px"><span class="kicker">風險管理費率表</span>${ntpcRisk}</div></div>`;
+    const fl = ["1~5", "6~10", "11~15", "16~20", "21~25", "26~30", "31~35", "36~40", "41~"];
+    const tk = [1, 6, 11, 16, 21, 26, 31, 36, 41];
+    $("#costTpe").innerHTML = U.table(["樓層", "SC 二級", "SC 三級", "SRC 二級", "SRC 三級", "RC 二級", "RC 三級"], tk.map((k, i) => [fl[i] + " 層", ...["SC", "SRC", "RC"].flatMap(s => [2, 3].map(g => T.cost[s][g][k] ? f(T.cost[s][g][k]) : "—"))]), "num");
+    const nk = [6, 11, 16, 21, 26, 31, 36];
+    $("#costNtpc").innerHTML = U.table(["樓層", "SC 未滿 2,500", "SC 2,500~7,500", "SC 7,500~", "RC 未滿 2,500", "RC 2,500~7,500", "RC 7,500~"], nk.map((k, i) => [fl[i + 1] + " 層", ...["SC", "RC"].flatMap(s => [0, 2500, 7500].map(b => N.cost[s][b][k] ? f(N.cost[s][b][k]) : "—"))]), "num");
+  }
+
+  fill(); render(); ruleCards();
+  document.addEventListener("input", e => { if (e.target.closest("#burden")) { read(); render(); } });
+  document.addEventListener("change", e => { if (e.target.closest("#burden")) { read(); render(); } });
+  $("#reset").onclick = () => { S = fresh(); fill(); render(); U.toast("已還原示範案"); };
+  $("#share").onclick = () => U.copy(U.share(S, "b"));
+  U.reveal();
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/Footer";
+import { GlossPop } from "@/components/GlossPop";
 import { IconSprite } from "@/components/Icon";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </SiteProvider>
         <Reveal />
+        <GlossPop />
       </body>
     </html>
   );

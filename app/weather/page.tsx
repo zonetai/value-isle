@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { FlowChain } from "@/components/FlowChain";
+import { G } from "@/components/Gloss";
+import { PageHero } from "@/components/LayerBlocks";
 import { Gauges, SeasonPicker, VerdictText } from "@/components/SeasonParts";
 import { DATA } from "@/data/site";
 import { DAILY } from "@/data/daily";
@@ -32,13 +34,9 @@ function DailyStrip() {
 export default function WeatherPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <h1>估價氣象台</h1>
-          <p>四個儀表，對應估價師每天在看的四股力量。選一個「市場季節」，指針、天色與判讀會一起換。</p>
-          <SeasonPicker />
-        </div>
-      </section>
+      <PageHero mark="cloudsun" title="估價氣象台" extra={<SeasonPicker />}>
+        四個儀表，對應估價師每天在看的四股力量。選一個「市場季節」，指針、天色與判讀會一起換。
+      </PageHero>
       <section className="section" style={{ paddingTop: 36 }}>
         <div className="container">
           <Gauges />
@@ -50,13 +48,13 @@ export default function WeatherPage() {
             </div>
             <div className="card reveal">
               <h3>怎麼讀這四個儀表</h3>
-              <p style={{ fontSize: ".92rem" }}>「資金活水」與「政策氣壓」是一般因素，決定需求曲線的位置；「市場潮位」是區域因素與期日修正，決定比較法案例的水位；「條件分化」提醒估價師這一季要在個別因素上花多少篇幅。四個儀表都偏右時，是最容易做出過度樂觀估值的季節。</p>
-              <p className="disclaimer">儀表數值為依季節設定的示意判讀，不是量化指標；更新季節判讀請改 data/site.ts 的 seasons。</p>
+              <p style={{ fontSize: ".92rem" }}><G>{"「資金活水」與「政策氣壓」是一般因素，決定需求曲線的位置；「市場潮位」是區域因素與期日修正，決定比較法案例的水位；「條件分化」提醒估價師這一季要在個別因素上花多少篇幅。四個儀表都偏右時，是最容易做出過度樂觀估值的季節。"}</G></p>
+              <p className="disclaimer"><G>{"儀表數值為依季節設定的示意判讀，不是量化指標；更新季節判讀請改 data/site.ts 的 seasons。"}</G></p>
             </div>
           </div>
           <div className="card reveal" style={{ marginTop: 18 }}>
             <h3 style={{ fontFamily: "var(--serif)", fontSize: "1.3rem", fontWeight: 900, margin: "6px 0" }}>估價師每個月怎麼看一般因素</h3>
-            <p style={{ fontSize: ".95rem", color: "var(--ink-2)" }}>{DATA.macroMethod}</p>
+            <p style={{ fontSize: ".95rem", color: "var(--ink-2)" }}><G>{DATA.macroMethod}</G></p>
           </div>
         </div>
       </section>

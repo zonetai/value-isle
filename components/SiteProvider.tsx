@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { DATA } from "@/data/site";
 import { DAILY } from "@/data/daily";
 import { layerOf, md, type Season } from "@/lib/site";
+import { G } from "./Gloss";
 import { Icon } from "./Icon";
 
 /* ============================================================
@@ -14,8 +15,12 @@ type Site = {
   season: Season;
   setSeason: (s: Season, silent?: boolean) => void;
   openDrawer: (layerId: string, focusTitle?: string) => void;
+  /** 通用側欄：內容由呼叫端給（情境推演的依據用） */
+  openPanel: (content: React.ReactNode, color?: string) => void;
+  closeDrawer: () => void;
   toast: (msg: string, ms?: number) => void;
 };
+type DrawerState = { layer: string; focus?: string } | { content: React.ReactNode; color?: string } | null;
 const Ctx = createContext<Site | null>(null);
 export const useSite = () => {
   const c = useContext(Ctx);
@@ -29,7 +34,7 @@ const isSeason = (s: unknown): s is Season => typeof s === "string" && s in DATA
 export function SiteProvider({ children }: { children: React.ReactNode }) {
   /* 伺服器端一律先畫「復甦」；載入後換成這位訪客上次選的季節 */
   const [season, setSeasonState] = useState<Season>("spring");
-  const [drawer, setDrawer] = useState<{ layer: string; focus?: string } | null>(null);
+  const [drawer, setDrawer] = useState<DrawerState>(null);
   const [toastMsg, setToastMsg] = useState<{ text: string; id: number } | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -56,6 +61,8 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const openDrawer = useCallback((layer: string, focus?: string) => setDrawer({ layer, focus }), []);
+  const openPanel = useCallback((content: React.ReactNode, color?: string) => setDrawer({ content, color }), []);
+  const closeDrawer = useCallback(() => setDrawer(null), []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setDrawer(null); };
@@ -64,7 +71,7 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <Ctx.Provider value={{ season, setSeason, openDrawer, toast }}>
+    <Ctx.Provider value={{ season, setSeason, openDrawer, openPanel, closeDrawer, toast }}>
       {children}
       <Drawer state={drawer} onClose={() => setDrawer(null)} />
       <div className={toastMsg ? "toast show" : "toast"} role="status" aria-live="polite">{toastMsg?.text}</div>
@@ -73,14 +80,26 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
 }
 
 /* ---------- 四層抽屜：某一層的說明、觀測項目與最新動態 ---------- */
-function Drawer({ state, onClose }: { state: { layer: string; focus?: string } | null; onClose: () => void }) {
+function Drawer({ state, onClose }: { state: DrawerState; onClose: () => void }) {
   const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!state?.focus || !panel.current) return;
+    if (panel.current) panel.current.scrollTop = 0;
+    if (!state || !("focus" in state) || !state.focus || !panel.current) return;
     const el = panel.current.querySelector<HTMLElement>("[data-focus='1']");
     if (el) setTimeout(() => el.scrollIntoView({ block: "center", behavior: "smooth" }), 120);
   }, [state]);
   if (!state) return <div className="drawer" />;
+  if ("content" in state) {
+    return (
+      <div className="drawer open">
+        <div className="mask" onClick={onClose} />
+        <div className="panel" ref={panel} style={{ "--c": state.color || "var(--accent)" } as React.CSSProperties} role="dialog">
+          <button className="close" aria-label="關閉" onClick={onClose}><Icon name="close" /></button>
+          {state.content}
+        </div>
+      </div>
+    );
+  }
   const l = layerOf(state.layer);
   const news = DAILY.briefs.filter((b) => b.layer === l.id).slice(0, 3);
   const toDaily = l.page.startsWith("/daily");
@@ -91,8 +110,8 @@ function Drawer({ state, onClose }: { state: { layer: string; focus?: string } |
         <button className="close" aria-label="關閉" onClick={onClose}><Icon name="close" /></button>
         <span className="kicker">第 {+l.n} 層</span>
         <h3>{l.name}</h3>
-        <p style={{ color: "var(--ink-2)", margin: 0 }}>{l.desc}</p>
-        <div className="why"><b>估價師怎麼看：</b>{l.why}</div>
+        <p style={{ color: "var(--ink-2)", margin: 0 }}><G>{l.desc}</G></p>
+        <div className="why"><b>估價師怎麼看：</b><G>{l.why}</G></div>
         {news.length > 0 && (
           <div className="dr-news">
             <div className="dr-news-head">
@@ -111,8 +130,8 @@ function Drawer({ state, onClose }: { state: { layer: string; focus?: string } |
           {l.items.map((i) => (
             <div className="card" key={i.t} data-focus={i.t === state.focus ? "1" : undefined} style={i.t === state.focus ? { borderColor: "var(--c)" } : undefined}>
               <b>{i.t}</b>
-              <p>{i.s}</p>
-              <div className="impact"><b>對估價的影響：</b>{i.i}</div>
+              <p><G>{i.s}</G></p>
+              <div className="impact"><b>對估價的影響：</b><G>{i.i}</G></div>
             </div>
           ))}
         </div>

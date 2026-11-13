@@ -1,5 +1,6 @@
 "use client";
 
+import { G } from "./Gloss";
 import { Fragment, useState } from "react";
 import { DATA } from "@/data/site";
 import { KN } from "@/data/knowledge";
@@ -49,9 +50,9 @@ export function NotesList() {
               >
                 <div className="meta"><span className={`tag ${L.cls}`}>{L.name}</span><span>{a.date}</span><span>{a.venue}</span></div>
                 <h3>{a.title}</h3>
-                <div className="quote">{a.quote}</div>
-                <p>{a.summary}</p>
-                <div className="takes">{a.takeaways.map((t) => <span key={t}>{t}</span>)}</div>
+                <div className="quote"><G>{a.quote}</G></div>
+                <p><G>{a.summary}</G></p>
+                <div className="takes">{a.takeaways.map((t) => <span key={t}><G>{t}</G></span>)}</div>
                 <div className="aud">適合：{a.audience}　<span style={{ color: "var(--c)" }}>{open.has(a.id) ? "收起重點 ‹" : "點卡片展開重點 ›"}</span></div>
               </article>
             </Fragment>

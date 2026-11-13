@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/chain.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>01 計算鏈｜權變沙盤</title>
+<meta name="description" content="都市更新權利變換的四個數字：更新前權利價值 A、更新後房地總價 B、共同負擔 C、分回。每一個怎麼算、彼此怎麼串，以及三個常見誤會。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-exchange"/></svg>第 1 站</span>
+    <h1>四個數字怎麼串：A、B、C 與分回</h1>
+    <p class="lede">權利變換的分配，只用四個數字就能講完。更新前每一戶的土地權利值多少（A），蓋好之後整棟值多少（B），蓋這棟樓要花多少（C），B 減 C 之後依 A 的占比分回。這一站把每個數字的計算鏈攤開，後面三站各講其中一個。</p>
+    <div class="where"><span class="tag a">更新前權值 A</span><span class="tag b">更新後總價 B</span><span class="tag c">共同負擔 C</span><span class="tag d">分回與找補</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="chain4 reveal stagger" id="chain4"></div>
+    <div class="formula reveal" style="margin-top:14px">各戶分回價值 ＝ （<span class="b">B</span> − <span class="c">C</span>）× <span class="a">A<sub>我</sub></span> ÷ <span class="a">ΣA</span>　　分回坪數 ＝ 分回價值 ÷ 選配單價　　找補 ＝ 選配價值 − 分回價值</div>
+  </div>
+</section>
+
+<section class="section" id="a">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="tag a">A</span><h2 style="margin-top:6px">更新前權利價值：從比準地到每一戶</h2><p>這一條鏈最長，也是住戶最常問「我家為什麼比隔壁少」的地方。</p></div></div>
+    <div class="grid g2">
+      <div>
+        <div class="step-list">
+          <div class="card reveal"><div><b>比準地價格</b><p>先在更新單元裡（或合併後基地）定一個基準：這塊地如果是素地，一坪值多少。價格要有比較案例支撐。</p></div></div>
+          <div class="card reveal"><div><b>各宗調整率</b><p>每一宗土地跟比準地比，臨路、面寬、角地、地形、容積率各有差異，調整率相加（不是相乘），得到各宗合併前單價。</p></div></div>
+          <div class="card reveal"><div><b>合併增值係數</b><p>合併後基地的總價除以各宗合併前總價之和。地形變完整、面積變大，係數通常略大於一，每一宗按比例放大。</p></div></div>
+          <div class="card reveal"><div><b>宗地價分到各戶</b><p>同一宗裡的各戶，依土地貢獻占比分。區分所有建物先估各戶房地價值（比準戶 × 樓層別效用比 × 用途），再乘土地價值比率，得到每一戶對土地的貢獻。</p></div></div>
+          <div class="card reveal"><div><b>扣建物使用權、做找補</b><p>土地持分與建物面積不成比例的戶，要用建物使用權或找補把差距調回來。這一步做不做、怎麼做，要寫進估價條件。</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card reveal">
+          <h3>親手拉：比準地單價變了，我家分回變多少？</h3>
+          <p>示範基地四宗四十戶，示範戶在宗三三樓。拉動比準地單價，看 A 值與分回坪數怎麼變。</p>
+          <div class="sliders" style="margin-top:14px">
+            <label><span>比準地單價<output id="buOut">180 萬/坪</output></span><input type="range" id="bu" min="120" max="260" value="180" step="10"></label>
+            <label><span>宗三臨路調整<output id="adjOut">−2%</output></span><input type="range" id="adj" min="-8" max="8" value="-2" step="1"></label>
+          </div>
+          <div class="kpis" style="margin-top:14px" id="aKpi"></div>
+          <p class="note" style="margin-top:14px" id="aNote"></p>
+        </div>
+        <div class="card reveal" style="margin-top:14px">
+          <h3>樓層別效用比：由估價師依個案查估</h3>
+          <p>同一棟裡每一層相對於基準樓層的價值比，由三家估價師依比較案例與使用情況查估，沒有固定表。常見的方向是：無電梯公寓愈高愈便宜、一樓店面另以店面比準戶估、更新後電梯大樓愈高愈貴。本站試算用的數值只是讓流程能走的示範假設，不是標準，也不是任何案件的參考值。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="b">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="tag b">B</span><h2 style="margin-top:6px">更新後房地總價：蓋好之後整棟值多少</h2><p>分回能不能兌現，看這個數字有沒有市場支撐。</p></div></div>
+    <div class="grid g3">
+      <div class="card reveal"><span class="kicker">第一步</span><h3 style="margin-top:6px">容積變成坪數</h3><p>基地面積 × 法定容積率 × （1 ＋ 獎勵） ＝ 容積樓地板。加上陽台、梯廳等附屬面積，再除以（1 − 公設比），就是可以賣的坪數。公設比每差三個百分點，銷售坪數差約百分之五。</p></div>
+      <div class="card reveal"><span class="kicker">第二步</span><h3 style="margin-top:6px">三種產品分開估</h3><p>店面、住宅、車位各自有比準戶與單價，不能用一個均價乘總坪。店面與樓上住宅的倍數常態在一點五到兩倍；車位單價要跟同區新案一致。</p></div>
+      <div class="card reveal"><span class="kicker">第三步</span><h3 style="margin-top:6px">樓層別效用比</h3><p>更新後的電梯大樓以某一層為基準，各層依市場查估效用比，愈高通常愈貴，但斜率由個案決定。各戶選配的單價 ＝ 住宅均價 × 該樓層效用比，這個單價決定分回坪數。</p></div>
+    </div>
+    <div class="formula reveal" style="margin-top:14px"><span class="b">B</span> ＝ 店面坪 × 店面單價 ＋ 住宅坪 × 住宅均價 ＋ 車位數 × 車位單價</div>
+    <p class="note reveal" style="margin-top:14px">市場支撐怎麼看：找基地周邊近兩年、近五年完工的新成屋成交，算中位數與分位，更新後均價要落在合理分位並寫明。本站不含成交資料，可以去價值島的〈市場潮位〉看各區單價，或查實價登錄。</p>
+  </div>
+</section>
+
+<section class="section" id="c">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="tag c">C</span><h2 style="margin-top:6px">共同負擔：蓋這棟樓要花多少</h2><p>由全體所有權人依 A 值比例共同負擔，以更新後的房地折價抵付。</p></div></div>
+    <div class="grid g2">
+      <div class="card reveal">
+        <h3>十個項目</h3>
+        <div id="bItems" style="margin-top:10px"></div>
+      </div>
+      <div>
+        <div class="card reveal">
+          <h3>共負比 D ＝ C ÷ B</h3>
+          <p>由實施者依提列標準逐項提列、經審議會審議決定，每案不同。本站不給區間、不下結論，只把每一項怎麼算攤開。</p>
+          <p>共負比是一個比例，分母是 B。B 被喊高，比例會變漂亮，但地主分到的是價值不是比例，所以看共負比之前要先看 B 有沒有市場支撐。</p>
+          <div style="margin-top:14px"><a class="btn sm" href="burden.html">去共同負擔拆解，逐項看燈號</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="d">
+  <div class="container">
+    <div class="section-head reveal"><div><span class="tag d">分回</span><h2 style="margin-top:6px">分配、選配、找補</h2></div></div>
+    <div class="grid g3">
+      <div class="card reveal"><span class="kicker">分配</span><h3 style="margin-top:6px">依 A 的占比分 B − C</h3><p>地主全體分回的價值 ＝ B − C。每一戶拿到的 ＝ （B − C）× 自己的 A ÷ 全部 A 合計。所以比準地單價整個調高，每一戶的 A 都變大，占比不變，分回不變。</p></div>
+      <div class="card reveal"><span class="kicker">選配</span><h3 style="margin-top:6px">用分回價值去換房子</h3><p>分回的是價值。選高樓層單價高、坪數就少；選低樓層坪數多。同一筆分回價值，選配的樓層不同，拿到的坪數可以差一成。</p></div>
+      <div class="card reveal"><span class="kicker">找補</span><h3 style="margin-top:6px">選配價值與分回價值的差</h3><p>選的那戶價值比分回多，補錢；比分回少，領錢。找補總額很大，通常代表分配不公或選配順序有問題。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>三個常見誤會</h2></div></div>
+    <div class="myths" id="myths"></div>
+    <div style="margin-top:22px" class="reveal"><a class="btn accent" href="price.html">下一站：市價怎麼決定</a></div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=7"></script>
+<script src="assets/calc.js?v=7"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=7"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, C = window.RSC, $ = U.$;
+  $("#chain4").innerHTML = D.chain.map(c => `<a href="${c.page}" style="--c:var(--c-${c.c})"><div class="ico">${U.icon(c.ico)}</div><div class="k">${c.k}</div><h3>${c.t}</h3><p>${c.s}</p></a>`).join("");
+  $("#myths").innerHTML = D.myths.map((m, i) => `<div class="card myth reveal" style="transition-delay:${i * 80}ms"><span class="kicker">誤會 ${i + 1}</span><div class="q" style="margin-top:6px">${m.q}</div><div class="hint">點一下看為什麼</div><div class="ans">${m.a}</div></div>`).join("");
+  U.flip(".myth");
+  $("#bItems").innerHTML = D.burdenItems.map(b => `<details class="acc"><summary>${b.t}<span class="muted" style="font-weight:400;font-size:.8rem">${b.g}</span></summary><p>${b.s}。${b.how}</p></details>`).join("");
+
+  const base = { city: "tpe", site: D.demo.site, after: D.demo.after, burdenRatio: D.demo.burdenRatio, me: D.demo.me, pick: D.demo.pick };
+  const r0 = C.run(base);
+  const bu = $("#bu"), adj = $("#adj");
+  function upd() {
+    const lots = D.demo.site.lots.map(l => l.id === "宗三" ? { ...l, adj: { ...l.adj, road: +adj.value, width: 0 } } : l);
+    const r = C.run({ ...base, site: { ...D.demo.site, baseUnit: +bu.value * 1e4, lots } });
+    $("#buOut").textContent = bu.value + " 萬/坪";
+    $("#adjOut").textContent = (adj.value > 0 ? "+" : (adj.value < 0 ? "−" : "")) + Math.abs(adj.value) + "%";
+    $("#aKpi").innerHTML = `<div class="kpi"><span>示範戶 A 值</span><b>${U.wanShort(r.my.A)}</b></div><div class="kpi"><span>占全部 A 的比例</span><b>${U.pct(r.my.pct, 2)}</b></div><div class="kpi"><span>分回坪數</span><b>${r.pingBack.toFixed(1)} 坪</b></div>`;
+    const dA = r.my.A / r0.my.A - 1, dP = r.pingBack / r0.pingBack - 1;
+    $("#aNote").innerHTML = `比準地單價 ${bu.value} 萬時，示範戶 A 值比預設${dA >= 0 ? "多" : "少"} ${U.pct(Math.abs(dA))}，分回坪數${Math.abs(dP) < .002 ? "幾乎不變" : (dP > 0 ? "多" : "少") + " " + U.pct(Math.abs(dP))}。單價整體調整不改占比；改宗三的臨路調整率才會動到占比。`;
+  }
+  bu.oninput = adj.oninput = upd; upd();
+  U.reveal();
+})();
+</script>
+</body>
+</html>

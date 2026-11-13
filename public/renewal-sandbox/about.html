@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1">
+<meta name="theme-color" content="#1f6f6b">
+<link rel="canonical" href="https://zonetai.com/value-isle/renewal-sandbox/about.html">
+<script>(function(){if(/\.github\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}})();</script>
+<title>關於｜權變沙盤</title>
+<meta name="description" content="權變沙盤的資料來源、計算假設、規則庫版本、更新方式與免責。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker"><svg class="ic" aria-hidden="true"><use href="#i-tag"/></svg>關於本站</span>
+    <h1>這個沙盤怎麼算、依據什麼、哪裡不能用</h1>
+    <p class="lede">權變沙盤是價值島的姊妹站，由中泰不動產智庫整理。把都市更新權利變換的分配計算攤開給一般人看，是教學工具，不是估價報告。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid g2">
+      <div class="card reveal">
+        <h3>計算假設</h3>
+        <p>更新前權利價值採「比準地 × 各宗調整率（相加） × 合併增值係數」分到各宗，宗內各戶依建物面積 × 樓層別效用比 × 用途係數的占比分配；也可以切換成依土地持分分配，兩種結果的差距就是持分不均找補要處理的部分。建物使用權與地下室產權的分算，第一版未納入。</p>
+        <p>更新後總價以容積樓地板 × 附屬面積倍數 ÷（1 − 公設比）得到銷售坪數，店面、住宅、車位分開計價。共同負擔在試算頁以共負比輸入，在拆解頁逐項計算；風險管理費以其他費用合計為基數。</p>
+        <p>三情境固定變動三個參數：更新後均價正負一成、共負比正負五點、獎勵容積正負十點，上限依都市更新容積獎勵上限百分之五十。</p>
+      </div>
+      <div class="card reveal">
+        <h3>燈號的門檻</h3>
+        <p>燈號分三級：要有說明、先查、通過。門檻一部分來自法規與主管機關提列標準（例如臺北市公辦都更不提列人事行政管理費、風險管理費率上限），一部分是教學門檻（例如店面與樓上倍數、公設比的常見範圍），每一個項目的出處都寫在展開後的最後一行。共負比與樓層別效用比兩項本站刻意不給區間、不做判定：共負比由審議會逐項審議決定，效用比由三家估價師依個案查估，給了數字反而會讓人定錨。</p><p>共同負擔試算的規則庫收錄臺北市費用提列總表（110.01.15 版費率）、臺北市建築物工程造價要項（113.02）、新北市提列共同負擔項目及金額基準（110.09.08 版費率，營建單價物價基準日 112.04）。市價與法規兩站的內容整理自事務所的都更估價教學簡報與講稿。</p>
+      </div>
+      <div class="card reveal">
+        <h3>資料來源</h3>
+        <ul class="plain" style="padding-left:18px;list-style:disc;font-size:.9rem;color:var(--ink-2)">
+          <li>都市更新條例、都市更新權利變換實施辦法</li>
+          <li>不動產估價技術規則第十二章</li>
+          <li id="rulesVer"></li>
+          <li>臺北市建築物工程造價要項（113.02）；新北市提列共同負擔項目及金額基準（110.09.08）</li><li>全聯會第六號公報、第四號公報、第一號估價作業通則</li><li>中泰不動產估價師聯合事務所都更估價教學簡報與講稿（115 年）</li>
+        </ul>
+        <p>示範基地的數字是教學用的區間中值組合，不對應任何實際案件。</p>
+      </div>
+      <div class="card reveal">
+        <h3>更新方式與免責</h3>
+        <p>內容與規則庫版本記在 <span class="mono">assets/data.js</span> 與 <span class="mono">assets/calc.js</span>，資料整理至 <span id="asOf"></span>。試算輸入值會編進網址供分享，不會上傳到任何伺服器；自檢表的勾選紀錄留在你的瀏覽器裡。</p>
+        <p>本站內容為教學用一般性整理，試算結果不構成估價意見、投資或法律建議，也不是審議依據。實際案件以三家估價報告、主管機關現行規定與審議決議為準。</p>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn ghost sm" href="../index.html">回價值島</a><a class="btn ghost sm" href="../far-payment/index.html">容積代金學堂</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal"><div><h2>辭典</h2></div></div>
+    <div class="glossary card reveal" id="glossary"></div>
+  </div>
+</section>
+
+<script src="assets/data.js?v=7"></script>
+<script src="../assets/icons.js?v=14"></script>
+<script src="assets/common.js?v=7"></script>
+<script>
+(function(){
+  const D = window.RS, U = window.RSU, $ = U.$;
+  $("#rulesVer").textContent = D.rulesVer;
+  $("#asOf").textContent = D.asOf;
+  $("#glossary").innerHTML = D.glossary.map(g => `<details><summary>${g.t}</summary><p>${g.d}</p></details>`).join("");
+  U.reveal();
+})();
+</script>
+</body>
+</html>

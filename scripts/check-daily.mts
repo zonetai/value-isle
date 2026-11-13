@@ -2,6 +2,8 @@
    每日排程推送前一定要跑；有錯就回傳 1，排程不得推送。 */
 import { readFileSync } from "node:fs";
 import { DAILY } from "../data/daily.ts";
+import { LEANS } from "../data/daily-types.ts";
+import { DATA } from "../data/site.ts";
 
 const errors: string[] = [];
 const warns: string[] = [];
@@ -32,13 +34,38 @@ DAILY.topics.forEach((t, i) => {
   if (t.layer && !LAYERS.includes(t.layer)) errors.push(`topics[${i}] layer 錯誤：${t.layer}`);
 });
 
+/* 情境推演的目前方向（首頁「如果…」）：不得刪除，每個情境都要有判讀與依據 */
+const O = DAILY.outlook;
+if (!O || !O.items) errors.push("缺少 outlook（首頁情境推演的目前方向），不得刪除");
+else {
+  if (O.updated && !isDate(O.updated)) errors.push(`outlook.updated 不是 YYYY-MM-DD：${O.updated}`);
+  for (const sc of DATA.scenarios) if (!O.items[sc.id]) errors.push(`outlook.items 少了情境「${sc.id}」（${sc.t}）`);
+  for (const [id, o] of Object.entries(O.items)) {
+    const at = `outlook.items.${id}`;
+    if (!o.lean) errors.push(`${at} 缺少 lean`);
+    else if (!(LEANS as readonly string[]).includes(o.lean)) errors.push(`${at} 的 lean 只能是 ${LEANS.join("／")}：${o.lean}`);
+    if (!o.now) errors.push(`${at} 缺少 now`);
+    else if (o.now.length > 60) warns.push(`${at} 的 now ${o.now.length} 字，建議 60 字內`);
+    if (!o.basis?.length) errors.push(`${at} 至少要有 1 則依據（basis）`);
+    else {
+      if (o.basis.length > 5) warns.push(`${at} 有 ${o.basis.length} 則依據，建議最多 5 則`);
+      o.basis.forEach((b, k) => {
+        if (!b.t || !b.src || !b.url) errors.push(`${at}.basis[${k}] 缺少 t、src 或 url`);
+        if (b.url && !/^https?:\/\//.test(b.url)) errors.push(`${at}.basis[${k}] 網址要以 http 開頭`);
+        if (b.d && !/^\d{4}(-\d{2}(-\d{2})?)?$/.test(b.d)) warns.push(`${at}.basis[${k}] 日期建議寫成 YYYY-MM-DD（或只到年、月）：${b.d}`);
+        if (b.t && b.t.length > 40) warns.push(`${at}.basis[${k}] 標題 ${b.t.length} 字，建議 40 字內`);
+      });
+    }
+  }
+}
+
 /* 用詞禁忌：全站不使用「洋流」；不用破折號「——」 */
 const text = readFileSync(new URL("../data/daily.ts", import.meta.url), "utf8");
 if (text.includes("洋流")) errors.push("出現禁用詞「洋流」（國際這一層一律稱「國際海象」）");
 if (text.includes("——")) warns.push("出現破折號「——」");
 
 const per = Object.fromEntries(LAYERS.map((l) => [l, DAILY.briefs.filter((b) => b.layer === l).length]));
-console.log(`updated ${DAILY.updated}｜${DAILY.briefs.length} 則快訊（國際 ${per.intl}、政策 ${per.policy}、市場 ${per.market}、個案 ${per.ind}）｜${DAILY.topics.length} 個專題`);
+console.log(`updated ${DAILY.updated}｜${DAILY.briefs.length} 則快訊（國際 ${per.intl}、政策 ${per.policy}、市場 ${per.market}、個案 ${per.ind}）｜${DAILY.topics.length} 個專題｜目前方向更新至 ${O?.updated ?? "—"}`);
 warns.forEach((w) => console.log("提醒：" + w));
 if (errors.length) {
   errors.forEach((e) => console.error("錯誤：" + e));
