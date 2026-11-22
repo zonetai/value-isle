@@ -116,7 +116,7 @@
   VI.layerDaily = (layerId, sel, opts = {}) => VI.loadDaily(DAILY => {
     const el = $(sel), L = D.layers.find(l => l.id === layerId); if (!el || !L) return;
     if (!DAILY) { el.style.display = "none"; return; }
-    const items = DAILY.briefs.filter(b => b.layer === layerId).slice(0, opts.n || 4), topics = DAILY.topics.filter(t => t.layer === layerId);
+    const items = DAILY.briefs.filter(b => b.layer === layerId).slice(0, opts.n || 4), topics = DAILY.topics.filter(t => t.layer === layerId && !t.archived);
     if (!items.length && !topics.length) { el.style.display = "none"; return; }
     el.style.setProperty("--c", L.hex);
     el.innerHTML = `<div class="ld-head"><div><span class="kicker"><i class="ld-live"></i>最新動態 · 更新至 ${DAILY.updated}</span><h2>${opts.title || L.name + "的最新動態"}</h2><p>${opts.desc || "每天早上自動整理，每則附出處與對估價的影響。"}</p></div><a class="btn ghost sm" href="daily.html#layer-${layerId}">看這一層全部動態</a></div>

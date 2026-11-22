@@ -13,7 +13,7 @@
 <title>每日觀測｜價值島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=20">
+<link rel="stylesheet" href="assets/style.css?v=21">
 </head>
 <body>
 
@@ -53,9 +53,9 @@
   </div>
 </section>
 
-<script src="assets/data.js?v=20"></script>
-<script src="assets/icons.js?v=20"></script>
-<script src="assets/common.js?v=20"></script>
+<script src="assets/data.js?v=21"></script>
+<script src="assets/icons.js?v=21"></script>
+<script src="assets/common.js?v=21"></script>
 <script>
 (function(){
   const D = window.DATA, VI = window.VI, $ = VI.$, $$ = VI.$$, esc = VI.esc;
@@ -66,14 +66,16 @@
 
   VI.loadDaily(DAILY => {
     if (!DAILY) { $("#feed").innerHTML = `<div class="card">今日資料載入失敗，請稍後重新整理。</div>`; return; }
-    $("#updated").textContent = DAILY.updated; $("#sched").textContent = DAILY.schedule || ""; $("#count").textContent = `${DAILY.briefs.length} 則快訊・${DAILY.topics.length} 個專題`;
+    $("#updated").textContent = DAILY.updated; $("#sched").textContent = DAILY.schedule || ""; $("#count").textContent = `${DAILY.briefs.length} 則快訊・${DAILY.topics.filter(t => !t.archived).length} 個專題`;
     let view = "briefs", cat = "全部";
     const readHash = () => { const h = location.hash.replace("#", ""); if (h.startsWith("layer-")) { view = "briefs"; cat = h.slice(6); } else view = h || "briefs"; };
     readHash();
-    const tabs = [{ id: "briefs", t: "每日快訊" }, ...DAILY.topics.map(t => ({ id: t.id, t: "專題：" + t.title }))];
+    /* 專題依議題新舊排列；設了 archived 的移到「較早」 */
+    const tabs = [{ id: "briefs", t: "每日快訊" }, ...DAILY.topics.filter(t => !t.archived).map(t => ({ id: t.id, t: t.title })), ...DAILY.topics.filter(t => t.archived).map(t => ({ id: t.id, t: t.title, old: true }))];
 
     function renderTabs(){
-      $("#tabs").innerHTML = tabs.map(t => `<button class="${t.id===view?"on":""}" data-v="${t.id}">${t.t}</button>`).join("");
+      const firstOld = tabs.findIndex(t => t.old);
+      $("#tabs").innerHTML = tabs.map((t, i) => (i === 1 && !t.old ? `<span class="tabs-label">專題</span>` : "") + (i === firstOld ? `<span class="tabs-label">較早的專題</span>` : "") + `<button class="${t.id===view?"on":""}${t.old?" old":""}" data-v="${t.id}">${esc(t.t)}</button>`).join("");
       $$("#tabs button").forEach(b => b.onclick = () => { view = b.dataset.v; history.replaceState(null, "", "#" + view); render(); });
     }
     function renderBriefs(){
@@ -87,6 +89,7 @@
       const L = layerOf(t.layer); let h = `<div class="topic-head card" style="--c:${L.hex}"><div class="meta"><span class="tag ${L.cls}">${L.name}</span><span class="mono">${esc(t.date || "")}</span></div><h2>${esc(t.title)}</h2><div class="status">${esc(t.status || "")}</div><p>${esc(t.summary || "")}</p></div>`;
       if (t.groups) h += t.groups.map(g => `<div class="tgroup"><h3>${esc(g.name)}</h3><div class="tgrid">${g.items.map(it => `<div class="card titem"><b>${esc(it.t)}</b><p>${esc(it.s)}</p><div class="src">${link(it.src, it.url)}</div></div>`).join("")}</div></div>`).join("");
       if (t.themes) h += `<div class="themes">${t.themes.map((th, i) => `<details class="card theme" ${i===0?"open":""}><summary><span class="n">${String(i+1).padStart(2,"0")}</span><span><b>${esc(th.t)}</b><small>${esc(th.s)}</small></span></summary><div class="pos">${th.positions.map(p => `<div class="p"><div class="who">${esc(p.who)}</div><div class="say">${esc(p.say)}</div><div class="src">${link(p.src, p.url)}${p.date?`　${esc(p.date)}`:""}</div></div>`).join("")}</div>${th.note?`<div class="tnote">${esc(th.note)}</div>`:""}<div class="impact">${esc(th.i)}</div></details>`).join("")}</div>`;
+      if (t.columns && t.columns.length) h += `<div class="tgroup tcols"><h3>專欄怎麼寫</h3><div class="tgrid">${t.columns.map(c => { const ext = /^https?:/.test(c.url); return `<a class="card titem tcol" href="${esc(c.url)}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tcol-meta">${esc(c.venue)}${c.d ? "・" + esc(c.d) : ""}</span><b>${esc(c.t)}</b><p>${esc(c.note || "")}</p><span class="tcol-go">${ext ? "讀全文" : "看重點摘要"}</span></a>`; }).join("")}</div></div>`;
       h += `<div class="two-col" style="margin-top:22px"><div class="card"><span class="kicker">估價師怎麼讀</span><p style="margin:8px 0 0;font-size:.95rem;color:var(--ink-2)">${esc(t.appraiser || "")}</p></div><div class="card"><span class="kicker">接下來看什麼</span><div class="bullets" style="margin-top:10px">${(t.watch || []).map(w => `<div>${esc(w)}</div>`).join("")}</div></div></div>`;
       $("#view-topic").innerHTML = h;
     }

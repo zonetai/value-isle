@@ -266,6 +266,30 @@ window.DAILY = {
   /* ---------- 專題 ---------- */
   topics: [
     {
+      id: "us-compute-rule", layer: "intl", title: "美國管制遠端算力租用", date: "2026-11-16 公布",
+      status: "暫行最終規則預定 11/19 刊登聯邦公報後生效；臺灣不在須申請許可的五國名單內",
+      summary: "美國商務部 11 月 16 日公布新規則，把管制從「晶片運到哪裡」擴大到「算力租給誰」，並要求先進晶片出口到東南亞四國與巴西須先申請許可。這件事對臺灣不動產的關係在資料中心與廠辦用地：規則本身已經有生效日，但它會讓多少需求移到臺灣，目前還只是推估。",
+      groups: [
+        { name: "規則內容", items: [
+          { t: "11/16 公布暫行最終規則，刊登聯邦公報當日生效", s: "規則名稱為「處理先進半導體的遠端存取」，預定 11/19 刊登；刊登後 60 天內收受意見。", src: "Nixon Peabody 出口管制快訊", url: "https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers" },
+          { t: "海外資料中心把大量算力租給列管國家的企業，須先取得許可", s: "對象是總部或最終母公司在中國等列管國家的企業，門檻為合計超過 1,200 萬 TPP；已在提供這類服務者，生效後 90 天內要取得許可。", src: "Nixon Peabody 出口管制快訊", url: "https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers" },
+          { t: "先進晶片出口印尼、馬來西亞、新加坡、泰國、巴西改為須申請許可", s: "逐案審查；同時正式廢止前一任政府的 AI 擴散規則。", src: "Nixon Peabody 出口管制快訊", url: "https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers" }
+        ] },
+        { name: "臺灣的反應", items: [
+          { t: "經濟部：持續與美方就管制作法交換意見", s: "稱臺美今年 2 月簽訂的對等貿易協定已承諾強化出口管制合作，並會與產業一起注意法規調整。", src: "聯合報", url: "https://udn.com/news/story/7240/9885262" },
+          { t: "法人：對晶圓代工直接影響有限，留意訂單遞延", s: "出口到五國的受管制晶片都要先申請許可，出貨時程可能拉長；美系雲端業者在東南亞的資料中心適用豁免。", src: "聯合報", url: "https://udn.com/news/story/7240/9885217" }
+        ] },
+        { name: "資料中心用地的限制", items: [
+          { t: "北部 5MW 以上資料中心用電申請，2023 年 9 月起暫緩", s: "台電 2026 年 7 月表示，大潭電廠新機組已接受調度、協和電廠改建通過環評，桃園與基隆若在電廠附近規劃專區，可以合作設置。", src: "經濟日報", url: "https://money.udn.com/money/story/5612/9630433" }
+        ] }
+      ],
+      columns: [
+        { t: "美國管起遠端租算力，台灣站在哪裡", venue: "中泰不動產智庫專欄", d: "2026-11-19", note: "把規則本身和它的影響分開看：規則已到「生效」這一級，需求會不會移到臺灣還停在「僅有消息」。", url: "https://zonetai.com/housenewsdetail/%E7%BE%8E%E5%9C%8B%E7%AE%A1%E8%B5%B7%E9%81%A0%E7%AB%AF%E7%A7%9F%E7%AE%97%E5%8A%9B" }
+      ],
+      appraiser: "資料中心用地或廠辦，供電承諾與是否位於專區是個別因素的重點；沒有供電承諾的土地，不宜以資料中心用途推算價格。收益型的資料中心，要留意承租人與最終母公司的國別，合規風險反映在收益法的風險溢酬。比較案例若是題材發酵後的成交，不要再以同一個題材往上調一次。",
+      watch: ["聯邦公報刊登與 60 天意見徵詢","出口五國的許可核發情形與訂單遞延","經濟部與美方的協商","北部資料中心專區與供電的正式公告"]
+    },
+    {
       id: "nvidia-ceo", layer: "intl", title: "輝達換執行長之後", date: "2026-11-12 公告",
       status: "財務長暫代執行長，董事會遴選正式人選中；11/17 公布財報，季營收 1,158 億美元",
       summary: "輝達董事會 11 月 12 日宣布創辦人辭去總裁、執行長與董事，即日生效。這件事對臺灣不動產沒有直接關係，影響經由三條路傳進來：臺股與匯率的震盪、AI 供應鏈的訂單與擴廠信心，以及輝達在北投士林科技園區的海外總部案。以下只列已有出處的事實與公開說法，不推測後續人事。",
@@ -293,40 +317,61 @@ window.DAILY = {
           { t: "房市專家：未來半年量縮價穩、高檔盤整", s: "認為人事異動不等於撤資，但買方會轉趨觀望；價格明顯超前區域行情、投資性需求較高的產品，議價空間可能擴大。", src: "聯合報", url: "https://udn.com/news/story/7241/9881150" }
         ] }
       ],
+      columns: [
+        { t: "輝達換了執行長，台灣該重估什麼", venue: "中泰不動產智庫專欄", d: "2026-11-18", note: "把重大建設分成五級來看，北士科總部站在「已掛建照」這一級，人事異動沒有改變它的級數。", url: "https://zonetai.com/housenewsdetail/%E8%BC%9D%E9%81%94%E6%8F%9B%E4%BA%86%E5%9F%B7%E8%A1%8C%E9%95%B7" }
+      ],
       appraiser: "估價上分兩層看。股市與匯率的震盪屬於一般因素，影響買方的資金與信心，通常要一到兩季才反映在成交量價上。北士科一帶則是區域因素：總部案目前履約正常，估價時依「已簽約、建照已掛件、尚未動工」的確定程度處理，尚未實現的產業效益不宜全數算進價格。公告日之後成交的比較案例，要留意議價幅度是否擴大，並做期日修正。",
       watch: ["財報公布後臺股與外資動向", "正式執行長人選，以及新團隊對臺投資的說法", "11 月底北士科總部案都審委員會", "外資買賣超與新臺幣匯率", "北士科周邊新案的成交量與議價幅度"]
     },
     {
-      id: "us-midterm", layer: "intl", title: "美國期中選舉之後", date: "2026-11-03 投票",
-      status: "民主黨取得參眾兩院多數，少數席次未定；新國會 2027 年 1 月就任",
-      summary: "選舉結果本身不直接改變關稅與利率，但改變了市場對政策的預期。選後一週美股、臺股與新臺幣大幅震盪，市場同時在消化聯準會 12 月可能升息與 AI 資料中心監管的疑慮。對臺灣不動產的影響，主要經由利率、匯率與股市財富效果傳導。",
+      id: "renewal-contract", layer: "policy", title: "都更契約有了民間範本", date: "2026-11-11 公布",
+      status: "住保會公布合建、委建兩份範本，已有個案採用；屬參考性質，不具強制力",
+      summary: "都更與危老的合建契約，過去沒有官方範本。11 月 11 日住宅消保會與 30 位律師公布民間版範本，重點在土地不得被拿去融資，以及停工後的續建機制。履約保障補上了，但地主最在意的分回多少、找補怎麼算，仍由個案契約約定，這一段要回到估價。",
       groups: [
-        { name: "選舉結果", items: [
-          { t: "參議院：民主黨陣營至少 54 席、共和黨 44 席，2 席未定", s: "較選前翻轉 7 席；選前為共和黨 53 席、民主黨陣營 47 席。", src: "NBC News", url: "https://www.nbcnews.com/politics/2026-elections/senate-results" },
-          { t: "眾議院：民主黨已過半，最終席次未定", s: "各家統計在 252 至 255 席之間，仍有十餘席未判定；選前為共和黨 218 席、民主黨 214 席。", src: "NBC News", url: "https://www.nbcnews.com/politics/2026-elections/house-results" },
-          { t: "新國會 2027 年 1 月就任，總統仍握有否決權", s: "年底前的跛鴨會期仍由共和黨掌握兩院；民主黨在兩院均未達推翻否決所需的三分之二。", src: "CNBC", url: "https://www.cnbc.com/2026/11/09/congress-government-funding-debt-limit-elections.html" }
+        { name: "範本內容", items: [
+          { t: "住保會與 11 家法律事務所、30 位律師公布合建、委建兩份範本", s: "公開在住保會官網供參考。要求清楚記載雙方資訊、土地標示與權利清理，並約定關鍵時間節點；逾期時雙方都可催告、解約與請求損害賠償。", src: "聯合報", url: "https://house.udn.com/house/story/123589/9874303" },
+          { t: "合建版：不得約定建方以地主土地融資或設定抵押權", s: "避免土地被拿去作其他建案或關係企業的擔保。", src: "聯合報", url: "https://house.udn.com/house/story/123589/9874303" },
+          { t: "承攬人須拋棄民法第 513 條法定抵押權，降低續建受阻的風險", s: "營造廠與下包也不得對地主分得的房地持分主張權利。", src: "住展雜誌", url: "https://www.myhousing.com.tw/n/n01/n0102/305427/" },
+          { t: "已有個案採用：三重損鄰倒塌都更案重啟", s: "新建商接手後採住保會版契約，基地由 97.4 坪擴大到 145 坪，規劃 32 戶。", src: "聯合報", url: "https://udn.com/news/story/7323/9884371" }
         ] },
-        { name: "選後一週的市場", items: [
-          { t: "美股劇烈震盪", s: "11/4 道瓊漲 3.03%；11/5 標普 500 跌 4.4%、那斯達克跌 5.5%；11/9 標普 500 反彈 2.35%。報導指市場擔憂資料中心建設放緩。", src: "CNBC", url: "https://www.cnbc.com/2026/11/08/stock-market-today-live-updates.html" },
-          { t: "美債殖利率走低", s: "10 年期美債殖利率 11/6 收 4.86%，自 10 月初以來下滑約 45 個基點。", src: "Wolf Street", url: "https://wolfstreet.com/2026/11/07/would-be-a-worrisome-sign-for-the-bond-market-if-treasury-yields-turn-higher-next-week/" },
-          { t: "臺股一度失守 4 萬點，國安基金授權進場", s: "11/6 加權指數收 39,701 點，較今年高點回落約兩成；11/9 反彈 1,960 點收 41,661 點，外資仍連續賣超。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611060270.aspx" },
-          { t: "新臺幣貶至 32.88 元", s: "11/9 收 32.882 元，匯銀人士指外資賣股匯出未止。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611090222.aspx" }
-        ] },
-        { name: "政策含意（已有報導者）", items: [
-          { t: "關稅：國會換屆不直接改變稅率", s: "關稅由總統依國會既有授權訂定；民主黨擬提案收回權限，但難以跨過否決門檻。", src: "Council on Foreign Relations", url: "https://www.cfr.org/articles/democrats-win-control-of-congress-heres-how-that-could-affect-u-s-foreign-policy" },
-          { t: "聯準會：市場定價 12 月 9 日升息 1 碼的機率約七成以上", s: "10 月非農新增 16.5 萬人、失業率 4.1%；國內銀行估升息機率逾 75%，短期美元偏強。", src: "經濟日報", url: "https://udn.com/news/story/7239/9866610" },
-          { t: "10 月 CPI 高於預期，12 月升息定價升至 88%", s: "11/10 公布 CPI 月增 0.4%，預期 0.3%；升 2 碼機率 11%，一週前為零。", src: "CNBC", url: "https://www.cnbc.com/2026/11/10/market-spooked-because-now-the-fed-may-need-a-supersized-hike-in-december.html" },
-          { t: "財政：政府撥款 12 月 11 日到期，債務上限估 2027 年觸頂", s: "年底前須通過臨時或全年撥款法案；智庫預期 2027 年出現債限僵局。", src: "CNBC", url: "https://www.cnbc.com/2026/11/09/congress-government-funding-debt-limit-elections.html" },
-          { t: "對臺與晶片：關稅與軍售仍由行政部門主導", s: "半導體 232、301 關稅與對臺軍售進度不因國會換屆直接改變，變的是監督力道。", src: "數位時代", url: "https://www.bnext.com.tw/article/92878/us-midterm-elections-2026-result-taiwan-tariff" }
-        ] },
-        { name: "傳到臺灣房市的路徑", items: [
-          { t: "股市到房市：第 4 季保守看待", s: "專家指 9 月央行雖放寬管制，但臺股急跌使第 4 季買氣仍須保守，全年周轉率初估 2.5% 至 2.7%。", src: "經濟日報", url: "https://udn.com/news/story/7241/9865684" },
-          { t: "資金短期難由股市轉進房市", s: "業者認為投資人資金受困、房貸不易取得，短期難見明顯移轉。", src: "鏡週刊", url: "https://www.mirrormedia.mg/story/20261106fin009" },
-          { t: "匯率：外資匯出與升息預期壓抑新臺幣", s: "匯銀人士認為貶勢短期不易扭轉。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611090222.aspx" }
+        { name: "和估價有關的部分", items: [
+          { t: "分回面積與計算式留白，估價師由建方協助指定", s: "專欄逐條對照後指出，地主沒有參與選任估價師的管道，對估價結果有異議也沒有處理程序。", src: "中泰不動產智庫專欄", url: "https://zonetai.com/housenewsdetail/%E5%88%86%E9%85%8D%E7%9A%84%E5%83%B9%E6%A0%BC%E8%AA%B0%E4%BE%86%E6%8A%8A%E9%97%9C" },
+          { t: "坪差找補以建方的銷售底價為基準", s: "住保會版約定坪差 10% 以內按建方首次公開銷售底價 95 折，超過部分按底價計算；底價由建方自己訂。", src: "中泰不動產智庫專欄", url: "https://zonetai.com/housenewsdetail/%E5%88%86%E9%85%8D%E7%9A%84%E5%83%B9%E6%A0%BC%E8%AA%B0%E4%BE%86%E6%8A%8A%E9%97%9C" },
+          { t: "對照：權利變換的估價者由實施者與地主共同指定", s: "都市更新條例第 50 條規定委任三家以上估價者查估；無法共同指定時，實施者指定一家，其餘二家自主管機關建議名單公開、隨機選任。這套程序只適用權利變換。", src: "全國法規資料庫", url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0070008&flno=50" }
         ] }
       ],
-      appraiser: "估價上這屬於「一般因素」的變動。短期看三個數字：12 月聯準會與臺灣央行的利率決策、新臺幣匯率、臺股是否回穩。它們影響收益法的折現率與買方的資金成本，但不會直接出現在比較法的成交案例裡，要等一到兩季才看得到量價反應。",
-      watch: ["12/9 聯準會利率決策", "12/11 美國政府撥款期限", "12 月臺灣央行理監事會", "外資買賣超與新臺幣匯率"]
+      columns: [
+        { t: "都更契約有了民間範本，分配的價格誰來把關？", venue: "中泰不動產智庫專欄", d: "2026-11-17", note: "履約保障寫得紮實，價值查估的部分還要靠個案契約補上；建議補四項約定：估價師選任、找補基準、價格調整門檻、管理人報酬脫鉤。", url: "https://zonetai.com/housenewsdetail/%E5%88%86%E9%85%8D%E7%9A%84%E5%83%B9%E6%A0%BC%E8%AA%B0%E4%BE%86%E6%8A%8A%E9%97%9C" }
+      ],
+      appraiser: "協議合建與危老重建不適用權利變換的估價程序，估價師怎麼選、價格怎麼定，全看契約。估價上看三件事：分回比例背後的更新後價值與共同負擔假設、找補單價用的是誰訂的價格、行情大幅變動時有沒有重新檢討的約定。",
+      watch: ["範本的實際採用件數","主管機關會不會訂定契約範本或應記載事項","建方與相關公會的回應"]
+    },
+    {
+      id: "songshan-airport", layer: "policy", title: "松山機場遷建", date: "2026-10-08 提出",
+      status: "市府提出構想，中央稱評估保守需 20 年，尚無核定計畫；選舉期間議題，依各方公開說法整理",
+      summary: "臺北市政府 10 月 8 日提出松山機場遷建構想，原址約 300 公頃規劃作 AI 產業、住宅與公園，並解除周邊的航高限制。遷不遷是中央與市府要談的事，這裡只整理各方公開說法，以及專欄從估價角度拆開來看的三層因素：機場搬走，不等於周邊每一塊地都增值。",
+      groups: [
+        { name: "各方說法", items: [
+          { t: "臺北市政府 10/8 提出遷建構想，原址約 300 公頃", s: "規劃分作 AI 產業、住宅與公園。", src: "今周刊", url: "https://www.businesstoday.com.tw/article/category/183027/post/202610080015/" },
+          { t: "交通部：遷建評估保守需 20 年", s: "10/15 行政院會後表示；衛福部重申松機對離島醫療後送的重要性。臺北市長回應，現在開始評估可以加速。", src: "聯合報", url: "https://udn.com/news/story/6656/9817133" },
+          { t: "民航局與北市府，對過去的立場說法不同", s: "民航局引審查會議紀錄，指北市代表對「松山國際機場 2040 年整體規劃」敬表尊重；北市府稱預算申請不等於遷移主張。行政院長要求補資料。", src: "今周刊", url: "https://www.businesstoday.com.tw/article/category/183027/post/202610150019/" },
+          { t: "民進黨臺北市長參選人：未說明遷往何處", s: "11/5 表示社子島應優先處理。", src: "自由時報", url: "https://news.ltn.com.tw/news/politics/paper/1777197" },
+          { t: "民進黨桃園市長參選人：遷移將影響桃園機場運能", s: "11/9 提出，並質疑市府為何不爭取 AI 園區。", src: "自由時報", url: "https://news.ltn.com.tw/news/politics/breakingnews/5634129" },
+          { t: "選舉公報未列入遷建", s: "臺北市長 11/17 回應，已在記者會、議會專案報告與行政院說明。", src: "聯合報", url: "https://udn.com/news/story/124652/9883915" }
+        ] },
+        { name: "專欄拆開來看的三層因素", items: [
+          { t: "總體：價格在宣告日反映，供給要等生效日之後", s: "國外機場從關閉到第一批住戶入住，多為 7 到 8 年，香港啟德長達 15 年。政見、核定、生效是三個不同的價格日期。", src: "住展雜誌「房價之外」專欄", url: "notes.html#songshan-airport-relocation" },
+          { t: "區域：園區是需求，住宅是供給，公園只惠及緊鄰", s: "6.5 萬個就業機會要經過通勤半徑、所得與住宅供給三道轉換，才成為在地需求；3.5 萬居住人口約 1.4 萬戶，對既有市場是供給。", src: "住展雜誌「房價之外」專欄", url: "notes.html#songshan-airport-relocation" },
+          { t: "個別：限高解除不等於容積變多", s: "水平面限制只在跑道南側，2008 年已放寬到 90 公尺；民生社區多數小基地受限的是容積率與建蔽率，真正被壓低的是北側濱江、大直沿河的土地。", src: "住展雜誌「房價之外」專欄", url: "notes.html#songshan-airport-relocation" },
+          { t: "權屬：機場 213 公頃都是國有地", s: "釋出的產業用地依法不得標售，只能設定地上權，估的是權利金，不是所有權。", src: "住展雜誌「房價之外」專欄", url: "notes.html#songshan-airport-relocation" }
+        ] }
+      ],
+      columns: [
+        { t: "松機遷建，地價一定漲？", venue: "住展雜誌「房價之外」專欄", d: "2026-12 月號", note: "總體看方向，區域看三股力量，個別看自己腳下那塊地。", url: "notes.html#songshan-airport-relocation" },
+        { t: "松機遷建，估價師看總體、區域與個別不動產市場影響", venue: "中泰不動產智庫專欄", d: "2026-10-28", note: "同一題目的網路版，逐區說明利多與風險。", url: "https://zonetai.com/housenewsdetail/%E6%9D%BE%E5%B1%B1%E6%A9%9F%E5%A0%B4%E9%81%B7%E5%BB%BA" }
+      ],
+      appraiser: "目前只有構想，沒有核定計畫。估價報告只記載來源與日期，不作量化調整。航高限制區內 10 月 8 日之後的成交，可能已經含有遷建預期，引用時要說明。對都更案，更新前價值若先反映預期，更新後價值與共同負擔沒有變，權利變換的協商會更難。",
+      watch: ["11/28 選後市府與中央的說法","中央是否啟動遷建評估","桃園機場第三航廈的進度","航高限制區成交量與單價的變化"]
     },
     {
       id: "tw-local", layer: "policy", title: "九合一選舉的住宅與土地議題", date: "2026-11-28 投票",
@@ -397,8 +442,49 @@ window.DAILY = {
           note: "單方資料：皆為中央政府部門說法。",
           i: "貸款成數與利息補貼是金融面的一般因素，影響購屋資金成本與有效需求；容積獎勵則影響重建案的開發量體與土地價值。" }
       ],
+      columns: [
+        { t: "79萬戶老屋的兩種解法：高雄市長選舉都更危老政見比較與市場觀察", venue: "中泰不動產智庫專欄", d: "2026-11-10", note: "一方談融資與安置，一方談補助與窗口，兩套方案都還沒回答財務算不算得過來。", url: "https://zonetai.com/housenewsdetail/79%E8%90%AC%E6%88%B6%E8%80%81%E5%B1%8B%E7%9A%84%E5%85%A9%E7%A8%AE%E8%A7%A3%E6%B3%95" },
+        { t: "換屋能否解開都更僵局？從估價角度看「無限都更」", venue: "中泰不動產智庫專欄", d: "2026-11-01", note: "以新屋換舊屋的構想國內外都有前例，成敗在交換規則、法源與財源。", url: "https://zonetai.com/housenewsdetail/%E5%BE%9E%E4%BC%B0%E5%83%B9%E8%A7%92%E5%BA%A6%E7%9C%8B%E7%84%A1%E9%99%90%E9%83%BD%E6%9B%B4" },
+        { t: "政見進入房價之前：從估價角度看北市長辯論的不動產議題", venue: "中泰不動產智庫專欄", d: "2026-10-31", note: "容積、門檻、資訊揭露與交通建設，哪些會進入價格、何時進入。", url: "https://zonetai.com/housenewsdetail/%E5%BE%9E%E4%BC%B0%E5%83%B9%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%8C%97%E5%B8%82%E9%95%B7%E8%BE%AF%E8%AB%96%E7%9A%84%E4%B8%8D%E5%8B%95%E7%94%A2%E8%AD%B0%E9%A1%8C" },
+        { t: "「公辦都更5099專案」及「大街廓都更」政策上路對不動產市場的影響", venue: "中泰不動產智庫專欄", d: "2026-10-23", note: "門檻調整與大街廓整合，對整合速度與資產布局的影響。", url: "https://zonetai.com/housenewsdetail/%E5%85%AC%E8%BE%A6%E9%83%BD%E6%9B%B45099%E5%B0%88%E6%A1%88%E5%8F%8A%E5%A4%A7%E8%A1%97%E5%BB%93%E9%83%BD%E6%9B%B4" }
+      ],
       appraiser: "選舉期間的政見多數還在「主張」階段。估價時只把已核定、已編預算或已動工的建設納入區域因素；尚屬政見者，最多在報告中揭露為不確定因素，不反映在價格裡。選後會改為追蹤當選人政見的落實進度。",
       watch: ["11/28 投票", "12/25 新任首長就職", "都更與危老條例修正草案立法院審議", "各市社宅與可負擔住宅預算"]
+    },
+    {
+      id: "us-midterm", layer: "intl", title: "美國期中選舉之後", date: "2026-11-03 投票",
+      status: "民主黨取得參眾兩院多數，少數席次未定；新國會 2027 年 1 月就任",
+      summary: "選舉結果本身不直接改變關稅與利率，但改變了市場對政策的預期。選後一週美股、臺股與新臺幣大幅震盪，市場同時在消化聯準會 12 月可能升息與 AI 資料中心監管的疑慮。對臺灣不動產的影響，主要經由利率、匯率與股市財富效果傳導。",
+      groups: [
+        { name: "選舉結果", items: [
+          { t: "參議院：民主黨陣營至少 54 席、共和黨 44 席，2 席未定", s: "較選前翻轉 7 席；選前為共和黨 53 席、民主黨陣營 47 席。", src: "NBC News", url: "https://www.nbcnews.com/politics/2026-elections/senate-results" },
+          { t: "眾議院：民主黨已過半，最終席次未定", s: "各家統計在 252 至 255 席之間，仍有十餘席未判定；選前為共和黨 218 席、民主黨 214 席。", src: "NBC News", url: "https://www.nbcnews.com/politics/2026-elections/house-results" },
+          { t: "新國會 2027 年 1 月就任，總統仍握有否決權", s: "年底前的跛鴨會期仍由共和黨掌握兩院；民主黨在兩院均未達推翻否決所需的三分之二。", src: "CNBC", url: "https://www.cnbc.com/2026/11/09/congress-government-funding-debt-limit-elections.html" }
+        ] },
+        { name: "選後一週的市場", items: [
+          { t: "美股劇烈震盪", s: "11/4 道瓊漲 3.03%；11/5 標普 500 跌 4.4%、那斯達克跌 5.5%；11/9 標普 500 反彈 2.35%。報導指市場擔憂資料中心建設放緩。", src: "CNBC", url: "https://www.cnbc.com/2026/11/08/stock-market-today-live-updates.html" },
+          { t: "美債殖利率走低", s: "10 年期美債殖利率 11/6 收 4.86%，自 10 月初以來下滑約 45 個基點。", src: "Wolf Street", url: "https://wolfstreet.com/2026/11/07/would-be-a-worrisome-sign-for-the-bond-market-if-treasury-yields-turn-higher-next-week/" },
+          { t: "臺股一度失守 4 萬點，國安基金授權進場", s: "11/6 加權指數收 39,701 點，較今年高點回落約兩成；11/9 反彈 1,960 點收 41,661 點，外資仍連續賣超。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611060270.aspx" },
+          { t: "新臺幣貶至 32.88 元", s: "11/9 收 32.882 元，匯銀人士指外資賣股匯出未止。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611090222.aspx" }
+        ] },
+        { name: "政策含意（已有報導者）", items: [
+          { t: "關稅：國會換屆不直接改變稅率", s: "關稅由總統依國會既有授權訂定；民主黨擬提案收回權限，但難以跨過否決門檻。", src: "Council on Foreign Relations", url: "https://www.cfr.org/articles/democrats-win-control-of-congress-heres-how-that-could-affect-u-s-foreign-policy" },
+          { t: "聯準會：市場定價 12 月 9 日升息 1 碼的機率約七成以上", s: "10 月非農新增 16.5 萬人、失業率 4.1%；國內銀行估升息機率逾 75%，短期美元偏強。", src: "經濟日報", url: "https://udn.com/news/story/7239/9866610" },
+          { t: "10 月 CPI 高於預期，12 月升息定價升至 88%", s: "11/10 公布 CPI 月增 0.4%，預期 0.3%；升 2 碼機率 11%，一週前為零。", src: "CNBC", url: "https://www.cnbc.com/2026/11/10/market-spooked-because-now-the-fed-may-need-a-supersized-hike-in-december.html" },
+          { t: "財政：政府撥款 12 月 11 日到期，債務上限估 2027 年觸頂", s: "年底前須通過臨時或全年撥款法案；智庫預期 2027 年出現債限僵局。", src: "CNBC", url: "https://www.cnbc.com/2026/11/09/congress-government-funding-debt-limit-elections.html" },
+          { t: "對臺與晶片：關稅與軍售仍由行政部門主導", s: "半導體 232、301 關稅與對臺軍售進度不因國會換屆直接改變，變的是監督力道。", src: "數位時代", url: "https://www.bnext.com.tw/article/92878/us-midterm-elections-2026-result-taiwan-tariff" }
+        ] },
+        { name: "傳到臺灣房市的路徑", items: [
+          { t: "股市到房市：第 4 季保守看待", s: "專家指 9 月央行雖放寬管制，但臺股急跌使第 4 季買氣仍須保守，全年周轉率初估 2.5% 至 2.7%。", src: "經濟日報", url: "https://udn.com/news/story/7241/9865684" },
+          { t: "資金短期難由股市轉進房市", s: "業者認為投資人資金受困、房貸不易取得，短期難見明顯移轉。", src: "鏡週刊", url: "https://www.mirrormedia.mg/story/20261106fin009" },
+          { t: "匯率：外資匯出與升息預期壓抑新臺幣", s: "匯銀人士認為貶勢短期不易扭轉。", src: "中央社", url: "https://www.cna.com.tw/news/afe/202611090222.aspx" }
+        ] }
+      ],
+      columns: [
+        { t: "美國期中選舉變天，台灣不動產市場該看什麼？", venue: "中泰不動產智庫專欄", d: "2026-11-11", note: "政治事件不直接動房價，傳導靠利率、匯率與產業用地三條線。", url: "https://zonetai.com/housenewsdetail/%E7%BE%8E%E5%9C%8B%E6%9C%9F%E4%B8%AD%E9%81%B8%E8%88%89%E8%AE%8A%E5%A4%A9" }
+      ],
+      appraiser: "估價上這屬於「一般因素」的變動。短期看三個數字：12 月聯準會與臺灣央行的利率決策、新臺幣匯率、臺股是否回穩。它們影響收益法的折現率與買方的資金成本，但不會直接出現在比較法的成交案例裡，要等一到兩季才看得到量價反應。",
+      watch: ["12/9 聯準會利率決策", "12/11 美國政府撥款期限", "12 月臺灣央行理監事會", "外資買賣超與新臺幣匯率"]
     }
   ],
 
