@@ -1,11 +1,11 @@
 # 價值島改版交接（給所長的 Claude Code）
 
-> 撰寫：宗淳（2026-11-23）。這份文件在 `nextjs` 分支的 `docs/HANDOVER.md`。
-> 請 Claude Code 先完整讀完這份文件與 `README.md`，再動手。
+> 撰寫：宗淳（2026-11-23）。**切換已於 2026-11-23 完成**（main 0d91977，GitHub Pages 來源已改成 GitHub Actions，官網轉接也已更新）。
+> 請 Claude Code 先完整讀完這份文件與 `README.md`，再動手。**第五節的切換步驟已經做過，不要再執行。**
 
 ## 一、發生了什麼
 
-價值島主站（不含兩個姊妹站）已經從「純靜態 HTML＋瀏覽器端 JavaScript」改寫成 **Next.js（App Router）＋ React**，放在 `nextjs` 分支。`main` 目前還是舊版，**每日排程仍照常更新 main**。
+價值島主站（不含兩個姊妹站）已經從「純靜態 HTML＋瀏覽器端 JavaScript」改寫成 **Next.js（App Router）＋ React**，已於 2026-11-23 合併進 `main` 並上線。每日排程照常更新 main（現在改的是 `data/daily.ts`）。`nextjs` 分支已完成任務，不要再往上面提交。
 
 改寫的原因：
 - **搜尋引擎與 AI 搜尋讀得到內容**。舊版的內容都是瀏覽器跑 JavaScript 後才畫出來，不跑 JavaScript 的爬蟲每頁只看得到幾百字（每日觀測 229 字、手記 112 字）。新版在建置時就把文字寫進 HTML（每日觀測約 6,000 字、手記約 5,500 字）。
@@ -61,59 +61,24 @@
 
 推上 main 後，GitHub Actions 會再跑一次 `check:daily`，接著建置並發布。資料有錯就不發布，網站維持上一版。
 
-## 五、切換步驟（請所長的 Claude Code 照順序做）
+## 五、切換（已完成，不要再執行）
 
-需要 repo 管理員權限（第 2 步）。每一步做完先確認再做下一步。
+2026-11-23 由宗淳這邊完成：
+1. `nextjs` 同步到 main 的 c835628（含所長 11/22 的專題改版）。
+2. repo Settings → Pages 的來源改成 GitHub Actions。
+3. 合併進 main（0d91977），GitHub Actions 約 1 分鐘發布完成。
+4. github.io 與 zonetai.com 兩個網址的 10 頁、兩個姊妹站、舊 `.html` 網址、sitemap 都已確認正常。
 
-1. **同步最新的 main 進 nextjs**（如果 c835628 之後 main 又有新的 commit）：
+`scripts/migrate/`（從舊版同步用的腳本）只在過渡期用，穩定一週後可以刪掉。
 
-   ```bash
-   git fetch origin
-   git log --oneline c835628..origin/main      # 只有「每日觀測 YYYY-MM-DD」可以直接走下一步
-   git checkout nextjs && git merge origin/main # 會有「舊檔已刪除」的衝突，照下面處理
-   python -I -X utf8 scripts/migrate/sync-static.py origin/main   # 從 main 重新產生 data/、app/globals.css、lib/island-scene.js
-   git rm -q --cached about.html daily.html drill.html global.html index.html market.html notes.html policy.html roles.html weather.html assets/*.js assets/*.css 2>/dev/null
-   ```
+## 六、官網（Zonetai_Brand-Website）的轉接（已完成）
 
-   - 衝突的舊檔一律刪除，內容以同步腳本產生的為準。
-   - 若 main 上除了每日觀測還有版面改動（`*.html`、`assets/common.js`、`assets/style.css`、`assets/island.js`），資料與樣式會由腳本帶過來，**頁面行為的改動要手動搬進 `app/`、`components/`**。可以參考 `git diff c835628 origin/main -- '*.html' assets/common.js`。
-   - 跑 `npm run build` 與 `npm run check:daily`，都通過才提交到 nextjs。
+官網 `next.config.ts` 已更新並上線：
+- 主站 10 頁的乾淨網址（`/value-isle/daily`）明確對應到 GitHub Pages 的 `daily.html`。
+- 兩個姊妹站的資料夾網址導到各自的 `index.html`，不再被 GitHub Pages 帶去 github.io。
+- 首頁 `zonetai.com/value-isle` 直接轉接，不再導到 `index.html`。
 
-2. **把 GitHub Pages 的來源改成 GitHub Actions**：repo Settings → Pages → Build and deployment → Source 選「GitHub Actions」。也可以用指令：
-
-   ```bash
-   gh api -X PUT repos/zonetai/value-isle/pages -f build_type=workflow
-   ```
-
-   改完後舊網站會繼續上線，直到下一步發布新版為止，不會中斷。
-
-3. **合併到 main**：
-
-   ```bash
-   git checkout main && git pull --ff-only origin main
-   git merge --no-ff nextjs -m "價值島改用 Next.js（靜態匯出到 GitHub Pages）"
-   git push origin main
-   ```
-
-   如果 merge 前 main 又多了一筆每日觀測，先回到第 1 步把它同步進 nextjs。
-
-4. **確認發布**：repo 的 Actions 頁面「發布到 GitHub Pages」要是綠燈（約 2 分鐘）。接著檢查：
-   - `https://zonetai.github.io/value-isle/`：首頁、島嶼、「如果…」
-   - `https://zonetai.github.io/value-isle/daily.html`
-   - `https://zonetai.github.io/value-isle/far-payment/`
-   - `https://zonetai.com/value-isle/daily`（經官網轉接）
-
-5. **通知宗淳**部署官網的第二段修改（首頁不再導到 index.html，見下節）。
-
-6. 確認穩定一週後，可以刪掉 `scripts/migrate/`（只在過渡期用）。
-
-## 六、官網（Zonetai_Brand-Website）要配合的修改（由宗淳處理）
-
-兩段修改都已經在宗淳電腦上準備好，還沒推送：
-- **A（`value-isle-a` 分支，可以在切換前部署，新舊兩版都適用）**：
-  - 主站 10 頁的乾淨網址明確對應到 GitHub Pages 的 `.html`。
-  - 兩個姊妹站的資料夾網址導到 `index.html`。這也修好一個**現存的問題**：今天從 `zonetai.com/value-isle/far-payment/` 進去，會被 GitHub Pages 的 301 帶到 `zonetai.github.io`。
-- **B（`value-isle-b` 分支，第 4 步確認新版上線後才部署）**：首頁 `zonetai.com/value-isle` 直接轉接，不再導到 `/value-isle/index.html`。
+**以後新增主站頁面**，要把頁名加進官網 `next.config.ts` 的 `VALUE_ISLE_PAGES`（請宗淳處理），否則經官網進來會開不到。
 
 ## 七、驗證紀錄（宗淳這邊做過的）
 
