@@ -3,6 +3,7 @@
 > 這是 Next.js 版上線**之後**，每天早上排程交給 Claude 的工作說明。內容沿用所長 1151112 交接版，只把檔案位置與驗證指令換成新架構：
 > `assets/daily.js` → `data/daily.ts`、驗證改成 `npm run check:daily`、網址不再有 `.html`。
 > 上線前排程仍用舊版說明（改 `assets/daily.js`）。上線當天把排程內容換成下面「任務」整段，並把專案資料夾換成實際路徑。
+> 1151123 補：第 5 步加了三條專題規則（其他專題比照辦理、專題的去留、專題與專欄），並在回報加上專題異動。排程用的那一份要跟著換才會生效。
 
 ---
 
@@ -39,6 +40,9 @@
    - 把 updated 改成今天日期（YYYY-MM-DD）。
    - outlook（首頁「如果…」情境推演的「目前方向」，不得刪除）：結構為 { updated, note, items: { cut, hike, credit, export, mrt, supply } }，每一項是 { lean, now, why:[…], basis:[{ t, d, src, url }] }。lean 只能填「正在發生／已發生／較可能／可能性各半／較不可能」其中之一。只有出現會改變判讀的新資料時才更新（央行理監事會決議、聯準會決議、CPI、出口與外銷訂單統計、信用管制或新青安調整、捷運通車或延期公告、使用執照與買賣移轉棟數統計）：把新資料加在該項 basis 最前面（每項最多 5 則，t 40 字內，必附 d、src、url），必要時改寫 now（60 字內）與 lean，並把 outlook.updated 改成今天。沒有新資料就不要動。判讀只根據 basis 列出的事實，寫清楚理由，不喊漲跌、不寫投資建議；數字以原文為準。
    - topics：若「us-midterm」或「tw-local」專題內的事實有重大更新（例如席次定案、聯準會決議、法案三讀、選舉結果出爐），就更新對應的 status、groups／themes 內的條目與 watch，並保留來源。2026-11-28 投票日之後，把 tw-local 的 title 改為「九合一選後的住宅與土地政策追蹤」、status 改寫為選後狀態，themes 的 positions 逐步改為當選人的政見與落實進度（落選者的主張可刪）。專題已無新進展超過 30 天時，可在 status 註明「本專題已停止更新」，但不要刪除。
+   - 其他專題比照辦理：目前另有 us-compute-rule（美國管制遠端算力租用）、nvidia-ceo（輝達換執行長之後）、renewal-contract（都更契約有了民間範本）、songshan-airport（松山機場遷建）。有新事實就在對應的 groups 加一則，並更新 status 與 watch，每則都要有 src 與 url。nvidia-ceo 只寫事件對市場與不動產的影響，不寫個人私事，不推測人事；songshan-airport 屬選舉期間議題，只列各方公開說法，人物用職稱。
+   - 專題的去留：topics 只留最新的議題，依議題新舊排列，最新的放最前面。上架的專題（沒有 archived 的）最多 6 個；超過時，把最久沒有新進展的那一個加上 archived: true，頁面會把它移到「較早的專題」，不要刪除。
+   - 專題與專欄：每個專題有 columns（頁面上的「專欄怎麼寫」），每筆是 { t, venue, d, note, url }。每天看一次官網專欄列表 https://zonetai.com/housenews?category=%E5%B0%88%E9%A1%8C%E6%8E%A2%E8%A8%8E （署名中泰不動產智庫的文章）。有還沒掛上的新文章時：題目屬於既有專題，就在該專題 columns 最前面加一筆，venue 填「中泰不動產智庫專欄」，d 填刊出日期，note 用一句話寫文章重點（取自文章本身，40 字內），url 填文章網址（中文路徑要做 URL 編碼）；題目是新的議題，就新增一個專題放在 topics 最前面：id 用英文小寫加連字號，layer 標對，groups 至少兩組，每一則都要有獨立可查的 src 與 url（要另外查證原始出處，不能只引專欄本身），appraiser 與 watch 都要寫，並把這篇專欄放進 columns。住展雜誌「房價之外」專欄的新文章不要自行新增，等所長通知；尚未刊出的稿件與題目一律不得寫進網站。
    - 用 Edit 或 Write 工具修改檔案，不要用 shell 的 heredoc 寫入中文內容。保持檔案開頭的註解、import type 那一行與 export const DAILY: DailyData = {...}; 的格式。
 6. 驗證：在專案資料夾執行 npm run check:daily（第一次執行前若沒有 node_modules，先跑 npm install）。必須印出今天日期、則數與「檢查通過」；它也會檢查 outlook 的每一項都有 lean、now 與附出處的依據。失敗就修到通過；修不好就用 git checkout -- data/daily.ts 還原並回報錯誤，不要推送壞檔。
 7. 提交與推送（在專案資料夾內）：
@@ -46,6 +50,6 @@
    git commit -m "每日觀測 YYYY-MM-DD"
    git push origin main
    若沒有任何變更就不要提交。push 被拒（遠端有新提交）時，先 git pull --rebase origin main 再推一次；仍失敗就回報錯誤訊息（常見原因是 GitHub 登入過期，需要重新執行 gh auth login）。不要用 --force。
-8. 回報：用兩三句話說明今天新增幾則、各層幾則、outlook 與專題有沒有更新、是否已推送成功。
+8. 回報：用兩三句話說明今天新增幾則、各層幾則、outlook 與專題有沒有更新（含新掛上的專欄、新增或移到「較早」的專題）、是否已推送成功。
 
 週期性產出規約：落點 data/daily.ts（單一檔案就地更新）；保留期限 45 天、60 則；版本由 git 歷史保存。
