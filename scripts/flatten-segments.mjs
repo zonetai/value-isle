@@ -4,8 +4,10 @@
    換頁預載才不會 404（不處理也能換頁，只是會退回整頁載入）。 */
 import { copyFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const OUT = new URL("../out/", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
+/* 用 fileURLToPath 轉路徑：資料夾或使用者名稱含中文、空白時，URL 的 pathname 會是 %E4… 的編碼，直接拿去讀會找不到 */
+const OUT = fileURLToPath(new URL("../out/", import.meta.url));
 let n = 0;
 function walk(dir) {
   for (const name of readdirSync(dir)) {
