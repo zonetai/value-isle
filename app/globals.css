@@ -597,6 +597,14 @@ a.scene-hint b{color:var(--accent);font-size:.74rem}
 .daily-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:12px}
 .daily-tabs button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 14px;font-size:.9rem;color:var(--ink-2);transition:.2s}
 .daily-tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.daily-tabs .tabs-label{align-self:center;font-size:.74rem;font-weight:700;letter-spacing:.14em;color:var(--ink-3);margin:0 2px 0 10px}
+.daily-tabs button.old{background:transparent;border-style:dashed;color:var(--ink-3)}
+.daily-tabs button.old.on{background:var(--ink);color:#fff;border-style:solid}
+/* 專題裡的「專欄怎麼寫」 */
+.tcol{display:block;text-decoration:none;color:inherit;border-left:4px solid var(--accent);transition:transform .2s,box-shadow .2s}
+.tcol:hover{transform:translateY(-2px)}
+.tcol-meta{display:block;font-size:.74rem;font-weight:700;color:var(--accent);margin-bottom:5px}
+.tcol-go{display:inline-block;margin-top:10px;font-size:.78rem;color:var(--ink-3);border-bottom:1px solid var(--line)}
 .feed .day{margin-bottom:26px}
 .day-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;position:sticky;top:var(--nav-h);background:var(--paper);padding:6px 0;z-index:3}
 .day-head b{font-family:var(--serif);font-size:1.15rem}

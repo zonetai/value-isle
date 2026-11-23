@@ -22,10 +22,16 @@ export type TopicItem = { t: string; s: string; src?: string; url?: string };
 export type Position = { who: string; say: string; src?: string; url?: string; date?: string };
 export type Theme = { t: string; s?: string; positions: Position[]; note?: string; i?: string };
 
+/** 專題底下的「專欄怎麼寫」：url 可以是外站全文，或站內手記（例如 "notes.html#文章代號" 或 "/notes#文章代號"） */
+export type TopicColumn = { t: string; venue: string; d?: string; note?: string; url: string };
+
 export type Topic = {
   id: string;
   layer: string;
   title: string;
+  /** 設為 true 的移到「較早的專題」，也不再出現在各層頁面的最新動態 */
+  archived?: boolean;
+  columns?: TopicColumn[];
   date?: string;
   status?: string;
   summary?: string;

@@ -1,24 +1,18 @@
 import type { NextConfig } from "next";
 
 /**
- * 價值島掛在官網 zonetai.com/value-isle 底下：官網（Zonetai_Brand-Website）把 /value-isle/* 轉接到這個 Vercel 專案，
- * 所以這裡的每一頁、每個靜態檔都要帶 /value-isle 前綴（basePath）。改這個值要同步改 lib/site.ts 的 BASE。
+ * 價值島部署在 GitHub Pages（repo zonetai/value-isle 的 Pages，網址 https://zonetai.github.io/value-isle/），
+ * 官網 zonetai.com 再把 /value-isle/* 轉接過來。所以：
+ * - output: "export"：建置時把每一頁匯出成靜態 HTML（out/ 資料夾），由 .github/workflows/pages.yml 發布到 GitHub Pages。
+ * - basePath 是 /value-isle：跟 GitHub Pages 的專案網址路徑一致，官網轉接也不用改。改這個值要同步改 lib/site.ts 的 BASE。
+ *
+ * 匯出後每一頁是 daily.html、market.html…；GitHub Pages 會讓 /value-isle/daily 與 /value-isle/daily.html 都開到同一頁，
+ * 所以舊網址不用轉址也能開。兩個姊妹站（public/far-payment、public/renewal-sandbox）原樣複製，資料夾網址會開它的 index.html。
+ * 靜態匯出不支援 redirects、rewrites、headers，這裡不要加。
  */
-const PAGES = ["daily", "weather", "market", "policy", "global", "notes", "roles", "drill", "about"];
-/** 姊妹站：原樣放在 public/ 底下的靜態網站 */
-const SISTER_SITES = ["far-payment", "renewal-sandbox"];
-
 const nextConfig: NextConfig = {
+  output: "export",
   basePath: "/value-isle",
-  async redirects() {
-    return [
-      /* 舊版是靜態網頁（daily.html…），外面的連結與搜尋結果都還指向 .html，一律永久轉到新網址；#錨點由瀏覽器保留 */
-      { source: "/index.html", destination: "/", permanent: true },
-      ...PAGES.map((p) => ({ source: `/${p}.html`, destination: `/${p}`, permanent: true })),
-      /* 姊妹站的入口：資料夾網址導到 index.html，頁面裡的相對路徑（assets/…）才找得到 */
-      ...SISTER_SITES.map((s) => ({ source: `/${s}`, destination: `/${s}/index.html`, permanent: false })),
-    ];
-  },
 };
 
 export default nextConfig;

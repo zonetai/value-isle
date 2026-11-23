@@ -27,7 +27,7 @@ export const fmtDate = (d: string) => {
 
 /**
  * 每頁的 metadata：標題、說明、正式網址（canonical 一律指向 zonetai.com/value-isle，
- * 這樣 vercel.app 的副本不會跟官網搶搜尋排名）
+ * 這樣 github.io 的副本不會跟官網搶搜尋排名）
  */
 export const pageMeta = (title: string | null, description: string, path: string) => {
   const url = SITE_URL + (path === "/" ? "" : path);

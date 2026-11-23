@@ -1,12 +1,16 @@
 "use client";
 
 import { G } from "./Gloss";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DATA } from "@/data/site";
 import { DAILY } from "@/data/daily";
 import { fmtDate, layerOf } from "@/lib/site";
 import type { Topic } from "@/data/daily-types";
 import { SrcLink } from "./LayerBlocks";
+
+/** 資料裡的站內連結可能還是舊寫法（notes.html#代號），換成新網址（/notes#代號） */
+const siteHref = (u: string) => u.replace(/^\/?([a-z]+)\.html(?=#|$)/, (_, p: string) => (p === "index" ? "/" : "/" + p)).replace(/^(?!\/)/, "/");
 
 /** 網址錨點：#briefs 快訊、#layer-intl 某一層的快訊、#us-midterm 某個專題 */
 const readHash = () => {
@@ -30,14 +34,22 @@ export function DailyView() {
     setView(v); setCat(c);
     history.replaceState(null, "", "#" + (v === "briefs" && c !== "全部" ? "layer-" + c : v));
   };
-  const tabs = [{ id: "briefs", t: "每日快訊" }, ...DAILY.topics.map((t) => ({ id: t.id, t: "專題：" + t.title }))];
+  /* 專題依議題新舊排列；設了 archived 的移到「較早的專題」 */
+  const live = DAILY.topics.filter((t) => !t.archived), old = DAILY.topics.filter((t) => t.archived);
+  const tabBtn = (id: string, label: string, isOld = false) => (
+    <button key={id} className={[id === view ? "on" : "", isOld ? "old" : ""].filter(Boolean).join(" ") || undefined} onClick={() => go(id)}>{label}</button>
+  );
   const list = DAILY.briefs.filter((b) => cat === "全部" || b.layer === cat);
   const days = [...new Set(list.map((b) => b.d))];
 
   return (
     <>
       <div className="daily-tabs" id="tabs">
-        {tabs.map((t) => <button key={t.id} className={t.id === view ? "on" : undefined} onClick={() => go(t.id)}>{t.t}</button>)}
+        {tabBtn("briefs", "每日快訊")}
+        {live.length > 0 && <span className="tabs-label">專題</span>}
+        {live.map((t) => tabBtn(t.id, t.title))}
+        {old.length > 0 && <span className="tabs-label">較早的專題</span>}
+        {old.map((t) => tabBtn(t.id, t.title, true))}
       </div>
 
       <div id="view-briefs" hidden={view !== "briefs"}>
@@ -114,6 +126,27 @@ function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
               {th.i && <div className="impact"><G>{th.i}</G></div>}
             </details>
           ))}
+        </div>
+      )}
+      {t.columns && t.columns.length > 0 && (
+        <div className="tgroup tcols">
+          <h3>專欄怎麼寫</h3>
+          <div className="tgrid">
+            {t.columns.map((c) => {
+              const ext = /^https?:/.test(c.url);
+              const inner = (
+                <>
+                  <span className="tcol-meta">{c.venue}{c.d ? "・" + c.d : ""}</span>
+                  <b>{c.t}</b>
+                  <p><G>{c.note ?? ""}</G></p>
+                  <span className="tcol-go">{ext ? "讀全文" : "看重點摘要"}</span>
+                </>
+              );
+              return ext
+                ? <a key={c.url} className="card titem tcol" href={c.url} target="_blank" rel="noopener">{inner}</a>
+                : <Link key={c.url} className="card titem tcol" href={siteHref(c.url)}>{inner}</Link>;
+            })}
+          </div>
         </div>
       )}
       <div className="two-col" style={{ marginTop: 22 }}>

@@ -13,7 +13,7 @@
 專案資料夾（git repo，遠端 origin = https://github.com/zonetai/value-isle.git，分支 main）：
 （請換成這台電腦上 value-isle 的實際路徑；這個資料夾固定停在 main 分支，專供本排程使用。若 git branch --show-current 不是 main，就停下來回報，不要切換分支或做任何修改。）
 
-網站是「中泰不動產智庫」給一般大眾看的公開網站，正式網址 https://zonetai.com/value-isle/daily（官網轉接 Vercel，推上 main 後約 2 分鐘內更新），立場中立。價格分四層：intl 國際海象、policy 政策氣候、market 市場潮位、ind 個別條件。
+網站是「中泰不動產智庫」給一般大眾看的公開網站，正式網址 https://zonetai.com/value-isle/daily（官網轉接 GitHub Pages；推上 main 後 GitHub Actions 會檢查、建置、發布，約 2 分鐘內更新），立場中立。價格分四層：intl 國際海象、policy 政策氣候、market 市場潮位、ind 個別條件。
 用詞禁忌：全站不使用「洋流」一詞（敏感），任何新增文字都不要出現這兩個字；國際這一層一律稱「國際海象」。每則快訊的 layer 務必標對，因為各層頁面會自動取用對應 layer 的內容。
 
 步驟：

@@ -3,13 +3,14 @@
 一塊地的價格，從四層看起：**國際海象、政策氣候、市場潮位、個別條件**。
 中泰不動產智庫整理的互動網站，讓一般人用估價師的視角看市場行情、政策動態、國際局勢與個別條件。
 
-正式網址：https://zonetai.com/value-isle （官網把 `/value-isle/*` 轉接到這個專案在 Vercel 上的部署）
+正式網址：https://zonetai.com/value-isle （官網把 `/value-isle/*` 轉接到這個 repo 的 GitHub Pages：https://zonetai.github.io/value-isle/ ，該副本標為不收錄）
 
 ## 架構
 
-- Next.js（App Router）＋ React，部署在 Vercel；`basePath` 是 `/value-isle`
+- Next.js（App Router）＋ React，靜態匯出（`output: "export"`）後由 GitHub Actions（`.github/workflows/pages.yml`）發布到 GitHub Pages；`basePath` 是 `/value-isle`
 - 每一頁的文字內容在建置時就寫進網頁（搜尋引擎與 AI 搜尋不跑 JavaScript 也讀得到）；季節切換、篩選、播放、3D 島嶼、情境推演等互動在瀏覽器端
-- 舊版 `.html` 網址（例如 `daily.html#layer-ind`）一律永久轉到新網址（`/daily#layer-ind`）
+- 匯出後每頁是 `daily.html` 這種檔案，所以舊網址 `daily.html#layer-ind` 照樣能開；官網那邊把乾淨網址（`/value-isle/daily`）對應到 `daily.html`
+- 靜態匯出不支援 next.config 的 redirects、rewrites、headers；新增頁面時，記得在官網（Zonetai_Brand-Website 的 next.config.ts）的頁面清單加上名字
 - 兩個姊妹站維持靜態網頁，原樣放在 `public/` 底下，網址不變
 
 ## 主站頁面
@@ -37,7 +38,7 @@
 - 站內連結寫路徑，例如 `"/daily"`，網址前綴 `/value-isle` 會自動加上
 - 辭典（`data/site.ts` 的 `glossary`）裡的名詞，會在各頁內文第一次出現時加上虛線「名詞小註」
 
-改完推上 `main`，Vercel 會自動重新部署（約 1 分鐘）。
+改完推上 `main`，GitHub Actions 會先跑每日資料檢查、再建置發布（約 2 分鐘）；檢查或建置失敗就不發布，網站維持上一版。到 repo 的 Actions 頁面看結果。
 
 ## 姊妹站：容積代金學堂（`public/far-payment/`）
 

@@ -18,7 +18,7 @@ export default function DailyPage() {
             <div className="daily-meta">
               <span className="live"><i />更新至 <b>{DAILY.updated}</b></span>
               <span>{DAILY.schedule}</span>
-              <span>{DAILY.briefs.length} 則快訊・{DAILY.topics.length} 個專題</span>
+              <span>{DAILY.briefs.length} 則快訊・{DAILY.topics.filter((t) => !t.archived).length} 個專題</span>
             </div>
           </div>
           <svg className="lh" viewBox="0 0 220 200" aria-hidden="true">

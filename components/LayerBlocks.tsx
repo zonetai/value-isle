@@ -41,7 +41,7 @@ export function PageHero({ title, children, badge, color, mark, extra }: { title
 export function LayerDaily({ layer, title, desc, n = 4 }: { layer: string; title?: string; desc?: string; n?: number }) {
   const L = layerOf(layer);
   const items = DAILY.briefs.filter((b) => b.layer === layer).slice(0, n);
-  const topics = DAILY.topics.filter((t) => t.layer === layer);
+  const topics = DAILY.topics.filter((t) => t.layer === layer && !t.archived);
   if (!items.length && !topics.length) return null;
   return (
     <div className="layer-daily" id="layerDaily" style={{ "--c": L.hex } as React.CSSProperties}>

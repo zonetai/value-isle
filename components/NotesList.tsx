@@ -1,7 +1,7 @@
 "use client";
 
 import { G } from "./Gloss";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DATA } from "@/data/site";
 import { KN } from "@/data/knowledge";
 import { layerOf } from "@/lib/site";
@@ -16,6 +16,20 @@ export function NotesList() {
     .filter((a) => (cat === "全部" || a.layer === cat) && (yr === "全部" || a.date.startsWith(yr)))
     .sort((x, y) => y.date.localeCompare(x.date));
   const toggle = (id: string) => setOpen((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
+
+  /* 從專題連過來時（/notes#文章代號），直接捲到那一篇並展開 */
+  useEffect(() => {
+    const openHash = () => {
+      const id = decodeURIComponent(location.hash.slice(1)).replace(/[^\w-]/g, "");
+      if (!id || !KN.articles.some((a) => a.id === id)) return;
+      setCat("全部"); setYr("全部");
+      setOpen((s) => new Set(s).add(id));
+      setTimeout(() => document.querySelector(`.note-card[data-id="${id}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
+    };
+    openHash();
+    addEventListener("hashchange", openHash);
+    return () => removeEventListener("hashchange", openHash);
+  }, []);
 
   return (
     <>
@@ -44,6 +58,8 @@ export function NotesList() {
             <Fragment key={a.id}>
               {head && <div className="year-head"><b>{y}</b><span>{list.filter((x) => x.date.startsWith(y)).length} 篇</span></div>}
               <article
+                id={a.id}
+                data-id={a.id}
                 className={open.has(a.id) ? "card note-card open" : "card note-card"}
                 style={{ "--c": L.hex, animation: `popin .4s ease ${Math.min(i, 8) * 60}ms both` } as React.CSSProperties}
                 onClick={() => toggle(a.id)}

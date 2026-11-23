@@ -25,6 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="zh-Hant" className="no-js" suppressHydrationWarning>
       <head>
+        {/* 同一份內容只讓搜尋引擎收錄官網 zonetai.com/value-isle；GitHub Pages 的副本標為不收錄 */}
+        <script dangerouslySetInnerHTML={{ __html: `if(/\\.github\\.io$/.test(location.hostname)){var m=document.createElement("meta");m.name="robots";m.content="noindex, follow";document.head.appendChild(m);}` }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
