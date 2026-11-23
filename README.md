@@ -1,56 +1,83 @@
 # 價值島 Value Isle｜中泰不動產智庫的市場觀測站
 
 一塊地的價格，從四層看起：**國際海象、政策氣候、市場潮位、個別條件**。
-中泰不動產智庫整理的多頁式互動網站，讓一般人用估價師的視角看市場行情、政策動態、國際局勢與個別條件。
+中泰不動產智庫整理的互動網站，讓一般人用估價師的視角看市場行情、政策動態、國際局勢與個別條件。
 
-線上版：https://zonetai.com/value-isle （經官網轉接；GitHub Pages 副本 https://zonetai.github.io/value-isle/ 標為不收錄）
+正式網址：https://zonetai.com/value-isle （官網把 `/value-isle/*` 轉接到這個 repo 的 GitHub Pages：https://zonetai.github.io/value-isle/ ，該副本標為不收錄）
 
-## 頁面
+## 架構
 
-| 頁面 | 內容 | 動畫 |
-|---|---|---|
-| `index.html` 島嶼 | Three.js 3D 島嶼、四層標示、觀測索引 | 島嶼浮出水面、建物長出、雲飄、貨輪繞島、路人走動、季節光影、「估價師帶路」鏡頭 |
-| `daily.html` 每日觀測 | 每日快訊（附對估價的影響與出處）、專題 | 燈塔掃描、首頁跑馬燈 |
-| `weather.html` 估價氣象台 | 四個儀表與本季判讀 | 指針與弧線隨季節轉動 |
-| `market.html` 市場潮位 | 實價登錄：12 區單價、逐季走勢 | 潮位牆水位升降、長條生長、折線描繪 |
-| `policy.html` 政策時間軸 | 2020 年起的政策事件 | 播放器依序點亮事件 |
-| `global.html` 國際海象 | 六股力量與傳導路徑 | 傳導圖流動、路徑依序亮起 |
-| `notes.html` 估價師手記 | 專欄、投書與論文摘要 | 卡片展開 |
-| `roles.html` 我是誰 | 六種委託人路線 | 迷你島依序亮起關心的層次 |
-| `drill.html` 估價小測 | 23 題分類測驗與辭典 | 翻牌、答對答錯回饋 |
-| `about.html` 關於 | 整理方式、資料與知識來源、更新方式 | |
+- Next.js（App Router）＋ React，靜態匯出（`output: "export"`）後由 GitHub Actions（`.github/workflows/pages.yml`）發布到 GitHub Pages；`basePath` 是 `/value-isle`
+- 每一頁的文字內容在建置時就寫進網頁（搜尋引擎與 AI 搜尋不跑 JavaScript 也讀得到）；季節切換、篩選、播放、3D 島嶼、情境推演等互動在瀏覽器端
+- 匯出後每頁是 `daily.html` 這種檔案，所以舊網址 `daily.html#layer-ind` 照樣能開；官網那邊把乾淨網址（`/value-isle/daily`）對應到 `daily.html`
+- 靜態匯出不支援 next.config 的 redirects、rewrites、headers；新增頁面時，記得在官網（Zonetai_Brand-Website 的 next.config.ts）的頁面清單加上名字
+- 兩個姊妹站維持靜態網頁，原樣放在 `public/` 底下，網址不變
 
-## 姊妹站：容積代金學堂（`far-payment/`）
+## 主站頁面
+
+| 網址 | 內容 |
+|---|---|
+| `/` 島嶼 | Three.js 3D 島嶼、四層標示、勘查手冊、「如果…」情境推演、觀測索引、估價師帶路、估價小卡 |
+| `/daily` 每日觀測 | 每日快訊（附對估價的影響與出處）、專題 |
+| `/weather` 估價氣象台 | 四個儀表與本季判讀 |
+| `/market` 市場潮位 | 實價登錄：12 區單價、逐季走勢、季度判讀 |
+| `/policy` 政策時間軸 | 2020 年起的政策事件，可播放 |
+| `/global` 國際海象 | 傳導圖與六股力量的傳導路徑 |
+| `/notes` 估價師手記 | 專欄、投書與論文摘要 |
+| `/roles` 我是誰 | 一般委託人與專業人士的看價路線 |
+| `/drill` 估價小測 | 分類測驗與辭典 |
+| `/about` 關於 | 整理方式、資料與知識來源 |
+
+## 要改主站內容，改這幾個檔
+
+- 每日觀測與情境推演的「目前方向」：`data/daily.ts`，由每日排程自動更新（保留 45 天、60 則）。改完跑 `npm run check:daily` 檢查
+- 市場數字、政策時間軸、國際海象、季節判讀、情境推演、島上勘查點、身分、辭典：`data/site.ts`
+- 手記、小測題庫、路人小知識：`data/knowledge.ts`
+- 圖示：`data/icons.ts`（自繪線條 icon）。`data/site.ts` 的 `icon`／`ico` 欄位填這裡的名稱，例如 `ico:"bank"`
+- 3D 島嶼：`lib/island-scene.js`；樣式：`app/globals.css`
+- 站內連結寫路徑，例如 `"/daily"`，網址前綴 `/value-isle` 會自動加上
+- 辭典（`data/site.ts` 的 `glossary`）裡的名詞，會在各頁內文第一次出現時加上虛線「名詞小註」
+
+改完推上 `main`，GitHub Actions 會先跑每日資料檢查、再建置發布（約 2 分鐘）；檢查或建置失敗就不發布，網站維持上一版。到 repo 的 Actions 頁面看結果。
+
+## 姊妹站：容積代金學堂（`public/far-payment/`）
 
 容積移轉與容積代金的學習網站，線上版 https://zonetai.com/value-isle/far-payment/ 。九站學習路線：故事、法令、縣市、估價試算、範本、審議與找碴、標購、數據、小測。
 
-- `far-payment/assets/data.js`：全站內容（時間軸、縣市、範本規則、題庫、辭典、示範案）
-- `far-payment/assets/calc.js`：雙情境土地開發分析計算與檢核引擎（示範案數字與 114 上期末考解答檔一致）
-- `far-payment/assets/scene.js`：首頁雙塔場景；`common.js`、`style.css` 為共用程式與樣式
+- `public/far-payment/assets/data.js`：全站內容（時間軸、縣市、範本規則、題庫、辭典、示範案）
+- `public/far-payment/assets/calc.js`：雙情境土地開發分析計算與檢核引擎（示範案數字與 114 上期末考解答檔一致）
+- `public/far-payment/assets/scene.js`：首頁雙塔場景；`common.js`、`style.css` 為共用程式與樣式
 - 新增頁面時照樣加 canonical 與 github.io 的 noindex 腳本
 
-## 姊妹站：權變沙盤（`renewal-sandbox/`）
+## 姊妹站：權變沙盤（`public/renewal-sandbox/`）
 
-都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。五站：計算鏈、市價怎麼決定、分回試算、共同負擔試算、法規依據；首頁依地主、實施者、專業服務者三條路線進站。另有「十分鐘看懂權利變換」投影片導覽（`intro.html`，22 張、可自動播放、附講稿，投影片內容在該頁的 `S` 陣列）。架構與分期見 `renewal-sandbox/PLAN.md`。
+都市更新權利變換分配的學習與試算網站，線上版 https://zonetai.com/value-isle/renewal-sandbox/ 。五站：計算鏈、市價怎麼決定、分回試算、共同負擔試算、法規依據；首頁依地主、實施者、專業服務者三條路線進站。另有「十分鐘看懂權利變換」投影片導覽（`intro.html`，22 張、可自動播放、附講稿，投影片內容在該頁的 `S` 陣列）。架構與分期見 `public/renewal-sandbox/PLAN.md`。
 
-- `renewal-sandbox/assets/data.js`：全站內容（示範基地、燈號文字、審查清單、辭典）
-- `renewal-sandbox/assets/calc.js`：A、B、C 與分回的計算引擎、三情境、敏感度、燈號；規則庫 `RULES` 與計算分離
-- `renewal-sandbox/assets/burden.js`：共同負擔案件試算引擎，`CITY` 規則庫收錄臺北市費用提列總表與工程造價要項、新北市提列基準與營建單價，換版本只改規則庫
-- `renewal-sandbox/assets/common.js`、`style.css`：共用程式與樣式，主色深青；試算輸入值以網址參數 `?s=` 分享，共同負擔以 `?b=`，帶入共負比以 `?d=`
+- `public/renewal-sandbox/assets/data.js`：全站內容（示範基地、燈號文字、審查清單、辭典）
+- `public/renewal-sandbox/assets/calc.js`：A、B、C 與分回的計算引擎、三情境、敏感度、燈號；規則庫 `RULES` 與計算分離
+- `public/renewal-sandbox/assets/burden.js`：共同負擔案件試算引擎，`CITY` 規則庫收錄臺北市費用提列總表與工程造價要項、新北市提列基準與營建單價，換版本只改規則庫
+- `public/renewal-sandbox/assets/common.js`、`style.css`：共用程式與樣式，主色深青；試算輸入值以網址參數 `?s=` 分享，共同負擔以 `?b=`，帶入共負比以 `?d=`
 - 示範基地是教學用區間中值組合，不對應實際案件；門檻標明「教學門檻」者非審議標準
 
-## 更新方式
+兩個姊妹站共用主站的線條圖示 `public/assets/icons.js`（頁面裡寫的是 `../assets/icons.js`）。改了姊妹站 `assets/` 裡的樣式或程式，記得把各頁 `?v=` 的版本號加 1，瀏覽器才會抓新檔。
 
-- 每日觀測：`assets/daily.js`，由每日排程自動更新（保留 45 天、60 則）
-- 市場數字、政策時間軸、國際海象、季節判讀：`assets/data.js`
-- 手記、小測題庫、路人小知識：`assets/knowledge.js`
-- 圖示：`assets/icons.js`（自繪線條 icon）。`data.js` 的 `icon`／`ico` 欄位填這裡的名稱，例如 `ico:"bank"`；要新增圖示就在這個檔案加一筆
+## 每日自動更新
 
-改完存檔、推上 `main` 即可，GitHub Pages 會自動重新發布。改了 `assets/` 裡的樣式或程式（含兩個姊妹站各自的 `assets/`），記得把各頁 `?v=` 的版本號加 1，瀏覽器才會抓新檔。
+每天早上由不關機電腦上的 Claude 排程執行：搜新聞、更新 `data/daily.ts`（含情境推演的目前方向），跑 `npm run check:daily` 通過才推上 `main`。任務說明在 `docs/daily-task-prompt.md`。
+
+## 本機開發
+
+```bash
+npm install
+npm run dev        # http://localhost:3301/value-isle
+npm run build      # 正式建置
+npm run check:daily
+```
 
 ## 資料來源
 
 - 內政部地政司 不動產交易實價查詢服務系統（政府資料開放授權條款第 1 版）
 - 中央銀行、財政部、內政部、金管會公開新聞稿
+- 每日觀測：各則附原始出處
 
 本站內容為一般性資訊整理，不構成估價意見、投資或法律建議。

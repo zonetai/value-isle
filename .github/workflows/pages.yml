@@ -1,0 +1,46 @@
+# 價值島：推上 main 就建置並發布到 GitHub Pages（https://zonetai.github.io/value-isle/，官網 zonetai.com/value-isle 轉接過來）
+# 需要 repo 設定一次：Settings → Pages → Build and deployment → Source 選「GitHub Actions」
+# 每日資料檢查或建置失敗就不發布，網站維持上一版。
+name: 發布到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: 每日觀測資料檢查
+        run: npm run check:daily
+      - name: 建置（靜態匯出到 out/）
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
