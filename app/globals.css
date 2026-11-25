@@ -1269,3 +1269,59 @@ a.scene-hint{background:var(--paper);border:1px solid var(--ink);border-radius:6
 .loader .bar i{position:absolute;left:0;top:0;height:16px;background:none;overflow:hidden}
 .loader .bar i svg{stroke:var(--accent)}
 .loader small{font-family:var(--hand);font-size:.95rem;letter-spacing:.1em;color:var(--ink-2)}
+
+/* ============================================================
+   手機體驗修正
+   ============================================================ */
+/* 抽屜：開著時背景不跟著捲；關閉鈕黏在上方，捲到哪都按得到 */
+body:has(.drawer.open){overflow:hidden}
+.drawer .panel{overscroll-behavior:contain}
+.drawer .close{position:sticky;top:0;float:right;margin:-10px -10px 0 8px;z-index:3;width:40px;height:40px}
+.scene-card .close,.sl-close{width:38px;height:38px;top:8px;right:8px}
+/* 導覽列季節切換：跟紙本風一致，字放大一點 */
+.season{background:var(--paper);border-radius:6px}
+.season button{border-radius:4px;font-size:.76rem}
+/* 小測：「下一題」不要被擠成直排 */
+.q-foot{flex-wrap:wrap;gap:12px}
+.q-foot > div:first-child{flex:1 1 180px;min-width:0}
+.q-foot button,.q-foot .btn{white-space:nowrap}
+/* 市場潮位的水位尺：最上面的刻度不要被切掉 */
+.tide-vis .ruler{top:28px}
+
+@media (max-width:700px){
+  /* 各層頁的最新動態：拿掉舊版留下的內縮，跟上下文字對齊 */
+  .layer-daily{padding:0;border-radius:0}
+  /* 每日觀測分頁：一排橫向滑動，不要疊成五行 */
+  .daily-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:0 18px;margin-left:-16px;margin-right:-16px;padding:0 16px}
+  .daily-tabs::-webkit-scrollbar{display:none}
+  .daily-tabs button,.daily-tabs .tabs-label{flex:none;white-space:nowrap}
+  .daily-tabs button{padding:11px 0 9px}
+  /* 報頭日期列：換行時不要讓分隔線落在行首 */
+  .daily-meta{gap:4px 14px}
+  .daily-meta > span + span::before{display:none}
+  /* 手指好按：出處連結、篩選、辭典、身分、說明卡按鈕 */
+  .src a{display:inline-block;padding:8px 0 4px}
+  .note-filters .chip{padding:9px 2px 7px}
+  .glossary details{padding:14px 0}
+  .roles-row .chip,.hero-panel.left .roles-row .chip{padding:8px 1px}
+  .tour .ctl button{min-width:40px;min-height:38px;justify-content:center}
+  .ld-all{display:inline-block;padding:8px 0 4px}
+  /* 估價師帶路的字幕：貼著島的下緣，少擋一點畫面；帶路時跑馬燈先收起來 */
+  .tour{top:calc(var(--scene-h) - 10px)}
+  .touring .scene-hint{display:none}
+  /* 氣象台四個儀表：手機上兩欄，少捲一半 */
+  .board{grid-template-columns:1fr 1fr!important;gap:10px}
+  .gauge{padding:14px}
+  .gauge .dial{width:110px;height:60px}
+  .gauge .dial svg{width:110px;height:110px}
+  .gauge h3{font-size:.98rem}
+  .gauge .scale{padding:0}
+  .gauge p{font-size:.8rem}
+  /* 國際傳導圖可以左右滑，提示一下 */
+  .flowmap::before{content:"← 左右滑動看完整傳導圖 →";display:block;font-size:.74rem;color:var(--ink-3);text-align:center;margin-bottom:6px;position:sticky;left:0}
+}
+@media (max-width:700px){
+  #view-briefs .note-filters .chip{padding:9px 2px 7px}
+  .glossary details{padding:2px 0}
+  .glossary summary{padding:12px 0}
+}
