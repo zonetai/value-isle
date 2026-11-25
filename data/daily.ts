@@ -9,7 +9,7 @@ import type { DailyData } from "./daily-types";
 
 export const DAILY: DailyData = {
   updated: "2026-11-25",
-  schedule: "每日上午自動更新",
+  schedule: "每天 6:00、17:30 自動更新",
 
   /* ---------- 情境推演的「目前方向」：首頁「如果…」使用；有新資料才更新，每項附出處 ---------- */
   outlook: {

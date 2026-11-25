@@ -63,7 +63,7 @@ export function LayerDaily({ layer, title, desc, n = 4 }: { layer: string; title
         <div>
           <span className="ld-kicker">{L.name} · <span className="ld-d">{md(DAILY.updated)}</span> 更新</span>
           <h2>{title ?? L.name + "的最新動態"}</h2>
-          <p>{desc ?? "每天早上自動整理，每則附出處與對估價的影響。"}</p>
+          <p>{desc ?? "每天早晚各整理一次，每則附出處與對估價的影響。"}</p>
         </div>
         <Link className="ld-all" href={`/daily#layer-${layer}`}>看這一層全部動態 →</Link>
       </div>

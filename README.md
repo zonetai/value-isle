@@ -63,7 +63,7 @@
 
 ## 每日自動更新
 
-每天早上由不關機電腦上的 Claude 排程執行：搜新聞、更新 `data/daily.ts`（含情境推演的目前方向），跑 `npm run check:daily` 通過才推上 `main`。任務說明在 `docs/daily-task-prompt.md`。
+每天 6:00 與 17:30 由不關機電腦上的 Claude 排程執行（傍晚場只補當天下午的新消息）：搜新聞、更新 `data/daily.ts`（含情境推演的目前方向），跑 `npm run check:daily` 通過才推上 `main`。任務說明在 `docs/daily-task-prompt.md`。
 
 ## 本機開發
 

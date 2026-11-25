@@ -4,7 +4,7 @@ import { Folio, HeroWave } from "@/components/LayerBlocks";
 import { DAILY } from "@/data/daily";
 import { pageMeta } from "@/lib/site";
 
-export const metadata = pageMeta("每日觀測", "每天早上整理影響不動產價格的國際、政策、市場與個案新聞，每則附原始出處與「對估價的影響」；只整理、不預測，也不評論哪一方好壞。", "/daily");
+export const metadata = pageMeta("每日觀測", "每天早上與傍晚整理影響不動產價格的國際、政策、市場與個案新聞，每則附原始出處與「對估價的影響」；只整理、不預測，也不評論哪一方好壞。", "/daily");
 
 export default function DailyPage() {
   return (
