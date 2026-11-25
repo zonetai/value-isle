@@ -126,6 +126,7 @@ export function IslandHero() {
   const [people, setPeople] = useState(false);
   const [flying, setFlying] = useState(false);
   const walkingRef = useRef(false);
+  const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   /* 事件處理器裡要讀到最新值，狀態另外放一份在 ref */
   const seenRef = useRef<string[]>([]), curScRef = useRef<string | null>(null), cardRef = useRef<Card>(null);
@@ -194,8 +195,9 @@ export function IslandHero() {
     const onNear = (e: Event) => {
       const n = (e as CustomEvent).detail as Near; setNear(n);
       setTalk((t) => (t && !(n.kind === "npc" && n.id === t.id) ? null : t));
-      /* 走離那棟樓，卷宗自動收起來 */
-      if (cardRef.current?.mode === "spot" && !(n.kind === "spot" && n.id === cardRef.current.id)) setCard(null);
+      /* 走離那棟樓（身邊沒有任何可互動的東西超過 0.6 秒），卷宗自動收起來 */
+      clearTimeout(awayT.current);
+      if (cardRef.current?.mode === "spot" && !n.kind) awayT.current = setTimeout(() => { if (cardRef.current?.mode === "spot") setCard(null); }, 600);
     };
     document.addEventListener("island:select", onSelect);
     document.addEventListener("island:spot", onSpot);
@@ -233,6 +235,9 @@ export function IslandHero() {
 
   /* 告訴島現在正在跟誰說話（路人頭上的泡泡會顯示「說話中」） */
   useEffect(() => { api.current?.walkTalking?.(talk?.id ?? null); }, [talk]);
+
+  /* 走路時打開卷宗、對話、名單：搖桿先收起來，不要蓋住按鈕 */
+  useEffect(() => { root.current?.classList.toggle("walk-panel", walking && (!!card || !!talk || people || listOpen)); }, [walking, card, talk, people, listOpen]);
 
   /* 索引收合：直接改 class（島嶼帶路時也會在同一個元素上加 touring，不能讓 React 覆寫 className） */
   useEffect(() => { root.current?.classList.toggle("idx-mini", mini); }, [mini]);
@@ -366,14 +371,14 @@ export function IslandHero() {
       {walking && (
         <>
           <div className="walk-hud">
-            <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" />回到空中</button>
+            <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" /><span className="wl">回到空中</span><span className="ws">離開</span></button>
             <span className="walk-hud-r">
               <button className={flying ? "walk-book on" : "walk-book"} onClick={() => {
                 const ok = api.current?.walkFly(!flying);
                 if (flying && ok === false) toast("下面是海，飛回島上才能降落。", 2600);
               }}><Icon name={flying ? "prev" : "up"} />{flying ? "降落" : "起飛"}</button>
-              <button className="walk-book" onClick={() => { setPeople(!people); setListOpen(false); }}><Icon name="talk" />找人聊天</button>
-              <button className="walk-book" onClick={() => { setListOpen(!listOpen); setPeople(false); }}><Icon name="book" />勘查章 {seen.length} / {SP_IDS.length}</button>
+              <button className="walk-book" onClick={() => { setPeople(!people); setListOpen(false); }}><Icon name="talk" /><span className="wl">找人聊天</span><span className="ws">聊天</span></button>
+              <button className="walk-book" onClick={() => { setListOpen(!listOpen); setPeople(false); }}><Icon name="book" /><span className="wl">勘查章 </span>{seen.length}/{SP_IDS.length}</button>
             </span>
           </div>
           {people && (

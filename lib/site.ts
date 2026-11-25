@@ -29,13 +29,17 @@ export const fmtDate = (d: string) => {
  * 每頁的 metadata：標題、說明、正式網址（canonical 一律指向 zonetai.com/value-isle，
  * 這樣 github.io 的副本不會跟官網搶搜尋排名）
  */
+/** 分享到 LINE、Facebook 時的縮圖（public/og.jpg，1200×630）；網址相對於 metadataBase（zonetai.com/value-isle/） */
+export const OG_IMAGE = { url: "og.jpg", width: 1200, height: 630, alt: "價值島：一塊地的價格，從四層看起" };
+
 export const pageMeta = (title: string | null, description: string, path: string) => {
   const url = SITE_URL + (path === "/" ? "" : path);
   return {
     ...(title ? { title } : {}),
     description,
     alternates: { canonical: url },
-    openGraph: { url, title: title ? `${title}｜價值島` : "價值島｜中泰不動產智庫的市場觀測站", description },
+    openGraph: { url, title: title ? `${title}｜價值島` : "價值島｜中泰不動產智庫的市場觀測站", description, siteName: "價值島｜中泰不動產智庫", locale: "zh_TW", type: "website" as const, images: [OG_IMAGE] },
+    twitter: { card: "summary_large_image" as const, images: [OG_IMAGE.url] },
   };
 };
 
