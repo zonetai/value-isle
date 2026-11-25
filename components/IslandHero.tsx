@@ -297,7 +297,11 @@ export function IslandHero() {
 
       <div className="loader" id="loader">
         <div className="big">價值島</div>
-        <div className="bar"><i /></div>
+        {/* 進度條畫成一道浪：墨線隨載入進度往右畫出來（寬度由 island-scene.js 的 setProgress 控制） */}
+        <div className="bar">
+          <svg className="wave-bg" viewBox="0 0 200 16" aria-hidden="true"><path d="M0 8q12.5-7 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0" /></svg>
+          <i><svg viewBox="0 0 200 16" aria-hidden="true"><path d="M0 8q12.5-7 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0" /></svg></i>
+        </div>
         <small>潮水退去，島正在浮現…</small>
       </div>
 

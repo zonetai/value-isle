@@ -1,6 +1,6 @@
 import { G } from "@/components/Gloss";
 import { DailyView } from "@/components/DailyView";
-import { HeroWave } from "@/components/LayerBlocks";
+import { Folio, HeroWave } from "@/components/LayerBlocks";
 import { DAILY } from "@/data/daily";
 import { pageMeta } from "@/lib/site";
 
@@ -12,7 +12,7 @@ export default function DailyPage() {
       <section className="page-hero daily-hero">
         <div className="container daily-hero-grid">
           <div>
-            <span className="kicker">燈塔日誌</span>
+            <Folio label="燈塔日誌" />
             <h1>每日觀測</h1>
             <p><G>{"這裡是四層動態的總覽。同樣的內容也會出現在各自的頁面：政策的進「政策」頁並接上時間軸，國際的進「國際」頁，市場的進「市場潮位」頁；個案層級的動態留在這裡。每則附「對估價的影響」與原始出處；只整理、不預測，也不評論哪一方好壞。"}</G></p>
             <div className="daily-meta">

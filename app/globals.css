@@ -1250,3 +1250,22 @@ a.scene-hint{background:var(--paper);border:1px solid var(--ink);border-radius:6
 .path span + span::before{content:"→";left:0;top:2px}
 .path span:last-child{color:var(--ink);font-weight:700}
 @media (max-width:700px){.season-picker{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.season-picker button{padding:8px 0}}
+
+/* 頁首：報頭樣式。最上面一條刊名與日期，下面雙線，標題用手寫楷體 */
+.ph-folio{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.78rem;letter-spacing:.12em;color:var(--ink-2);border-top:1px solid var(--ink);border-bottom:3px double var(--ink);padding:6px 0;margin-bottom:18px}
+.ph-folio span:last-child{letter-spacing:.06em}
+.page-hero h1{font-family:var(--hand);font-weight:700;font-size:clamp(2.4rem,5vw,3.6rem);letter-spacing:.04em;line-height:1.15}
+.page-hero p{max-width:640px;line-height:1.8}
+.page-hero .layer-badge{letter-spacing:.08em}
+.page-hero .layer-badge i{width:14px;height:2px;border-radius:0}
+.daily-hero .daily-meta{border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+
+/* 島的載入畫面：一張紙，墨線把浪畫出來 */
+.loader{background:var(--paper);gap:14px}
+.loader .big{font-family:var(--hand);font-weight:700;font-size:3.4rem;letter-spacing:.14em;animation:none;opacity:1}
+.loader .bar{position:relative;width:200px;height:16px;background:none;border-radius:0;overflow:visible}
+.loader .bar svg{position:absolute;left:0;top:0;width:200px;height:16px;fill:none;stroke-width:2;stroke-linecap:round}
+.loader .bar .wave-bg{stroke:var(--line);stroke-dasharray:3 4}
+.loader .bar i{position:absolute;left:0;top:0;height:16px;background:none;overflow:hidden}
+.loader .bar i svg{stroke:var(--accent)}
+.loader small{font-family:var(--hand);font-size:.95rem;letter-spacing:.1em;color:var(--ink-2)}

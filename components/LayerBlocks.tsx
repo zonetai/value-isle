@@ -21,11 +21,25 @@ export function HeroWave() {
   );
 }
 
+/** 頁首最上面的報頭條：刊名與日期，像報紙每一版的版頭 */
+const WK = ["日", "一", "二", "三", "四", "五", "六"];
+export function Folio({ label }: { label?: string }) {
+  const [y, m, d] = DAILY.updated.split("-").map(Number);
+  const wk = WK[new Date(DAILY.updated + "T00:00:00").getDay()];
+  return (
+    <div className="ph-folio">
+      <span>價值島{label ? `・${label}` : ""}</span>
+      <span>{y} 年 {m} 月 {d} 日　星期{wk}</span>
+    </div>
+  );
+}
+
 /** 頁首：標題、說明、屬於第幾層；mark 是右側淡淡的層次浮水印圖示，extra 放在說明下面（例如季節選擇器） */
 export function PageHero({ title, children, badge, color, mark, extra }: { title: string; children: React.ReactNode; badge?: string; color?: string; mark?: string; extra?: React.ReactNode }) {
   return (
     <section className="page-hero">
       <div className="container">
+        <Folio />
         <h1>{title}</h1>
         <p><G>{children}</G></p>
         {badge && <div className="layer-badge" style={{ "--c": color } as React.CSSProperties}><i />{badge}</div>}
