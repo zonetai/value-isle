@@ -1342,7 +1342,7 @@ main:focus{outline:none}
 /* 走路時：收起全景用的面板、工具列、「如果…」、跑馬燈，只留島和走路介面 */
 .island-hero.walking .hero-panel,.island-hero.walking .whatif,.island-hero.walking .scene-hint,.island-hero.walking .scene-tools{display:none!important}
 .island-hero.walking #island-labels .pin:not(.small){opacity:.35}
-@media (max-width:700px){
+@media (max-width:1100px){
   .island-hero.walking{--scene-h:calc(100dvh - var(--nav-h));padding-top:var(--scene-h)}
 }
 .walk-hud{position:absolute;top:14px;left:14px;right:14px;z-index:8;display:flex;justify-content:space-between;align-items:center;gap:10px;pointer-events:none}
@@ -1358,8 +1358,6 @@ main:focus{outline:none}
 .walk-stick{position:absolute;left:22px;bottom:26px;z-index:8;width:112px;height:112px;border-radius:50%;background:color-mix(in srgb,var(--paper) 70%,transparent);border:1px solid var(--ink);touch-action:none;display:none}
 .walk-stick i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--ink);opacity:.82}
 @media (pointer:coarse){.walk-stick{display:block}.walk-act{left:auto;right:16px;translate:none;max-width:calc(100% - 170px)}}
-/* 路人頭上的身分牌 */
-.npc-tag{background:var(--paper);color:var(--ink);border:1px solid var(--ink);border-radius:4px;padding:2px 7px;font-size:.72rem;font-weight:700;white-space:nowrap;pointer-events:none;transform:translateY(-6px)}
 /* 對話框：一張紙條 */
 .walk-talk{position:absolute;left:50%;bottom:20px;translate:-50% 0;z-index:9;width:min(560px,calc(100% - 28px));max-height:calc(100% - 110px);overflow:auto;background:var(--paper);border:1px solid var(--ink);border-radius:6px;box-shadow:var(--paper-shadow);padding:16px 18px;animation:panelin .25s ease both}
 .walk-talk .close{position:absolute;top:8px;right:8px;width:36px;height:36px;border:1px solid var(--line);background:var(--paper);border-radius:6px;display:flex;align-items:center;justify-content:center}
@@ -1376,4 +1374,34 @@ main:focus{outline:none}
 @keyframes stamp{from{scale:2.2;opacity:0}to{scale:1;opacity:.85}}
 .island-hero.walking .scene-card{bottom:20px;left:14px;right:14px}
 @media (max-width:700px){.scene-tools{max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}.scene-tools::-webkit-scrollbar{display:none}.scene-tools button{flex:none}}
-.npc-tag{z-index:1}
+
+/* 路人頭上的對話泡泡：可以聊天的人有名字，靠近時會說一句招呼；一般路人偶爾說一句閒聊 */
+.npc-bubble,.say-bubble{position:relative;transform:translateY(-10px);background:var(--paper);color:var(--ink);border:1px solid var(--ink);border-radius:8px;box-shadow:var(--paper-shadow);font-size:.74rem;line-height:1.4;white-space:nowrap}
+.npc-bubble::after,.say-bubble::after{content:"";position:absolute;left:50%;bottom:-6px;width:9px;height:9px;margin-left:-5px;background:var(--paper);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);rotate:45deg}
+.npc-bubble{pointer-events:auto;cursor:pointer;padding:3px 9px;display:flex;flex-direction:column;align-items:center;max-width:220px}
+.npc-bubble b{font-size:.74rem;display:flex;align-items:center;gap:4px}
+.npc-bubble b::after{content:"…";display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 5px;font-size:.7rem;line-height:1.3}
+.npc-bubble span{display:none;font-family:var(--hand);font-size:.86rem;color:var(--ink-2);white-space:normal;text-align:center;max-width:200px}
+.npc-bubble.open span{display:block}
+.npc-bubble.open b::after{display:none}
+.say-bubble{pointer-events:none;padding:4px 9px;font-family:var(--hand);font-size:.82rem;color:var(--ink-2);animation:panelin .25s ease both}
+/* 找人聊天的名單 */
+.walk-hud-r{display:flex;gap:8px}
+.walk-people{position:absolute;top:60px;right:14px;z-index:9;width:min(300px,calc(100% - 28px));background:var(--paper);border:1px solid var(--ink);border-radius:6px;box-shadow:var(--paper-shadow);padding:10px 12px;animation:panelin .2s ease both}
+.walk-people small{display:block;color:var(--ink-3);font-size:.74rem;margin-bottom:4px}
+.walk-people button{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:9px 2px}
+.walk-people button:hover{background:var(--paper-2)}
+.walk-people b{display:block;font-size:.9rem;color:var(--c)}
+.walk-people span{display:block;font-size:.78rem;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 對話框的說話者 */
+.walk-talk .wt-who{display:flex;align-items:center;gap:10px}
+.walk-talk .wt-face{width:40px;height:40px;border-radius:50%;background:color-mix(in srgb,var(--c) 18%,var(--paper));border:1px solid var(--c);display:flex;align-items:center;justify-content:center;color:var(--c);font-size:1.2rem;flex:none}
+.walk-talk .wt-who b{display:block;font-size:1rem}
+.walk-talk .wt-who small{display:block;font-size:.74rem;color:var(--c)}
+@media (max-width:700px){.walk-hud .btn,.walk-book{padding:7px 9px;font-size:.78rem}.walk-hud-r{gap:5px}}
+
+/* 飛行模式：起飛鈕亮起來；手機的上升／下降鈕 */
+.walk-book.on{background:var(--ink);color:#fff}
+.walk-lift{position:absolute;right:16px;bottom:92px;z-index:8;display:none;flex-direction:column;gap:8px}
+.walk-lift button{width:52px;height:52px;border-radius:50%;border:1px solid var(--ink);background:color-mix(in srgb,var(--paper) 85%,transparent);font-size:1.3rem;font-weight:700;touch-action:none;box-shadow:var(--paper-shadow)}
+@media (pointer:coarse){.walk-lift{display:flex}}

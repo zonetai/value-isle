@@ -6,7 +6,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { DATA } from "@/data/site";
 import { KN } from "@/data/knowledge";
 import { DAILY } from "@/data/daily";
-import { NPCS } from "@/data/walk";
+import { AMBIENT, NPCS } from "@/data/walk";
 import type { OutlookItem } from "@/data/daily-types";
 import { layerOf, md, type Season } from "@/lib/site";
 import { G } from "./Gloss";
@@ -25,7 +25,8 @@ type IslandApi = {
   labels: (on: boolean) => void; currents: (on: boolean) => void; pause: (on: boolean) => void;
   bird: () => void; home: () => void;
   startTour: () => void; stopTour: () => void; tourNext: () => void; tourPrev: () => void;
-  walk: (on: boolean) => void;
+  walk: (on: boolean) => void; walkNpc: (id: string) => void; walkTalking: (id: string | null) => void;
+  walkFly: (on: boolean) => boolean; walkLift: (v: number) => void;
   dispose: () => void;
 };
 type SeasonFn = (s: Season, data: (typeof DATA.seasons)[Season]) => void;
@@ -122,6 +123,8 @@ export function IslandHero() {
   const [walking, setWalking] = useState(false);
   const [near, setNear] = useState<Near>({ kind: null });
   const [talk, setTalk] = useState<{ id: string; qi: number | null } | null>(null);
+  const [people, setPeople] = useState(false);
+  const [flying, setFlying] = useState(false);
   const walkingRef = useRef(false);
 
   /* 事件處理器裡要讀到最新值，狀態另外放一份在 ref */
@@ -176,7 +179,7 @@ export function IslandHero() {
         openDrawer: (l: string) => site.current.openDrawer(l),
         onSeason: (fn: SeasonFn) => { seasonFns.current.push(fn); fn(seasonNow.current, DATA.seasons[seasonNow.current]); },
       };
-      api.current = initIsland({ root: root.current, D: DATA, KN, NPCS, VI, navigate: (p: string) => router.push(p) }) as IslandApi | null;
+      api.current = initIsland({ root: root.current, D: DATA, KN, NPCS, AMBIENT, VI, navigate: (p: string) => router.push(p) }) as IslandApi | null;
     });
     const onSelect = (e: Event) => setOpenLayer((e as CustomEvent).detail.layer);
     const onSpot = (e: Event) => {
@@ -191,14 +194,18 @@ export function IslandHero() {
     const onNear = (e: Event) => {
       const n = (e as CustomEvent).detail as Near; setNear(n);
       setTalk((t) => (t && !(n.kind === "npc" && n.id === t.id) ? null : t));
+      /* 走離那棟樓，卷宗自動收起來 */
+      if (cardRef.current?.mode === "spot" && !(n.kind === "spot" && n.id === cardRef.current.id)) setCard(null);
     };
     document.addEventListener("island:select", onSelect);
     document.addEventListener("island:spot", onSpot);
+    const onFly = (e: Event) => { setFlying((e as CustomEvent).detail.on); setTalk(null); };
+    document.addEventListener("island:fly", onFly);
     document.addEventListener("island:walk", onWalk);
     document.addEventListener("island:near", onNear);
     return () => {
       alive = false; api.current?.dispose(); api.current = null; seasonFns.current = [];
-      document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
+      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
       document.removeEventListener("island:select", onSelect); document.removeEventListener("island:spot", onSpot);
     };
   }, [router, showSpot]);
@@ -223,6 +230,9 @@ export function IslandHero() {
     const t = TICKER.length ? setTimeout(() => { setTick(0); iv = setInterval(() => setTick((i) => (i + 1) % TICKER.length), 5200); }, 9000) : undefined;
     return () => { clearTimeout(t); clearInterval(iv); };
   }, []);
+
+  /* 告訴島現在正在跟誰說話（路人頭上的泡泡會顯示「說話中」） */
+  useEffect(() => { api.current?.walkTalking?.(talk?.id ?? null); }, [talk]);
 
   /* 索引收合：直接改 class（島嶼帶路時也會在同一個元素上加 touring，不能讓 React 覆寫 className） */
   useEffect(() => { root.current?.classList.toggle("idx-mini", mini); }, [mini]);
@@ -289,6 +299,7 @@ export function IslandHero() {
         <div className="sc-foot">
           <button className="btn sm" onClick={next}>{walking ? (seen.length < SP_IDS.length ? "走去下一處還沒看的" : "走去下一處") : seen.length < SP_IDS.length ? "去下一處還沒看的" : "下一處"}</button>
           <button className="btn ghost sm" onClick={() => openDrawer(s.layer)}>{L.name}的觀測項目</button>
+          {walking && <button className="btn ghost sm" onClick={() => setCard(null)}>走出來</button>}
         </div>
       </>
     );
@@ -356,9 +367,35 @@ export function IslandHero() {
         <>
           <div className="walk-hud">
             <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" />回到空中</button>
-            <button className="walk-book" onClick={() => setListOpen(!listOpen)}><Icon name="book" />勘查章 {seen.length} / {SP_IDS.length}</button>
+            <span className="walk-hud-r">
+              <button className={flying ? "walk-book on" : "walk-book"} onClick={() => {
+                const ok = api.current?.walkFly(!flying);
+                if (flying && ok === false) toast("下面是海，飛回島上才能降落。", 2600);
+              }}><Icon name={flying ? "prev" : "up"} />{flying ? "降落" : "起飛"}</button>
+              <button className="walk-book" onClick={() => { setPeople(!people); setListOpen(false); }}><Icon name="talk" />找人聊天</button>
+              <button className="walk-book" onClick={() => { setListOpen(!listOpen); setPeople(false); }}><Icon name="book" />勘查章 {seen.length} / {SP_IDS.length}</button>
+            </span>
           </div>
-          <p className="walk-hint">{touch ? "左下搖桿走路・拖曳畫面轉視角・點地面走過去" : "WASD 或方向鍵走路・拖曳畫面轉視角・點地面走過去・E 互動・Esc 離開"}</p>
+          {people && (
+            <div className="walk-people">
+              <small>島上可以聊天的人，點名字就會走過去</small>
+              {NPCS.map((n) => (
+                <button key={n.id} onClick={() => { setPeople(false); api.current?.walkNpc(n.id); }} style={{ "--c": layerOf(n.layer).hex } as React.CSSProperties}>
+                  <b>{n.who}</b><span>{n.hello}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          <p key={flying ? "f" : "w"} className="walk-hint">{flying
+            ? (touch ? "搖桿飛行・右邊 ↑↓ 升降・飛近船、飛機、風機可以進去看看" : "WASD 飛行・空白鍵上升・Shift 下降・飛近船、飛機、風機可以進去看看")
+            : (touch ? "左下搖桿走路・拖曳畫面轉視角・點地面走過去" : "WASD 或方向鍵走路・拖曳畫面轉視角・點地面走過去・E 互動・Esc 離開")}</p>
+          {flying && (
+            <div className="walk-lift">
+              {[[1, "上升"], [-1, "下降"]].map(([v, t]) => (
+                <button key={t} aria-label={t as string} onPointerDown={() => api.current?.walkLift(v as number)} onPointerUp={() => api.current?.walkLift(0)} onPointerLeave={() => api.current?.walkLift(0)} onPointerCancel={() => api.current?.walkLift(0)}>{v === 1 ? "↑" : "↓"}</button>
+              ))}
+            </div>
+          )}
           {near.kind && !talk && !card && (
             <button id="walkAct" className="walk-act" onClick={() => {
               if (near.kind === "npc" && near.id) setTalk({ id: near.id, qi: null });
@@ -373,7 +410,7 @@ export function IslandHero() {
             return (
               <div className="walk-talk" style={{ "--c": L.hex } as React.CSSProperties} role="dialog" aria-label={`和${n.who}說話`}>
                 <button className="close" aria-label="結束對話" onClick={() => setTalk(null)}><Icon name="close" /></button>
-                <span className="ld-label">{n.who}・{L.name}</span>
+                <div className="wt-who"><span className="wt-face" aria-hidden="true"><Icon name="talk" /></span><span><b>{n.who}</b><small>{L.name}</small></span></div>
                 {qa && <p className="wt-q">你：{qa.q}</p>}
                 <p className="wt-a"><G>{qa ? qa.a : n.hello}</G></p>
                 {qa?.go && (
