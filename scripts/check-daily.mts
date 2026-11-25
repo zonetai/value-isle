@@ -34,6 +34,16 @@ DAILY.topics.forEach((t, i) => {
   if (t.layer && !LAYERS.includes(t.layer)) errors.push(`topics[${i}] layer 錯誤：${t.layer}`);
 });
 
+/* 資安：整份資料裡每一個 url（快訊、專題各組、各方主張、專欄、outlook 依據）只能是 http(s) 網址或站內路徑，
+   擋掉 javascript:、data: 這類會在點擊時執行程式的連結 */
+(function walk(v: unknown, at: string) {
+  if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${at}[${i}]`));
+  else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) {
+    if (k === "url" && typeof x === "string" && x && !/^(https?:\/\/|\/(?!\/)|[a-z]+\.html(#|$)|#)/i.test(x.trim())) errors.push(`${at}.url 不是 http(s) 網址或站內路徑：${x.slice(0, 60)}`);
+    walk(x, `${at}.${k}`);
+  }
+})(DAILY, "DAILY");
+
 /* 情境推演的目前方向（首頁「如果…」）：不得刪除，每個情境都要有判讀與依據 */
 const O = DAILY.outlook;
 if (!O || !O.items) errors.push("缺少 outlook（首頁情境推演的目前方向），不得刪除");

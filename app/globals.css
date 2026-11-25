@@ -8,9 +8,9 @@
   --c-intl:#2a6f97; --c-policy:#c9711a; --c-market:#2b8a6e; --c-ind:#7b4fa3;
   --radius:18px; --shadow:0 10px 30px rgba(40,30,20,.10);
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;
-  --serif:'Noto Serif TC','Noto Sans TC',serif;
-  --hand:'LXGW WenKai TC','Noto Serif TC',serif;
+  --sans:system-ui,-apple-system,'PingFang TC','Microsoft JhengHei','Noto Sans TC','Noto Sans CJK TC',sans-serif;
+  --serif:'LXGW WenKai TC','PingFang TC','Microsoft JhengHei',serif;
+  --hand:'LXGW WenKai TC','PingFang TC','Microsoft JhengHei',serif;
   --sky-a:#dff1f7; --sky-b:#fdf3e4;
   --nav-h:66px;
 }
@@ -1324,4 +1324,13 @@ body:has(.drawer.open){overflow:hidden}
   #view-briefs .note-filters .chip{padding:9px 2px 7px}
   .glossary details{padding:2px 0}
   .glossary summary{padding:12px 0}
+}
+
+/* 跳到主要內容：用鍵盤 Tab 進來時第一個出現 */
+.skip-link{position:absolute;left:12px;top:-60px;z-index:200;background:var(--ink);color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none;font-size:.9rem}
+.skip-link:focus{top:12px}
+main:focus{outline:none}
+/* 系統設定「減少動態效果」時：關掉裝飾性動畫與轉場 */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
