@@ -1334,3 +1334,46 @@ main:focus{outline:none}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+/* ============================================================
+   走進島上（遊戲導覽模式）
+   ============================================================ */
+.scene-tools .walk-enter{color:var(--accent);font-weight:700}
+/* 走路時：收起全景用的面板、工具列、「如果…」、跑馬燈，只留島和走路介面 */
+.island-hero.walking .hero-panel,.island-hero.walking .whatif,.island-hero.walking .scene-hint,.island-hero.walking .scene-tools{display:none!important}
+.island-hero.walking #island-labels .pin:not(.small){opacity:.35}
+@media (max-width:700px){
+  .island-hero.walking{--scene-h:calc(100dvh - var(--nav-h));padding-top:var(--scene-h)}
+}
+.walk-hud{position:absolute;top:14px;left:14px;right:14px;z-index:8;display:flex;justify-content:space-between;align-items:center;gap:10px;pointer-events:none}
+.walk-hud > *{pointer-events:auto}
+.walk-hud .btn{box-shadow:var(--paper-shadow)}
+.walk-book{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border:1px solid var(--ink);border-radius:6px;padding:8px 12px;font-size:.84rem;box-shadow:var(--paper-shadow)}
+.walk-hint{position:absolute;left:50%;top:62px;translate:-50% 0;z-index:7;margin:0;font-size:.74rem;color:var(--ink-2);background:color-mix(in srgb,var(--paper) 88%,transparent);padding:4px 10px;border-radius:4px;white-space:nowrap;max-width:calc(100% - 28px);overflow:hidden;text-overflow:ellipsis;animation:walkhint 1s ease 6s forwards}
+@keyframes walkhint{to{opacity:0;visibility:hidden}}
+.walk-act{position:absolute;left:50%;bottom:28px;translate:-50% 0;z-index:8;display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:0;border-radius:6px;padding:13px 20px;font-size:.98rem;font-weight:700;box-shadow:var(--paper-shadow);animation:panelin .25s ease both;max-width:calc(100% - 180px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.walk-act:hover{background:var(--ink-2)}
+.walk-act .ic{font-size:1.15em;flex:none}
+/* 搖桿：只在觸控裝置出現 */
+.walk-stick{position:absolute;left:22px;bottom:26px;z-index:8;width:112px;height:112px;border-radius:50%;background:color-mix(in srgb,var(--paper) 70%,transparent);border:1px solid var(--ink);touch-action:none;display:none}
+.walk-stick i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--ink);opacity:.82}
+@media (pointer:coarse){.walk-stick{display:block}.walk-act{left:auto;right:16px;translate:none;max-width:calc(100% - 170px)}}
+/* 路人頭上的身分牌 */
+.npc-tag{background:var(--paper);color:var(--ink);border:1px solid var(--ink);border-radius:4px;padding:2px 7px;font-size:.72rem;font-weight:700;white-space:nowrap;pointer-events:none;transform:translateY(-6px)}
+/* 對話框：一張紙條 */
+.walk-talk{position:absolute;left:50%;bottom:20px;translate:-50% 0;z-index:9;width:min(560px,calc(100% - 28px));max-height:calc(100% - 110px);overflow:auto;background:var(--paper);border:1px solid var(--ink);border-radius:6px;box-shadow:var(--paper-shadow);padding:16px 18px;animation:panelin .25s ease both}
+.walk-talk .close{position:absolute;top:8px;right:8px;width:36px;height:36px;border:1px solid var(--line);background:var(--paper);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.walk-talk .wt-q{margin:6px 0 0;font-size:.84rem;color:var(--ink-3)}
+.walk-talk .wt-a{margin:6px 0 12px;font-family:var(--hand);font-size:1.12rem;line-height:1.7;color:var(--ink);padding-right:30px}
+.walk-talk .wt-qs{display:flex;flex-direction:column;border-top:1px solid var(--line);margin-top:12px}
+.walk-talk .wt-qs button{text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:11px 2px;font-size:.92rem;color:var(--ink)}
+.walk-talk .wt-qs button::before{content:"→ ";color:var(--c,var(--accent))}
+.walk-talk .wt-qs button:hover{background:var(--paper-2)}
+.walk-talk .wt-qs .wt-bye{color:var(--ink-3)}
+.walk-talk .wt-qs .wt-bye::before{content:""}
+/* 第一次走進某棟樓：卷宗上蓋一個章 */
+.walk-stamp{position:absolute;right:56px;top:14px;font-family:var(--hand);font-weight:700;font-size:1rem;color:#c0392b;border:2px solid #c0392b;border-radius:6px;padding:2px 8px;rotate:-12deg;opacity:.85;animation:stamp .35s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes stamp{from{scale:2.2;opacity:0}to{scale:1;opacity:.85}}
+.island-hero.walking .scene-card{bottom:20px;left:14px;right:14px}
+@media (max-width:700px){.scene-tools{max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}.scene-tools::-webkit-scrollbar{display:none}.scene-tools button{flex:none}}
+.npc-tag{z-index:1}
