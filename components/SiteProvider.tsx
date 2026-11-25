@@ -115,7 +115,7 @@ function Drawer({ state, onClose }: { state: DrawerState; onClose: () => void })
         {news.length > 0 && (
           <div className="dr-news">
             <div className="dr-news-head">
-              <span><i className="ld-live" />最新動態</span>
+              <span>最新動態</span>
               <Link href={`/daily#layer-${l.id}`} onClick={onClose}>全部動態</Link>
             </div>
             {news.map((b) => (

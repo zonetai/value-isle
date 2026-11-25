@@ -47,27 +47,31 @@ export function LayerDaily({ layer, title, desc, n = 4 }: { layer: string; title
     <div className="layer-daily" id="layerDaily" style={{ "--c": L.hex } as React.CSSProperties}>
       <div className="ld-head">
         <div>
-          <span className="kicker"><i className="ld-live" />最新動態 · 更新至 {DAILY.updated}</span>
+          <span className="ld-kicker">{L.name} · <span className="ld-d">{md(DAILY.updated)}</span> 更新</span>
           <h2>{title ?? L.name + "的最新動態"}</h2>
           <p>{desc ?? "每天早上自動整理，每則附出處與對估價的影響。"}</p>
         </div>
-        <Link className="btn ghost sm" href={`/daily#layer-${layer}`}>看這一層全部動態</Link>
+        <Link className="ld-all" href={`/daily#layer-${layer}`}>看這一層全部動態 →</Link>
       </div>
       {topics.map((t) => (
-        <Link className="card ld-topic" key={t.id} href={`/daily#${t.id}`}>
-          <span className={`tag ${L.cls}`}>專題</span>
-          <div><b>{t.title}</b><small>{t.status}</small><p><G>{t.summary}</G></p></div>
-          <span className="go">看專題</span>
+        <Link className="ld-topic" key={t.id} href={`/daily#${t.id}`}>
+          <span className="ld-label">專題</span>
+          <b>{t.title}</b>
+          <small>{t.status}</small>
+          <p><G>{t.summary}</G> <span className="go">看專題 →</span></p>
         </Link>
       ))}
       <div className="ld-grid">
-        {items.map((b, i) => (
-          <article className="card ld-item" key={b.url + b.t} style={{ animationDelay: `${i * 60}ms` }}>
-            <div className="meta"><span className="date">{md(b.d)}</span>{b.tag && <span className="tag">{b.tag}</span>}</div>
-            <h3>{b.t}</h3>
-            <p><G>{b.s}</G></p>
-            {b.i && <div className="impact"><G>{b.i}</G></div>}
-            <div className="src"><SrcLink src={b.src} url={b.url} /></div>
+        {items.map((b) => (
+          <article className="ld-item" key={b.url + b.t}>
+            <span className="date">{md(b.d)}</span>
+            <div>
+              {b.tag && <span className="ld-label">{b.tag}</span>}
+              <h3>{b.t}</h3>
+              <p><G>{b.s}</G></p>
+              {b.i && <div className="impact"><G>{b.i}</G></div>}
+              <div className="src"><SrcLink src={b.src} url={b.url} /></div>
+            </div>
           </article>
         ))}
       </div>

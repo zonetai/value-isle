@@ -61,15 +61,16 @@ export function DailyView() {
           ))}
         </div>
         <div className="feed" id="feed">
-          {days.length === 0 && <div className="card">這個分類目前沒有快訊。</div>}
+          {days.length === 0 && <p className="feed-empty">這個分類目前沒有快訊。</p>}
           {days.map((d) => (
             <div className="day" key={d}>
-              <div className="day-head"><b>{fmtDate(d)}</b><span>{d}</span></div>
-              {list.filter((b) => b.d === d).map((b, i) => {
+              <div className="day-head"><b>{fmtDate(d)}</b><span>{list.filter((b) => b.d === d).length} 則</span></div>
+              <div className="day-cols">
+              {list.filter((b) => b.d === d).map((b) => {
                 const L = layerOf(b.layer);
                 return (
-                  <article className="card brief" key={b.url + b.t} style={{ "--c": L.hex, animationDelay: `${i * 50}ms` } as React.CSSProperties}>
-                    <div className="meta"><span className={`tag ${L.cls}`}>{L.name}</span>{b.tag && <span className="tag">{b.tag}</span>}</div>
+                  <article className="brief" key={b.url + b.t} style={{ "--c": L.hex } as React.CSSProperties}>
+                    <span className="ld-label">{L.name}{b.tag ? "・" + b.tag : ""}</span>
                     <h3>{b.t}</h3>
                     <p><G>{b.s}</G></p>
                     {b.i && <div className="impact"><G>{b.i}</G></div>}
@@ -77,6 +78,7 @@ export function DailyView() {
                   </article>
                 );
               })}
+              </div>
             </div>
           ))}
         </div>
@@ -87,13 +89,16 @@ export function DailyView() {
   );
 }
 
+/** 粗估閱讀時間：中文一分鐘約 400 字 */
+const readMin = (t: Topic) => Math.max(1, Math.round(JSON.stringify(t).replace(/https?:[^"]+/g, "").replace(/[\u0000-\u007f]/g, "").length / 400));
+
 function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
   const L = layerOf(t.layer);
   const { groups, themes } = t;
   return (
     <div id={`topic-${t.id}`} hidden={hidden}>
-      <div className="topic-head card" style={{ "--c": L.hex } as React.CSSProperties}>
-        <div className="meta"><span className={`tag ${L.cls}`}>{L.name}</span><span className="mono">{t.date}</span></div>
+      <div className="topic-head" style={{ "--c": L.hex } as React.CSSProperties}>
+        <span className="ld-label">專題・{L.name}<span className="th-date">{t.date}・約 {readMin(t)} 分鐘讀完</span></span>
         <h2>{t.title}</h2>
         <div className="status">{t.status}</div>
         <p><G>{t.summary}</G></p>
@@ -103,7 +108,7 @@ function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
           <h3>{g.name}</h3>
           <div className="tgrid">
             {g.items.map((it) => (
-              <div className="card titem" key={it.t}><b>{it.t}</b><p><G>{it.s}</G></p><div className="src"><SrcLink src={it.src} url={it.url} /></div></div>
+              <div className="titem" key={it.t}><b>{it.t}</b><p><G>{it.s}</G></p><div className="src"><SrcLink src={it.src} url={it.url} /></div></div>
             ))}
           </div>
         </div>
@@ -111,7 +116,7 @@ function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
       {themes && (
         <div className="themes">
           {themes.map((th, i) => (
-            <details className="card theme" key={th.t} open={i === 0}>
+            <details className="theme" key={th.t} open={i === 0}>
               <summary><span className="n">{String(i + 1).padStart(2, "0")}</span><span><b>{th.t}</b><small>{th.s}</small></span></summary>
               <div className="pos">
                 {th.positions.map((p) => (
@@ -143,15 +148,15 @@ function TopicView({ t, hidden }: { t: Topic; hidden: boolean }) {
                 </>
               );
               return ext
-                ? <a key={c.url} className="card titem tcol" href={c.url} target="_blank" rel="noopener">{inner}</a>
-                : <Link key={c.url} className="card titem tcol" href={siteHref(c.url)}>{inner}</Link>;
+                ? <a key={c.url} className="titem tcol" href={c.url} target="_blank" rel="noopener">{inner}</a>
+                : <Link key={c.url} className="titem tcol" href={siteHref(c.url)}>{inner}</Link>;
             })}
           </div>
         </div>
       )}
-      <div className="two-col" style={{ marginTop: 22 }}>
-        <div className="card"><span className="kicker">估價師怎麼讀</span><p style={{ margin: "8px 0 0", fontSize: ".95rem", color: "var(--ink-2)" }}><G>{t.appraiser}</G></p></div>
-        <div className="card"><span className="kicker">接下來看什麼</span><div className="bullets" style={{ marginTop: 10 }}>{(t.watch ?? []).map((w) => <div key={w}><G>{w}</G></div>)}</div></div>
+      <div className="two-col topic-foot">
+        <div><h3>估價師怎麼讀</h3><p><G>{t.appraiser}</G></p></div>
+        <div><h3>接下來看什麼</h3><div className="bullets" style={{ marginTop: 10 }}>{(t.watch ?? []).map((w) => <div key={w}><G>{w}</G></div>)}</div></div>
       </div>
     </div>
   );

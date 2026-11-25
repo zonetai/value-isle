@@ -14,7 +14,7 @@ function DailyStrip() {
   const order = ["intl", "policy", "market", "ind"];
   return (
     <div className="daily-strip" id="dailyStrip">
-      <div className="ds-head"><i className="ld-live" />最新觀測 · 更新至 {DAILY.updated}</div>
+      <div className="ds-head">最新觀測 · 更新至 {DAILY.updated}</div>
       {order.map((id) => {
         const L = DATA.layers.find((l) => l.id === id)!;
         const list = DAILY.briefs.filter((b) => b.layer === id);

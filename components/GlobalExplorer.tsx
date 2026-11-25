@@ -173,7 +173,7 @@ export function GlobalExplorer() {
           </div>
         </div>
         <div className="news">
-          <span className="kicker"><i className="ld-live" /> 相關最新動態</span>
+          <span className="kicker">相關最新動態</span>
           {news.length ? news.map((b) => (
             <a key={b.url + b.t} href={b.url} target="_blank" rel="noopener"><b>{md(b.d)}</b>　{b.t}<small>{b.i || b.s}</small></a>
           )) : <p style={{ marginTop: 8 }}>近期沒有直接相關的快訊。</p>}

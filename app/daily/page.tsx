@@ -16,7 +16,7 @@ export default function DailyPage() {
             <h1>每日觀測</h1>
             <p><G>{"這裡是四層動態的總覽。同樣的內容也會出現在各自的頁面：政策的進「政策」頁並接上時間軸，國際的進「國際」頁，市場的進「市場潮位」頁；個案層級的動態留在這裡。每則附「對估價的影響」與原始出處；只整理、不預測，也不評論哪一方好壞。"}</G></p>
             <div className="daily-meta">
-              <span className="live"><i />更新至 <b>{DAILY.updated}</b></span>
+              <span className="live">更新至 <b>{DAILY.updated}</b></span>
               <span>{DAILY.schedule}</span>
               <span>{DAILY.briefs.length} 則快訊・{DAILY.topics.filter((t) => !t.archived).length} 個專題</span>
             </div>
