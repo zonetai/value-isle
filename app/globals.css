@@ -2103,3 +2103,47 @@ html.immersive body{overflow:hidden}
 .tl-kick{font-size:.76rem;letter-spacing:.24em;color:var(--accent);font-weight:700}
 .tower-landing p{font-size:1rem;line-height:1.85;color:var(--ink-2)}
 .tl-back{margin-top:18px}
+
+/* ---------- 蓋高樓：成績圖片、我的紀錄 ---------- */
+.sg-pic,.sg-rec{width:min(460px,calc(100% - 28px));text-align:left;z-index:3}
+.sg-pic .sg-dex-h,.sg-rec .sg-dex-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sg-pic .sg-dex-h b,.sg-rec .sg-dex-h b{font-size:1.1rem}
+.sg-pic .sg-dex-c,.sg-rec .sg-dex-c{flex:1;font-size:.78rem;color:var(--ink-3)}
+.sg-pic-x,.sg-rec-x{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:#fff;font-size:.9rem;line-height:1;flex:none}
+.sg-pic-box{position:relative;aspect-ratio:4/5;max-height:58vh;margin:0 auto 14px;border-radius:12px;overflow:hidden;background:#f4ece0}
+.sg-pic-box img{display:block;width:100%;height:100%;object-fit:contain}
+.sg-pic-box img:not([src]){visibility:hidden}
+.sg-pic.busy .sg-pic-box::after{content:"畫圖中…";position:absolute;inset:0;display:grid;place-items:center;font-weight:700;color:var(--ink-3);background:linear-gradient(100deg,#f4ece0 30%,#fffaf1 50%,#f4ece0 70%) 0 0/300% 100%;animation:sgshim 1.2s linear infinite}
+@keyframes sgshim{to{background-position:-150% 0}}
+.sg-pic .sg-btns .btn{min-width:0;flex:1 1 auto}
+.sg-pic .sg-btns [hidden]{display:none}
+.sg-rec-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sg-rec-sum div{padding:10px 12px;border:2px solid var(--ink);border-radius:12px;background:#f4ece0}
+.sg-rec-sum div:first-child{background:#ffe3b0}
+.sg-rec-sum small{display:block;font-size:.7rem;color:var(--ink-3);font-weight:700}
+.sg-rec-sum b{display:block;font-size:1.25rem;line-height:1.3}
+.sg-rec-sum em{display:block;font-style:normal;font-size:.7rem;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg-rec-n{margin:10px 0 4px!important;font-size:.82rem!important}
+.sg-rec h4{margin:12px 0 6px;font-size:.85rem;color:var(--ink-2)}
+.sg-rec-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.sg-rec-list li{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;background:#fbf4e8;font-size:.84rem}
+.sg-rec-list.recent li{grid-template-columns:auto 1fr auto}
+.sg-rec-list .rk{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fffaf1;font-size:.72rem;font-weight:800}
+.sg-rec-list li:first-child .rk{background:#e4572e}
+.sg-rec-list span:not(.rk){color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg-rec-list time{font-size:.72rem;color:var(--ink-3);white-space:nowrap}
+.sg-rec-empty{padding:22px 4px;text-align:center}
+@media (max-width:520px){.sg-pic-box{max-height:50vh}.sg-rec-sum b{font-size:1.05rem}.sg-rec-sum div{padding:8px}}
+
+/* 圖鑑內頁的小圖示：方形徽章、帶這棟樓的顏色，圖案依實際範圍填滿 */
+.sg-dd-ic{width:60px;height:60px;padding:7px;border-radius:14px;border:2px solid var(--ink);background:radial-gradient(circle at 50% 80%,#fffaf1 0 40%,transparent 41%),linear-gradient(180deg,color-mix(in srgb,var(--ib,#f6e3c8) 55%,#fffaf1),#fffaf1);box-shadow:3px 3px 0 var(--ink);overflow:hidden}
+.sg-dd-ic .tw{width:100%;height:100%}
+@media (max-width:620px){.sg-dd-ic{width:52px;height:52px;padding:6px;border-radius:12px;box-shadow:2px 2px 0 var(--ink)}}
+
+/* 標誌：大尺寸用細節版，手機導覽列用簡化版（細線在 32px 會糊成一團） */
+.logo .lg-s{display:none}
+@media (max-width:640px){
+  .brand .logo{width:34px;height:34px;border-radius:0}
+  .brand .logo .lg-l{display:none}
+  .brand .logo .lg-s{display:inline}
+}
