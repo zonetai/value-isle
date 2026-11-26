@@ -11,6 +11,8 @@ import type { OutlookItem } from "@/data/daily-types";
 import { layerOf, md, type Season } from "@/lib/site";
 import { G } from "./Gloss";
 import { Icon } from "./Icon";
+import { StoryBook } from "./StoryBook";
+import { STORIES } from "@/data/stories";
 import { useSite } from "./SiteProvider";
 
 /* ============================================================
@@ -136,6 +138,7 @@ export function IslandHero() {
   const [flying, setFlying] = useState(false);
   const [riding, setRiding] = useState(false);
   const [onTram, setOnTram] = useState(false);
+  const [story, setStory] = useState<string | null>(null);
   const [rideKind, setRideKind] = useState("tram");
   const walkingRef = useRef(false);
   const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -434,6 +437,7 @@ export function IslandHero() {
                 const ok = api.current?.walkRide(!riding);
                 if (!riding && ok) toast("飛去熱氣球，到了就會搭上去。", 2200);
               }}><Icon name="balloon" /><span className="wl">{riding ? "跳下熱氣球" : "搭熱氣球"}</span><span className="ws">{riding ? "跳下" : "氣球"}</span></button>}
+              {!onTram && !riding && <button className="walk-book" onClick={openGame} aria-label="小遊戲：蓋高樓"><Icon name="building" /><span className="wl">蓋高樓</span></button>}
               <button className="walk-book" onClick={() => { setPeople(!people); setListOpen(false); }}><Icon name="talk" /><span className="wl">找人聊天</span><span className="ws">聊天</span></button>
               <button className="walk-book" onClick={() => { setListOpen(!listOpen); setPeople(false); }}><Icon name="book" /><span className="wl">勘查章 </span>{seen.length}/{SP_IDS.length}</button>
             </span>
@@ -479,6 +483,13 @@ export function IslandHero() {
                 <div className="wt-who"><span className="wt-face" aria-hidden="true"><Icon name="talk" /></span><span><b>{n.who}</b><small>{L.name}</small></span></div>
                 {qa && <p className="wt-q">你：{qa.q}</p>}
                 <p className="wt-a"><G>{qa ? qa.a : n.hello}</G></p>
+                {STORIES[n.id] && (
+                  <button className="wt-story" onClick={() => setStory(n.id)}>
+                    <span className="wt-bk" aria-hidden="true"><Icon name="book" /></span>
+                    <span><small>{n.id === "couple" ? "打開他們的故事" : "打開他的故事"}</small><b>{STORIES[n.id].title}</b></span>
+                    <Icon name="next" />
+                  </button>
+                )}
                 {qa?.go && (
                   <button className="btn sm" onClick={() => {
                     const g = qa.go!; setTalk(null);
@@ -493,6 +504,12 @@ export function IslandHero() {
             );
           })()}
         </>
+      )}
+
+      {story && NPC[story] && (
+        <StoryBook id={story} who={NPC[story].who} color={layerOf(NPC[story].layer).hex}
+          onClose={() => setStory(null)}
+          onGo={(href) => { setStory(null); setTalk(null); api.current?.walk(false); router.push(href); }} />
       )}
 
       {/* 勘查手冊：島上所有可以點開的地方 */}
