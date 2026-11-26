@@ -55,7 +55,7 @@ p{text-wrap:pretty}
 .nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(251,247,241,.84);border-bottom:1px solid var(--line)}
 .nav .container{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);gap:16px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand .logo{width:38px;height:38px;display:block;flex:none}
+.brand .logo{width:48px;height:48px;margin:-5px -4px -5px -6px;display:block;flex:none}
 .brand b{display:block;font-size:1.05rem;letter-spacing:.04em}
 .brand small{display:block;font-size:.7rem;color:var(--ink-3);letter-spacing:.08em}
 .nav-links{display:flex;gap:2px;flex-wrap:wrap}
@@ -808,7 +808,7 @@ button[data-season="autumn"] .ic{color:#c0592f} button[data-season="winter"] .ic
   /* 導覽列：品牌只留名稱，季節切換縮小，選單改兩欄 */
   .nav .container{gap:8px}
   .brand{gap:8px;flex:none}
-  .brand .logo{width:32px;height:32px;border-radius:9px}
+  .brand .logo{width:42px;height:42px;margin:-4px -3px -4px -5px}
   .brand b{white-space:nowrap}
   .brand small{display:none}
   .season{padding:2px;border-radius:11px}
@@ -1029,8 +1029,6 @@ body{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 .nav-progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
 .nav{transition:box-shadow .3s}
 .nav.scrolled{box-shadow:0 8px 24px rgba(40,30,20,.07)}
-.brand .logo{transition:transform .5s cubic-bezier(.3,1.6,.4,1)}
-.brand:hover .logo{transform:rotate(-8deg) scale(1.06)}
 .to-top{position:fixed;right:20px;bottom:20px;z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:1.1rem;opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s}
 .to-top.on{opacity:1;pointer-events:auto;transform:none}
 .to-top:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -2140,10 +2138,14 @@ html.immersive body{overflow:hidden}
 .sg-dd-ic .tw{width:100%;height:100%}
 @media (max-width:620px){.sg-dd-ic{width:52px;height:52px;padding:6px;border-radius:12px;box-shadow:2px 2px 0 var(--ink)}}
 
-/* 標誌：大尺寸用細節版，手機導覽列用簡化版（細線在 32px 會糊成一團） */
-.logo .lg-s{display:none}
-@media (max-width:640px){
-  .brand .logo{width:34px;height:34px;border-radius:0}
-  .brand .logo .lg-l{display:none}
-  .brand .logo .lg-s{display:inline}
-}
+
+/* 價值島標誌「小島」的動態（照交付的 SVG_動態）：水紋輕晃、金幣浮動、星光一閃，3.6 秒一輪 */
+.logo{overflow:visible}
+@keyframes vi-rip{0%,100%{transform:translateX(-2.2px) scaleX(1)}50%{transform:translateX(2.2px) scaleX(.9)}}
+.logo .vi-w0,.logo .vi-w1,.logo .vi-w2{transform-box:view-box;transform-origin:50px 0;animation:vi-rip 3.6s ease-in-out infinite}
+.logo .vi-w1{animation-delay:-.54s}.logo .vi-w2{animation-delay:-1.08s}
+@keyframes vi-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.6px)}}
+.logo .vi-bob{animation:vi-bob 3.6s ease-in-out -1.26s infinite}
+@keyframes vi-glint{0%,70%,100%{transform:scale(0);opacity:0}80%{transform:scale(1.15);opacity:1}90%{transform:scale(.9);opacity:.9}}
+.logo .vi-star{transform-box:view-box;transform-origin:73.41px 20.59px;animation:vi-glint 3.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.logo *{animation:none!important}.logo .vi-star{opacity:0}}
