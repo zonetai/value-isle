@@ -1905,3 +1905,29 @@ html.sb-open,html.sb-open body{overflow:hidden}
 .sg-card.sp.space::before{content:"宇宙收藏";background:#5b4fc0}
 .sg-card.sp.space:not(.on){background:#1d2042}
 .sg-card.sp.space:not(.on) .tw .b,.sg-card.sp.space:not(.on) .tw .s{fill:#3a3f70;stroke:#3a3f70}
+
+/* ---------- 高樓圖鑑：照片與科普 ---------- */
+.sg-dd2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+.sg-dd-top{position:relative}
+.sg-ph{margin:0;border-radius:10px;overflow:hidden;border:1.5px solid var(--ink);background:#eee;box-shadow:3px 3px 0 var(--ink)}
+.sg-ph img{display:block;width:100%;max-height:360px;object-fit:cover}
+.sg-ph figcaption{padding:5px 8px;font-size:.62rem;line-height:1.5;color:var(--ink-3);background:#fffaf1;border-top:1px solid var(--line)}
+.sg-ph figcaption a{color:inherit}
+.sg-dd-sil .tw{height:200px;width:100px;margin:0 auto}
+.sg-dd-top:has(.sg-ph) .sg-dd-sil{position:absolute;right:-6px;bottom:28px;width:58px;height:116px;background:rgba(255,250,241,.92);border:1.5px solid var(--ink);border-radius:10px;padding:4px}
+.sg-dd-top:has(.sg-ph) .sg-dd-sil .tw{height:100%;width:100%}
+.sg-dd-txt small{font-size:.74rem;color:var(--accent);font-weight:700;letter-spacing:.08em}
+.sg-dd-txt h4{font-family:var(--hand);font-size:1.7rem;margin:2px 0 4px}
+.sg-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:8px 0 10px;border:1.5px solid var(--ink);border-radius:10px;overflow:hidden}
+.sg-facts div{padding:7px 8px;border-right:1px solid var(--line);background:#fff}
+.sg-facts div:last-child{border-right:0}
+.sg-facts dt{font-size:.64rem;color:var(--ink-3);letter-spacing:.06em}
+.sg-facts dd{margin:2px 0 0;font-size:.82rem;font-weight:700;line-height:1.35}
+.sg-sci{font-size:.86rem!important;line-height:1.8!important;margin:0 0 8px!important;color:var(--ink)!important}
+.sg-nt{font-size:.8rem!important;line-height:1.7!important;color:var(--ink-2)!important;margin:0 0 10px!important;padding-left:10px;border-left:2px solid var(--line)}
+.sg-dh2{font-size:.72rem!important;color:var(--ink-3)!important;margin:8px 0 0!important}
+@media (max-width:620px){.sg-dd2{grid-template-columns:1fr}.sg-ph img{max-height:260px}.sg-facts{grid-template-columns:1fr 1fr 1fr}.sg-facts dd{font-size:.76rem}}
+.sg-dex-grid[hidden],.sg-dex-d[hidden],.sg-panel [hidden]{display:none!important}
+.sg-dd-top:has(.sg-ph) .sg-dd-sil{top:8px;bottom:auto}
+.sg:has(.sg-dex:not([hidden])) .sg-hint,.sg:has(.sg-start:not([hidden])) .sg-hint{display:none}
+@media (max-width:620px){.sg-dex{top:calc(50% + 30px);max-height:calc(100% - 96px)}}
