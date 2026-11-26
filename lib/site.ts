@@ -32,14 +32,17 @@ export const fmtDate = (d: string) => {
 /** 分享到 LINE、Facebook 時的縮圖（public/og.jpg，1200×630）；網址相對於 metadataBase（zonetai.com/value-isle/） */
 export const OG_IMAGE = { url: "og.jpg?v=20261126", width: 1200, height: 630, alt: "價值島：一塊地的價格，從四層看起" };
 
-export const pageMeta = (title: string | null, description: string, path: string) => {
+/** 蓋高樓遊戲的分享縮圖（public/og-tower.jpg） */
+export const TOWER_OG = { url: "og-tower.jpg?v=20261126", width: 1200, height: 630, alt: "價值島小遊戲：蓋高樓，你能蓋多高？" };
+
+export const pageMeta = (title: string | null, description: string, path: string, image = OG_IMAGE) => {
   const url = SITE_URL + (path === "/" ? "" : path);
   return {
     ...(title ? { title } : {}),
     description,
     alternates: { canonical: url },
-    openGraph: { url, title: title ? `${title}｜價值島` : "價值島｜中泰不動產智庫的市場觀測站", description, siteName: "價值島｜中泰不動產智庫", locale: "zh_TW", type: "website" as const, images: [OG_IMAGE] },
-    twitter: { card: "summary_large_image" as const, images: [OG_IMAGE.url] },
+    openGraph: { url, title: title ? `${title}｜價值島` : "價值島｜中泰不動產智庫的市場觀測站", description, siteName: "價值島｜中泰不動產智庫", locale: "zh_TW", type: "website" as const, images: [image] },
+    twitter: { card: "summary_large_image" as const, images: [image.url] },
   };
 };
 
