@@ -1899,3 +1899,9 @@ html.sb-open,html.sb-open body{overflow:hidden}
 .sg-card{position:relative}
 .sg-card.sp:not(.on){background:#f1e7cc}
 .sg-strip-q{display:grid;place-items:center;flex:0 0 auto;width:18px;height:28px;align-self:flex-end;font-family:var(--hand);font-weight:700;color:#c08a1e}
+
+.sg-card.sp.space{background:linear-gradient(180deg,#151a3a,#262b55);border-color:#7b6fd0;color:#fff}
+.sg-card.sp.space b,.sg-card.sp.space small{color:#e8e6ff}
+.sg-card.sp.space::before{content:"宇宙收藏";background:#5b4fc0}
+.sg-card.sp.space:not(.on){background:#1d2042}
+.sg-card.sp.space:not(.on) .tw .b,.sg-card.sp.space:not(.on) .tw .s{fill:#3a3f70;stroke:#3a3f70}
