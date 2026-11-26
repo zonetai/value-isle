@@ -1698,3 +1698,100 @@ html.sb-open,html.sb-open body{overflow:hidden}
 .sg-eggpop strong{font-family:var(--hand);font-size:1.3rem}
 .sg-eggpop span{font-size:.84rem;color:var(--ink-2)}
 @keyframes sgegg{0%{opacity:0;transform:translateY(-20px) rotate(-4deg) scale(.8)}10%{opacity:1;transform:none}85%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-14px)}}
+
+/* ---------- 故事書 v2：頁邊附註、貼在本子上的插圖、目錄、頁角 ---------- */
+/* 估價師旁註：細線分隔＋朱紅色「註」字小印，像正式報告的頁邊附註 */
+.sb-note{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;margin-top:18px;padding:14px 0 0;border:0;border-top:1px solid rgba(42,37,32,.22);border-radius:0;background:none;font-size:inherit}
+.sb-note::before{display:none}
+.sb-seal{display:grid;place-items:center;width:28px;height:28px;margin-top:2px;border:1.6px solid #b3321f;border-radius:3px;color:#b3321f;font-family:var(--hand);font-size:.95rem;font-weight:700;line-height:1;transform:rotate(-5deg);background:rgba(179,50,31,.05);box-shadow:inset 0 0 0 2px var(--sb-paper),inset 0 0 0 2.8px rgba(179,50,31,.55)}
+.sb-note b{display:block;margin:0 0 3px;font-size:.66rem;letter-spacing:.26em;color:#8a2a1a;font-weight:700}
+.sb-note p{margin:0!important;font-family:var(--serif);font-size:clamp(.8rem,1.1vw,.9rem)!important;line-height:1.85!important;color:#4a443c!important}
+/* 文字頁 */
+.sb-text{padding:7% 9% 9% 10%}
+.sb-head{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.sb-chn{font-family:var(--hand);font-size:.95rem;color:var(--sb-c);letter-spacing:.14em;display:flex;align-items:center;gap:10px}
+.sb-chn::after{content:"";width:28px;height:1.5px;background:var(--sb-c);opacity:.6}
+.sb-key{margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:3px 10px 3px 8px;border-radius:999px;border:1px solid color-mix(in srgb,var(--sb-c) 45%,transparent);color:color-mix(in srgb,var(--sb-c) 80%,#1d1a16);font-size:.72rem;font-weight:700;background:#fffaf0}
+.sb-key .ic{font-size:.85rem}
+.sb-text h4{margin:4px 0 14px}
+.sb-body{position:relative}
+.sb-drop{float:left;font-family:var(--hand);font-size:3.1em;line-height:.9;margin:.08em .12em 0 0;color:var(--sb-c)}
+.sb-quote{position:relative;margin:4px 0 20px;padding:4px 0 0 30px;font-family:var(--hand);font-size:clamp(1.1rem,2vw,1.42rem);line-height:1.8;color:var(--ink)}
+.sb-quote::before{content:"「";position:absolute;left:-4px;top:-14px;font-size:3.2rem;color:var(--sb-c);opacity:.5;font-family:var(--hand)}
+.sb-lastp{position:relative}
+.sb-fin{position:absolute;right:9%;bottom:9%;display:grid;place-items:center;width:78px;height:78px;border-radius:50%;border:2px solid var(--sb-c);color:var(--sb-c);font-family:var(--hand);font-size:1rem;transform:rotate(-12deg);box-shadow:inset 0 0 0 3px var(--sb-paper),inset 0 0 0 4.5px var(--sb-c);opacity:.85;animation:stampin .6s .3s cubic-bezier(.2,1.4,.4,1) both;--r:-12deg}
+/* 插圖：貼在本子上的照片（白框、和紙膠帶、手寫說明） */
+.sb-left{padding:7% 9% 11%}
+.sb-photo{position:relative;margin:0;width:100%;padding:12px 12px 10px;background:#fff;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.12),0 10px 22px rgba(60,40,20,.16);transform:rotate(var(--tilt,0deg));transition:transform .4s}
+.sb-photo .sb-art{border-radius:2px;overflow:hidden;background:#fffaf0}
+.sb-photo figcaption{margin-top:8px;text-align:center;font-family:var(--hand);font-size:clamp(.92rem,1.5vw,1.08rem);color:#4a443c}
+.sb-tape{position:absolute;left:50%;top:-12px;width:92px;height:24px;translate:-50% 0;rotate:-3deg;background:color-mix(in srgb,var(--sb-c) 35%,rgba(255,255,255,.55));opacity:.85;box-shadow:0 1px 2px rgba(0,0,0,.08);clip-path:polygon(3% 0,97% 4%,100% 50%,96% 100%,2% 96%,0 50%)}
+.sb-photo-who .sb-art svg{transform:scale(1.05)}
+.sb-no{font-family:var(--hand);font-size:.85rem;letter-spacing:.2em}
+/* 目錄（蝴蝶頁上貼一張卡片） */
+.sb-toc{height:100%;display:grid;place-items:center;padding:8%;background-image:radial-gradient(color-mix(in srgb,var(--sb-c) 22%,transparent) 2px,transparent 2.5px),radial-gradient(color-mix(in srgb,var(--sb-c) 14%,transparent) 2px,transparent 2.5px);background-size:22px 22px;background-position:0 0,11px 11px}
+.sb-toc-card{width:100%;max-width:330px;padding:18px 20px 14px;background:#fffdf7;border:1px solid rgba(42,37,32,.18);border-radius:4px;box-shadow:0 8px 18px rgba(60,40,20,.14);transform:rotate(-1deg)}
+.sb-toc-card small{display:block;font-size:.68rem;letter-spacing:.24em;color:var(--sb-c)}
+.sb-toc-card>b{display:block;font-family:var(--hand);font-size:1.5rem;margin:2px 0 8px;padding-bottom:6px;border-bottom:1.5px solid var(--ink)}
+.sb-toc-card ol{list-style:none;margin:0;padding:0}
+.sb-toc-card button{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:baseline;width:100%;padding:7px 2px;border:0;border-bottom:1px dotted rgba(42,37,32,.3);background:none;cursor:pointer;text-align:left;color:var(--ink)}
+.sb-toc-card button:hover em{color:var(--sb-c)}
+.sb-toc-card span{font-family:var(--hand);font-size:.82rem;color:var(--sb-c)}
+.sb-toc-card em{font-style:normal;font-size:.86rem}
+.sb-toc-card i{font-style:normal;font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+/* 封面多一行口述者 */
+.sb-by{margin:14px 0 0;font-family:var(--hand);font-size:1rem;color:#ffe2a8;letter-spacing:.1em}
+/* 頁角：可以拖著翻 */
+.sb-ear{position:absolute;bottom:0;width:46px;height:46px;z-index:2;pointer-events:none;transition:width .25s,height .25s}
+.sb-ear.r{right:0;background:linear-gradient(315deg,transparent 50%,rgba(0,0,0,.08) 50%,#efe6d4 56%,#fffaf0 100%);border-top-left-radius:4px;box-shadow:-2px -2px 4px rgba(0,0,0,.08)}
+.sb-ear.l{left:0;background:linear-gradient(45deg,transparent 50%,rgba(0,0,0,.08) 50%,#efe6d4 56%,#fffaf0 100%);border-top-right-radius:4px;box-shadow:2px -2px 4px rgba(0,0,0,.08)}
+.sb-page.r:hover .sb-ear.r,.sb-page.l:hover .sb-ear.l{width:72px;height:72px}
+.sb-page{touch-action:none;user-select:none;-webkit-user-select:none}
+.sb-leaf{animation:none!important;will-change:transform}
+.sb-shade{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(to right,rgba(0,0,0,.35),rgba(0,0,0,0) 50%)}
+.sb-face.back .sb-shade{background:linear-gradient(to left,rgba(0,0,0,.35),rgba(0,0,0,0) 50%)}
+.sb-face::before{display:none}
+.sb-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:var(--line);transition:all .3s;cursor:pointer}
+.sb-dots button.on{width:22px;border-radius:4px;background:var(--sb-c)}
+.sb-dots{gap:7px}
+.sb-nav{gap:10px}
+@media (max-width:759px){
+  .sb-photo{max-width:340px;margin:0 auto}
+  .sb-sheet .sb-left{padding:30px 26px 4px}
+  .sb-sheet .sb-text{padding:16px 24px 96px}
+  .sb-fin{right:24px;bottom:96px;width:64px;height:64px;font-size:.85rem}
+}
+/* 對話框按鈕：讀過的標「已讀」 */
+.wt-story .wt-read{margin-left:auto;font-size:.66rem;font-weight:700;color:#fff;background:var(--c);border-radius:999px;padding:2px 8px}
+
+/* ---------- 走進島上：更顯眼的入口與第一次的引導 ---------- */
+.walk-enter.hot{position:relative;animation:wehot 2.2s ease-in-out infinite}
+.walk-enter.hot::after{content:"";position:absolute;inset:-4px;border-radius:12px;border:2px solid var(--accent);opacity:0;animation:wering 2.2s ease-out infinite;pointer-events:none}
+@keyframes wering{0%{opacity:.8;transform:scale(.92)}100%{opacity:0;transform:scale(1.18)}}
+@keyframes wehot{50%{background:color-mix(in srgb,var(--accent) 14%,transparent)}}
+.we-new{font-style:normal;font-size:.58rem;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:999px;padding:1px 6px;margin-left:4px;white-space:nowrap;vertical-align:middle}
+@media (max-width:700px){.we-new{display:none}}
+.hero-panel.left .btn.walk-cta,.btn.walk-cta{display:flex;align-items:center;gap:12px;width:100%;justify-content:flex-start;text-align:left;padding:10px 14px;margin-bottom:8px;background:linear-gradient(120deg,#fff1e3,#ffe1cc);color:var(--ink);border:1.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);height:auto;min-height:0}
+.hero-panel.left .btn.walk-cta:hover,.btn.walk-cta:hover{background:linear-gradient(120deg,#ffe8d4,#ffd5b8);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.walk-cta .wc-fig{width:34px;height:42px;flex:none;animation:wcbob 1.4s ease-in-out infinite}
+.walk-cta .wc-fig svg{width:100%;height:100%}
+@keyframes wcbob{50%{transform:translateY(-4px)}}
+.walk-cta b{display:block;font-family:var(--hand);font-size:1.08rem}
+.walk-cta small{display:block;font-size:.72rem;color:var(--ink-3);font-weight:500}
+.walk-invite{position:absolute;z-index:12;display:flex;gap:12px;width:min(360px,calc(100% - 24px));padding:14px 16px 14px 12px;background:#fffaf1;border:2px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);animation:wiin .55s cubic-bezier(.2,1.4,.4,1) both}
+.walk-invite::before{content:"";position:absolute;top:-10px;left:calc(var(--ax) - 9px);width:16px;height:16px;background:#fffaf1;border-left:2px solid var(--ink);border-top:2px solid var(--ink);transform:rotate(45deg)}
+@keyframes wiin{from{opacity:0;transform:translateY(-10px) scale(.92)}}
+.walk-invite .wi-fig{width:58px;height:72px;flex:none;animation:wcbob 1.4s ease-in-out infinite}
+.walk-invite .wi-fig svg{width:100%;height:100%}
+.walk-invite small{display:block;font-size:.66rem;letter-spacing:.2em;color:var(--accent);font-weight:700}
+.walk-invite b{display:block;font-family:var(--hand);font-size:1.12rem;line-height:1.35;margin:2px 0 4px}
+.walk-invite p{margin:0 0 10px;font-size:.8rem;line-height:1.65;color:var(--ink-2)}
+.wi-btns{display:flex;gap:8px;flex-wrap:wrap}
+.walk-guide{position:absolute;left:50%;bottom:22px;translate:-50% 0;z-index:12;width:min(420px,calc(100% - 24px));padding:18px 20px 16px;background:#fffaf1;border:2px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);animation:wiin .45s cubic-bezier(.2,1.4,.4,1) both}
+.walk-guide .wg-x{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+.walk-guide .wg-i{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent);color:#fff;font-size:1.3rem;margin-bottom:8px;box-shadow:2px 2px 0 var(--ink)}
+.walk-guide small{font-family:var(--mono);font-size:.7rem;color:var(--ink-3)}
+.walk-guide b{display:block;font-family:var(--hand);font-size:1.3rem;margin:2px 0 6px}
+.walk-guide p{margin:0 0 14px;font-size:.88rem;line-height:1.75;color:var(--ink-2)}
+.wg-foot{display:flex;align-items:center;justify-content:space-between}
+.wg-dots{display:flex;gap:6px}.wg-dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}.wg-dots i.on{width:20px;border-radius:4px;background:var(--accent)}

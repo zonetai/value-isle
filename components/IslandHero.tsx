@@ -11,7 +11,7 @@ import type { OutlookItem } from "@/data/daily-types";
 import { layerOf, md, type Season } from "@/lib/site";
 import { G } from "./Gloss";
 import { Icon } from "./Icon";
-import { StoryBook } from "./StoryBook";
+import { StoryBook, READ_KEY } from "./StoryBook";
 import { STORIES } from "@/data/stories";
 import { useSite } from "./SiteProvider";
 
@@ -42,6 +42,7 @@ const NEW_COUNT = Object.fromEntries(DATA.layers.map((l) => [l.id, DAILY.briefs.
 const TICKER = DAILY.briefs.slice(0, 6);
 const SP = DATA.spots as Record<string, { layer: string; t: string; see: string; adj: string }>;
 const SP_IDS = Object.keys(SP);
+const WALK_FIG = `<svg viewBox="0 0 64 80" aria-hidden="true"><ellipse cx="32" cy="76" rx="16" ry="3" fill="rgba(0,0,0,.12)"/><rect x="18" y="34" width="28" height="40" rx="14" fill="#e8673a" stroke="#2a2520" stroke-width="2"/><rect x="18.5" y="56" width="27" height="4" fill="#faf4e8"/><circle cx="32" cy="26" r="13" fill="#f7d6bd" stroke="#2a2520" stroke-width="2"/><path d="M18 24a14 13 0 0 1 28 0z" fill="#faf4e8" stroke="#2a2520" stroke-width="2"/><path d="M16 24h32" stroke="#2a2520" stroke-width="2" stroke-linecap="round"/><path d="M32 11v13" stroke="#e8673a" stroke-width="3" stroke-linecap="round"/><circle cx="27.5" cy="29" r="1.6" fill="#2a2520"/><circle cx="36.5" cy="29" r="1.6" fill="#2a2520"/><path d="M29 33q3 2.4 6 0" fill="none" stroke="#2a2520" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 /* 勘查手冊的印章圖案 */
 const SP_ICON: Record<string, string> = {
   tower: "building", apt: "house", mid: "building", shop: "tag", site: "crane", station: "rail", park: "tree", pylon: "bolt",
@@ -139,6 +140,51 @@ export function IslandHero() {
   const [riding, setRiding] = useState(false);
   const [onTram, setOnTram] = useState(false);
   const [story, setStory] = useState<string | null>(null);
+  /* 「走進島上」的邀請：第一次來、島浮上來以後跳出來；走進去過就不再出現 */
+  const [walked, setWalked] = useState(true);
+  const [invite, setInvite] = useState(false);
+  const [invPos, setInvPos] = useState<{ left: number; top: number; arrow: number } | null>(null);
+  const [guide, setGuide] = useState(-1);
+  useEffect(() => { setWalked(store.get("vi-walked") === "1"); }, []);
+  useEffect(() => {
+    if (walked) return;
+    let t: ReturnType<typeof setTimeout>;
+    const onReady = () => { t = setTimeout(() => setInvite(true), 900); };
+    document.addEventListener("island:ready", onReady);
+    return () => { document.removeEventListener("island:ready", onReady); clearTimeout(t); };
+  }, [walked]);
+  /* 邀請卡對準「走進島上」按鈕 */
+  useEffect(() => {
+    if (!invite) return;
+    const place = () => {
+      const b = root.current?.querySelector(".walk-enter") as HTMLElement | null, h = root.current;
+      if (!b || !h) return;
+      const br = b.getBoundingClientRect(), hr = h.getBoundingClientRect(), w = Math.min(360, hr.width - 24);
+      const cx = br.left + br.width / 2 - hr.left, left = Math.max(12, Math.min(hr.width - w - 12, cx - 46));
+      setInvPos({ left, top: br.bottom - hr.top + 14, arrow: cx - left });
+    };
+    place(); window.addEventListener("resize", place); return () => window.removeEventListener("resize", place);
+  }, [invite]);
+  const enterWalk = () => {
+    setInvite(false);
+    const first = store.get("vi-walk-guide") !== "1";
+    store.set("vi-walked", "1"); setWalked(true);
+    api.current?.walk(true);
+    if (first) setTimeout(() => setGuide(0), 1700);
+  };
+  /* 搭輕軌／搭船：還沒走進島上的話，先帶你走進去再上車 */
+  const rideFrom = (kind: string) => {
+    setCard(null);
+    if (walkingRef.current) { api.current?.walkTram(true, kind); return; }
+    store.set("vi-walked", "1"); setWalked(true); setInvite(false);
+    api.current?.spotClear(true); api.current?.walk(true);
+    setTimeout(() => api.current?.walkTram(true, kind), 1900);
+  };
+  const dismissInvite = () => { setInvite(false); setWalked(true); };
+  const endGuide = () => { setGuide(-1); store.set("vi-walk-guide", "1"); };
+  const [readSt, setReadSt] = useState<string[]>([]);
+  useEffect(() => { try { const r = JSON.parse(store.get(READ_KEY) || "[]"); if (Array.isArray(r)) setReadSt(r); } catch {} }, []);
+  const markRead = (sid: string) => setReadSt((r) => { if (r.includes(sid)) return r; const n2 = [...r, sid]; store.set(READ_KEY, JSON.stringify(n2)); return n2; });
   const [rideKind, setRideKind] = useState("tram");
   const walkingRef = useRef(false);
   const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -256,7 +302,7 @@ export function IslandHero() {
   useEffect(() => { api.current?.walkTalking?.(talk?.id ?? null); }, [talk]);
 
   /* 走路時打開卷宗、對話、名單：搖桿先收起來，不要蓋住按鈕 */
-  useEffect(() => { root.current?.classList.toggle("walk-panel", walking && (!!card || !!talk || people || listOpen)); }, [walking, card, talk, people, listOpen]);
+  useEffect(() => { root.current?.classList.toggle("walk-panel", walking && (!!card || !!talk || people || listOpen || guide >= 0)); }, [walking, card, talk, people, listOpen, guide]);
 
   /* 索引收合：直接改 class（島嶼帶路時也會在同一個元素上加 touring，不能讓 React 覆寫 className） */
   useEffect(() => { root.current?.classList.toggle("idx-mini", mini); }, [mini]);
@@ -329,21 +375,19 @@ export function IslandHero() {
         </div>
         {id === "station" && (
           <button className="sc-game sc-tram" onClick={() => {
-            if (!walking) { toast("先按「走進島上」，走到輕軌站就能上車。", 2800); return; }
-            setCard(null); api.current?.walkTram(true);
+            rideFrom("tram");
           }}>
             <span className="sc-tram-i" aria-hidden="true"><Icon name="rail" /></span>
-            <span><small>搭輕軌</small><b>坐上輕軌繞島一圈</b><em>{walking ? "沿著環島軌道看街景，想下車隨時按「下車」" : "走進島上以後，在這裡就能上車"}</em></span>
+            <span><small>搭輕軌</small><b>坐上輕軌繞島一圈</b><em>沿著環島軌道看街景，想下車隨時按「下車」</em></span>
             <Icon name="play" />
           </button>
         )}
         {(id === "ship" || id === "tanker") && (
           <button className="sc-game sc-tram" onClick={() => {
-            if (!walking) { toast("先按「走進島上」，再起飛到船邊就能上船。", 2800); return; }
-            setCard(null); api.current?.walkTram(true, id);
+            rideFrom(id);
           }}>
             <span className="sc-tram-i" aria-hidden="true"><Icon name={id === "ship" ? "ship" : "oil"} /></span>
-            <span><small>搭船</small><b>{id === "ship" ? "登上貨櫃輪出海" : "登上油輪繞外海"}</b><em>{walking ? "跟著船繞島航行，下船時會開竹蜻蜓飛起來" : "走進島上、飛到船邊以後就能上船"}</em></span>
+            <span><small>搭船</small><b>{id === "ship" ? "登上貨櫃輪出海" : "登上油輪繞外海"}</b><em>跟著船繞島航行，下船時會開竹蜻蜓飛起來</em></span>
             <Icon name="play" />
           </button>
         )}
@@ -403,7 +447,7 @@ export function IslandHero() {
       </div>
 
       <div className="scene-tools">
-        <button className="walk-enter" onClick={() => api.current?.walk(true)} title="變成島上的估價師，走進城裡跟路人聊天、進每棟樓看看"><span><Icon name="walk" /></span>走進島上</button>
+        <button className={walked ? "walk-enter" : "walk-enter hot"} onClick={enterWalk} title="變成島上的估價師，走進城裡跟路人聊天、進每棟樓看看"><span><Icon name="walk" /></span>走進島上{!walked && <em className="we-new">新玩法</em>}</button>
         <button className={tools.labels ? "on" : undefined} onClick={() => tool("labels")}><span><Icon name="tag" /></span>標示</button>
         <button className={tools.currents ? "on" : undefined} onClick={() => tool("currents")}><span><Icon name="current" /></span>海流</button>
         <button className={listOpen ? "on" : undefined} onClick={() => tool("spots")} title="島上可以點開的勘查點"><span><Icon name="book" /></span>勘查 <em id="spotBadge">{seen.length}/{SP_IDS.length}</em></button>
@@ -487,7 +531,7 @@ export function IslandHero() {
                   <button className="wt-story" onClick={() => setStory(n.id)}>
                     <span className="wt-bk" aria-hidden="true"><Icon name="book" /></span>
                     <span><small>{n.id === "couple" ? "打開他們的故事" : "打開他的故事"}</small><b>{STORIES[n.id].title}</b></span>
-                    <Icon name="next" />
+                    {readSt.includes(n.id) ? <em className="wt-read">已讀</em> : <Icon name="next" />}
                   </button>
                 )}
                 {qa?.go && (
@@ -508,9 +552,43 @@ export function IslandHero() {
 
       {story && NPC[story] && (
         <StoryBook id={story} who={NPC[story].who} color={layerOf(NPC[story].layer).hex}
-          onClose={() => setStory(null)}
+          onClose={() => setStory(null)} onRead={markRead}
           onGo={(href) => { setStory(null); setTalk(null); api.current?.walk(false); router.push(href); }} />
       )}
+
+      {invite && invPos && (
+        <div className="walk-invite" role="dialog" aria-label="新玩法：走進島上" style={{ left: invPos.left, top: invPos.top, "--ax": `${invPos.arrow}px` } as React.CSSProperties}>
+          <span className="wi-fig" aria-hidden="true" dangerouslySetInnerHTML={{ __html: WALK_FIG }} />
+          <div>
+            <small>新玩法</small>
+            <b>走進島上，變成估價師小人</b>
+            <p>在城裡走走、跟路人聊天、翻開他們的故事書；還能搭熱氣球和輕軌，在都更工地蓋一棟樓。</p>
+            <div className="wi-btns"><button className="btn sm" onClick={enterWalk}>走進去看看</button><button className="btn ghost sm" onClick={dismissInvite}>等一下</button></div>
+          </div>
+        </div>
+      )}
+
+      {/* 第一次走進島上：三步驟小教學 */}
+      {walking && guide >= 0 && (() => {
+        const steps = [
+          { t: "怎麼走", p: touch ? "左下角的搖桿控制方向，推到底是快走；也可以直接點地面，小人會自己找路走過去。拖曳畫面可以轉視角。" : "WASD 或方向鍵走路，按住 Shift 快走；也可以直接點地面，小人會自己找路走過去。拖曳畫面可以轉視角。", i: "walk" },
+          { t: "跟人聊天、進去看看", p: "頭上有對話泡泡的是可以聊天的路人，聊完還能打開他們的故事書。走到建物旁邊按「進去看看」，就會在勘查手冊蓋上一枚章。", i: "talk" },
+          { t: "還有更多玩法", p: "右上角可以起飛、搭熱氣球繞島俯瞰，也可以在都更工地玩「蓋高樓」。輕軌站可以搭車，貨櫃輪和油輪也能上船。", i: "balloon" },
+        ], s = steps[guide];
+        return (
+          <div className="walk-guide" role="dialog" aria-label="走進島上的玩法">
+            <button className="wg-x" aria-label="略過教學" onClick={endGuide}><Icon name="close" /></button>
+            <span className="wg-i" aria-hidden="true"><Icon name={s.i} /></span>
+            <small>{guide + 1} / {steps.length}</small>
+            <b>{s.t}</b>
+            <p>{s.p}</p>
+            <div className="wg-foot">
+              <span className="wg-dots">{steps.map((_, i) => <i key={i} className={i === guide ? "on" : ""} />)}</span>
+              {guide < steps.length - 1 ? <button className="btn sm" onClick={() => setGuide(guide + 1)}>下一步</button> : <button className="btn sm" onClick={endGuide}>開始逛逛</button>}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* 勘查手冊：島上所有可以點開的地方 */}
       <div className={listOpen ? "spot-list on" : "spot-list"} id="spotList">
@@ -585,6 +663,10 @@ export function IslandHero() {
         </div>
         <div className="note" id="seasonNote"><G>{S.note}</G></div>
         <div className="cta">
+          <button className="btn walk-cta" onClick={enterWalk}>
+            <span className="wc-fig" aria-hidden="true" dangerouslySetInnerHTML={{ __html: WALK_FIG }} />
+            <span><b>走進島上</b><small>跟路人聊天、搭熱氣球、玩蓋高樓</small></span>
+          </button>
           <button className="btn" onClick={startTour}><Icon name="play" />估價師帶路（約 1 分鐘）</button>
           <Link className="btn ghost" href="/daily">看每日觀測</Link>
         </div>
