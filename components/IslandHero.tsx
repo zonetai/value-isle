@@ -12,6 +12,7 @@ import { layerOf, md, type Season } from "@/lib/site";
 import { G } from "./Gloss";
 import { Icon } from "./Icon";
 import { StoryBook, READ_KEY } from "./StoryBook";
+import { SurveyReport } from "./SurveyReport";
 import { STORIES } from "@/data/stories";
 import { useSite } from "./SiteProvider";
 
@@ -251,7 +252,7 @@ export function IslandHero() {
     };
     const onWalk = (e: Event) => {
       const on = (e as CustomEvent).detail.on as boolean; walkingRef.current = on; setWalking(on); setTalk(null); setNear({ kind: null });
-      if (on) { setListOpen(false); if (curScRef.current) { setCurSc(null); } setCard(null); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      if (on) { setListOpen(false); setInvite(false); setWalked(true); store.set("vi-walked", "1"); if (curScRef.current) { setCurSc(null); } setCard(null); window.scrollTo({ top: 0, behavior: "smooth" }); }
       else setCard(null);
     };
     const onNear = (e: Event) => {
@@ -367,15 +368,9 @@ export function IslandHero() {
     cardColor = L.hex;
     const next = () => { const rest = SP_IDS.filter((x) => !seen.includes(x)); api.current?.spot(rest[0] || SP_IDS[(SP_IDS.indexOf(id) + 1) % SP_IDS.length]); };
     cardBody = (
-      <>
-        <button className="close" aria-label="關閉" onClick={() => (walking ? setCard(null) : api.current?.spotClear())}><Icon name="close" /></button>
-        <div className="sc-top"><span className={`tag ${L.cls}`}>{L.name}</span><span className="sc-prog"><Icon name="book" />勘查手冊 {seen.length} / {SP_IDS.length}</span></div>
-        <h4>{s.t}</h4>
-        {card.stamp && <span className="walk-stamp" aria-hidden="true">已勘查</span>}
-        <div className="sc-two">
-          <div><b>現場看到</b><p><G>{s.see}</G></p></div>
-          <div><b>估價怎麼處理</b><p><G>{s.adj}</G></p></div>
-        </div>
+      <SurveyReport id={id} no={SP_IDS.indexOf(id) + 1} name={s.t} layer={L.name} layerCls={L.cls} see={s.see} adj={s.adj} stamp={!!card.stamp}
+        onClose={() => (walking ? setCard(null) : api.current?.spotClear())}
+        extra={<>
         {id === "station" && (
           <button className="sc-game sc-tram" onClick={() => {
             rideFrom("tram");
@@ -401,12 +396,12 @@ export function IslandHero() {
             <Icon name="play" />
           </button>
         )}
-        <div className="sc-foot">
+        </>}
+        foot={<>
           <button className="btn sm" onClick={next}>{walking ? (seen.length < SP_IDS.length ? "走去下一處還沒看的" : "走去下一處") : seen.length < SP_IDS.length ? "去下一處還沒看的" : "下一處"}</button>
           <button className="btn ghost sm" onClick={() => openDrawer(s.layer)}>{L.name}的觀測項目</button>
           {walking && <button className="btn ghost sm" onClick={() => setCard(null)}>走出來</button>}
-        </div>
-      </>
+        </>} />
     );
   } else if (card?.mode === "sc" && sc) {
     const o = outOf(sc.id);
@@ -531,15 +526,24 @@ export function IslandHero() {
               ))}
             </div>
           )}
-          {near.kind && !talk && !card && !riding && !onTram && (
-            <button id="walkAct" className="walk-act" onClick={() => {
-              if (near.kind === "npc" && near.id) setTalk({ id: near.id, qi: null });
-              else if (near.kind === "spot" && near.id) showSpot(near.id);
-            }}>
-              <Icon name={near.kind === "npc" ? "talk" : "building"} />
-              {near.kind === "npc" ? `和${near.label}說話` : `進去看看：${SP[near.id!]?.t ?? ""}`}
-            </button>
-          )}
+          {near.kind && !talk && !card && !riding && !onTram && (() => {
+              const isN = near.kind === "npc", np = isN && near.id ? NPC[near.id] : null, sp = !isN && near.id ? SP[near.id] : null;
+              const lay = layerOf((np?.layer || sp?.layer || "ind") as string), done = !!(sp && near.id && seen.includes(near.id)), read = !!(np && readSt.includes(np.id));
+              return (
+                <button id="walkAct" key={near.kind + ":" + near.id} className={isN ? "walk-act npc" : "walk-act spot"} style={{ "--c": lay.hex } as React.CSSProperties} onClick={() => {
+                  if (isN && near.id) setTalk({ id: near.id, qi: null });
+                  else if (near.id) showSpot(near.id);
+                }}>
+                  <span className="wa-av" aria-hidden="true">{isN ? <span className="wa-face"><i /><i /><b /></span> : <Icon name="building" />}</span>
+                  <span className="wa-txt">
+                    <small>{isN ? `${lay.name}・可以聊天` : done ? "已勘查・再看一次報告" : `${lay.name}・還沒勘查`}</small>
+                    <b>{isN ? `和${near.label}說話` : `打開勘查報告：${sp?.t ?? ""}`}</b>
+                    {isN && read && <em>故事書已讀</em>}
+                  </span>
+                  <kbd className="wa-key" aria-hidden="true">{touch ? "點我" : "E"}</kbd>
+                </button>
+              );
+            })()}
           {talk && NPC[talk.id] && (() => {
             const n = NPC[talk.id], L = layerOf(n.layer), qa = talk.qi === null ? null : n.qs[talk.qi];
             return (
@@ -661,7 +665,7 @@ export function IslandHero() {
       </div>
 
       {/* 勘查筆記與情境推演共用的說明卡 */}
-      <div key={card?.n ?? 0} className={cardBody ? "scene-card on" : "scene-card"} id="sceneCard" aria-live="polite" style={{ "--c": cardColor } as React.CSSProperties}>
+      <div key={card?.n ?? 0} className={cardBody ? (card?.mode === "spot" ? "scene-card on report" : "scene-card on") : "scene-card"} id="sceneCard" aria-live="polite" style={{ "--c": cardColor } as React.CSSProperties}>
         {cardBody}
       </div>
 
