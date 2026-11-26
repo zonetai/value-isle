@@ -619,7 +619,7 @@ export function IslandHero() {
           <span className="wi-fig" aria-hidden="true" dangerouslySetInnerHTML={{ __html: WALK_FIG }} />
           <div>
             <small>新玩法</small>
-            <b>走進島上，變成估價師小人</b>
+            <b>走進島上，變成估價小尖兵</b>
             <p>在城裡走走、跟路人聊天、翻開他們的故事書；還能搭熱氣球和輕軌，在都更工地蓋一棟樓。</p>
             <div className="wi-btns"><button className="btn sm" onClick={enterWalk}>走進去看看</button><button className="btn ghost sm" onClick={dismissInvite}>等一下</button></div>
           </div>
@@ -637,7 +637,7 @@ export function IslandHero() {
       {/* 第一次走進島上：三步驟小教學 */}
       {walking && guide >= 0 && (() => {
         const steps = [
-          { t: "怎麼走", p: touch ? "左下角的搖桿控制方向，推到底是快走；也可以直接點地面，小人會自己找路走過去。拖曳畫面可以轉視角。" : "WASD 或方向鍵走路，按住 Shift 快走；也可以直接點地面，小人會自己找路走過去。拖曳畫面可以轉視角。", i: "walk" },
+          { t: "怎麼走", p: touch ? "左下角的搖桿控制方向，推到底是快走；也可以直接點地面，小尖兵會自己找路走過去。拖曳畫面可以轉視角。" : "WASD 或方向鍵走路，按住 Shift 快走；也可以直接點地面，小尖兵會自己找路走過去。拖曳畫面可以轉視角。", i: "walk" },
           { t: "跟人聊天、進去看看", p: "頭上有對話泡泡的是可以聊天的路人，聊完還能打開他們的故事書。走到建物旁邊按「進去看看」，就會在勘查手冊蓋上一枚章。", i: "talk" },
           { t: "還有更多玩法", p: "右上角可以起飛、搭熱氣球繞島俯瞰，也可以在都更工地玩「蓋高樓」。輕軌站可以搭車，貨櫃輪和油輪也能上船。", i: "balloon" },
         ], s = steps[guide];
