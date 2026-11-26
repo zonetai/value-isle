@@ -27,6 +27,9 @@ export function StoryBook({ id, who, color, onClose, onGo, onRead }: { id: strin
   const [wide, setWide] = useState(true);
   const closeRef = useRef<HTMLButtonElement>(null);
   const bookRef = useRef<HTMLDivElement>(null);
+  const rail = useRef<HTMLDivElement>(null);
+  /* 手機：手指滑動時，依捲動位置更新目前在第幾頁 */
+  const onRail = () => { const r = rail.current; if (!r) return; const i = Math.round(r.scrollLeft / Math.max(1, r.clientWidth)); setAt((a) => (a === i ? a : i)); };
   const reduce = useRef(false);
 
   useEffect(() => { const m = window.matchMedia("(min-width: 760px)"); const f = () => setWide(m.matches); f(); m.addEventListener("change", f); reduce.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches; return () => m.removeEventListener("change", f); }, []);
@@ -37,7 +40,9 @@ export function StoryBook({ id, who, color, onClose, onGo, onRead }: { id: strin
   /* 翻到第 to 個跨頁（可以一次跳好幾頁，例如從目錄跳章） */
   const turnTo = useCallback((to: number) => {
     if (flip || to === at || to < 0 || to >= spreads.length) return;
-    if (reduce.current || !wide) { if (!wide) { setFlip({ dir: to > at ? 1 : -1, from: at, to }); setTimeout(() => { setAt(to); setFlip(null); }, 620); } else setAt(to); return; }
+    /* 手機：頁面並排成一條，捲到那一頁（跟手機原生滑動一樣，不閃爍） */
+    if (!wide) { const r = rail.current; if (r) r.scrollTo({ left: to * r.clientWidth, behavior: reduce.current ? "auto" : "smooth" }); setAt(to); return; }
+    if (reduce.current) { setAt(to); return; }
     const f: Flip = { dir: to > at ? 1 : -1, from: at, to };
     setFlip(f); setA(0); setAnim(false);
     requestAnimationFrame(() => requestAnimationFrame(() => { setAnim(true); setA(1); }));
@@ -73,10 +78,6 @@ export function StoryBook({ id, who, color, onClose, onGo, onRead }: { id: strin
   /* 進度剛好已經在 0 或 1，不會觸發轉場結束事件，直接收尾 */
   useEffect(() => { if (flip && anim && wide) { const t = setTimeout(() => finish(flip, a >= 1), 900); return () => clearTimeout(t); } }, [flip, anim, a, wide, finish]);
 
-  /* ---------- 手機：左右滑翻頁 ---------- */
-  const sx = useRef<number | null>(null);
-  const onDown = (e: React.PointerEvent) => { if (wide || (e.target as HTMLElement).closest("button,a")) return; sx.current = e.clientX; };
-  const onUp = (e: React.PointerEvent) => { if (sx.current === null) return; const d = e.clientX - sx.current; sx.current = null; if (Math.abs(d) > 40) go(d < 0 ? 1 : -1); };
 
   if (!st) return null;
   const n = st.pages.length;
@@ -162,7 +163,7 @@ export function StoryBook({ id, who, color, onClose, onGo, onRead }: { id: strin
   const one = (s: Spread) => s.l.kind === "toc" ? face(s.r) : <>{face(s.l)}{face(s.r)}</>;
 
   return (
-    <div className="sb" style={{ "--sb-c": color } as React.CSSProperties} role="dialog" aria-modal="true" aria-label={`${who}的故事：${st.title}`} onPointerDown={onDown} onPointerUp={onUp}>
+    <div className="sb" style={{ "--sb-c": color } as React.CSSProperties} role="dialog" aria-modal="true" aria-label={`${who}的故事：${st.title}`}>
       <div className="sb-dim" onClick={onClose} />
       <button ref={closeRef} className="sb-x" aria-label="闔上故事書" onClick={onClose}><Icon name="close" /></button>
       {wide ? (
@@ -173,8 +174,10 @@ export function StoryBook({ id, who, color, onClose, onGo, onRead }: { id: strin
           <div className="sb-spine" aria-hidden="true" />
         </div>
       ) : (
-        <div className="sb-mobile">
-          <div key={flip ? `f${flip.to}` : `a${at}`} className={`sb-sheet${flip ? (flip.dir > 0 ? " turn-next" : " turn-prev") : ""}`}>{one(spreads[flip ? flip.to : at])}</div>
+        <div className="sb-rail" ref={rail} onScroll={onRail}>
+          {spreads.map((sp, i) => (
+            <section key={i} className="sb-card" aria-hidden={i !== at} aria-label={i === 0 ? "封面" : i === spreads.length - 1 ? "結語" : `第${CN[i - 1]}章`}>{one(sp)}</section>
+          ))}
         </div>
       )}
       <div className="sb-nav">

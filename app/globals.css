@@ -2080,3 +2080,19 @@ html.immersive body{overflow:hidden}
 /* 島上建物名稱標籤：手機上至少 11px；全螢幕按鈕再寬一點 */
 @media (max-width:700px){.pin.small{font-size:11px;padding:3px 7px}}
 @media (pointer:coarse){.full-btn,.walk-full{min-width:40px}}
+
+/* 手機走進島上時，天氣小標示先收起來，不擋上方按鈕 */
+@media (max-width:1100px){.island-hero.walking .wx-chip{display:none}}
+/* ---------- 手機故事書 v3：頁面並排、左右滑（原生捲動，不閃爍） ---------- */
+.sb-rail{position:relative;width:min(440px,92vw);height:min(74vh,700px);margin-top:28px;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;border-radius:16px;box-shadow:0 24px 40px rgba(20,14,8,.45);animation:sbopen .45s ease both;-webkit-overflow-scrolling:touch}
+.sb-rail::-webkit-scrollbar{display:none}
+.sb-card{flex:0 0 100%;height:100%;scroll-snap-align:center;scroll-snap-stop:always;overflow-y:auto;overscroll-behavior-y:contain;background:var(--sb-paper);position:relative}
+.sb-card:has(.sb-cover){background:linear-gradient(to right,rgba(0,0,0,.22),rgba(0,0,0,0) 6%),repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 5px),color-mix(in srgb,var(--sb-c) 82%,#1d1a16)}
+.sb-card + .sb-card{border-left:1px solid rgba(60,40,20,.12)}
+.sb-card .sb-left{height:auto;padding:30px 26px 4px;position:relative}
+.sb-card .sb-no{position:static;translate:none}
+.sb-card .sb-text{height:auto;padding:16px 24px 96px}
+.sb-card .sb-cover{padding:40px 30px 96px;min-height:100%}
+.sb-card .sb-photo{max-width:340px;margin:0 auto}
+.sb-card .sb-lastp{padding-bottom:110px}
+.sb-card .sb-fin{position:static;display:grid;margin:18px 0 0 auto;transform:rotate(-12deg)}

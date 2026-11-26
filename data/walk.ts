@@ -81,7 +81,7 @@ export const NPCS: WalkNpc[] = [
     ],
   },
   {
-    id: "developer", who: "建商開發部經理", layer: "market", at: "mid",
+    id: "developer", who: "建商開發部經理", layer: "market", at: "gas",
     hello: "我在找下一塊可以蓋房子的地。地價、營建成本、政策，每一項都要算進去。",
     qs: [
       { q: "建商怎麼決定買哪塊地？", a: "我們會從未來倒推：先估將來蓋好能賣多少，扣掉營建成本、利息、管銷和合理利潤，剩下的才是買得起的地價。估價師也會用同一套「土地開發分析法」評估土地。", go: { label: "看估價師手記", href: "/notes" } },
