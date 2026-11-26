@@ -26,7 +26,7 @@ type IslandApi = {
   bird: () => void; home: () => void;
   startTour: () => void; stopTour: () => void; tourNext: () => void; tourPrev: () => void;
   walk: (on: boolean) => void; walkNpc: (id: string) => void; walkTalking: (id: string | null) => void;
-  walkFly: (on: boolean) => boolean; walkLift: (v: number) => void;
+  walkFly: (on: boolean) => boolean; walkLift: (v: number) => void; walkRide: (on: boolean) => boolean; walkTram: (on: boolean, kind?: string) => boolean; hold: (on: boolean) => void;
   dispose: () => void;
 };
 type SeasonFn = (s: Season, data: (typeof DATA.seasons)[Season]) => void;
@@ -40,6 +40,15 @@ const NEW_COUNT = Object.fromEntries(DATA.layers.map((l) => [l.id, DAILY.briefs.
 const TICKER = DAILY.briefs.slice(0, 6);
 const SP = DATA.spots as Record<string, { layer: string; t: string; see: string; adj: string }>;
 const SP_IDS = Object.keys(SP);
+/* 勘查手冊的印章圖案 */
+const SP_ICON: Record<string, string> = {
+  tower: "building", apt: "house", mid: "building", shop: "tag", site: "crane", station: "rail", park: "tree", pylon: "bolt",
+  vane: "compass", balloon: "balloon", turbine: "fan", gauge: "tide", buoy: "buoy", boat: "boat", ship: "ship", tanker: "oil",
+  plane: "plane", office: "bars", town: "house", school: "cap", temple: "temple", gas: "fuel", farm: "sprout", presale: "deed",
+  social: "key", plant: "chip", port: "exchange",
+};
+/* 每枚印章蓋下去的角度：依名稱固定（每次打開都一樣歪） */
+const stampTilt = (id: string) => { let h = 0; for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) % 997; return (h % 23) - 11; };
 const OUT = DAILY.outlook ?? null;
 const outOf = (id: string): OutlookItem | null => OUT?.items?.[id] ?? null;
 const leanCls = (l: string) => ({ 正在發生: "hot", 已發生: "hot", 較可能: "warm", 可能性各半: "mid", 較不可能: "cold" } as Record<string, string>)[l] || "mid";
@@ -125,6 +134,9 @@ export function IslandHero() {
   const [talk, setTalk] = useState<{ id: string; qi: number | null } | null>(null);
   const [people, setPeople] = useState(false);
   const [flying, setFlying] = useState(false);
+  const [riding, setRiding] = useState(false);
+  const [onTram, setOnTram] = useState(false);
+  const [rideKind, setRideKind] = useState("tram");
   const walkingRef = useRef(false);
   const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -202,12 +214,16 @@ export function IslandHero() {
     document.addEventListener("island:select", onSelect);
     document.addEventListener("island:spot", onSpot);
     const onFly = (e: Event) => { setFlying((e as CustomEvent).detail.on); setTalk(null); };
+    const onRide = (e: Event) => { setRiding((e as CustomEvent).detail.on); setTalk(null); setCard(null); };
     document.addEventListener("island:fly", onFly);
+    document.addEventListener("island:ride", onRide);
+    const onTramEv = (e: Event) => { const d = (e as CustomEvent).detail; setOnTram(d.on); if (d.kind) setRideKind(d.kind); setTalk(null); setCard(null); };
+    document.addEventListener("island:tram", onTramEv);
     document.addEventListener("island:walk", onWalk);
     document.addEventListener("island:near", onNear);
     return () => {
       alive = false; api.current?.dispose(); api.current = null; seasonFns.current = [];
-      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
+      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
       document.removeEventListener("island:select", onSelect); document.removeEventListener("island:spot", onSpot);
     };
   }, [router, showSpot]);
@@ -285,6 +301,13 @@ export function IslandHero() {
   const query = q.trim().toLowerCase();
   const b = tick >= 0 ? TICKER[tick] : null;
 
+  /* 小遊戲「蓋高樓」：按了才下載；開著的時候島先暫停畫面 */
+  const openGame = async () => {
+    const { startStackGame } = await import("@/lib/stack-game.js");
+    api.current?.hold(true);
+    startStackGame({ onClose: () => api.current?.hold(false) });
+  };
+
   /* 說明卡內容 */
   let cardBody: React.ReactNode = null, cardColor = "var(--accent)";
   if (card?.mode === "spot" && SP[card.id]) {
@@ -301,6 +324,33 @@ export function IslandHero() {
           <div><b>現場看到</b><p><G>{s.see}</G></p></div>
           <div><b>估價怎麼處理</b><p><G>{s.adj}</G></p></div>
         </div>
+        {id === "station" && (
+          <button className="sc-game sc-tram" onClick={() => {
+            if (!walking) { toast("先按「走進島上」，走到輕軌站就能上車。", 2800); return; }
+            setCard(null); api.current?.walkTram(true);
+          }}>
+            <span className="sc-tram-i" aria-hidden="true"><Icon name="rail" /></span>
+            <span><small>搭輕軌</small><b>坐上輕軌繞島一圈</b><em>{walking ? "沿著環島軌道看街景，想下車隨時按「下車」" : "走進島上以後，在這裡就能上車"}</em></span>
+            <Icon name="play" />
+          </button>
+        )}
+        {(id === "ship" || id === "tanker") && (
+          <button className="sc-game sc-tram" onClick={() => {
+            if (!walking) { toast("先按「走進島上」，再起飛到船邊就能上船。", 2800); return; }
+            setCard(null); api.current?.walkTram(true, id);
+          }}>
+            <span className="sc-tram-i" aria-hidden="true"><Icon name={id === "ship" ? "ship" : "oil"} /></span>
+            <span><small>搭船</small><b>{id === "ship" ? "登上貨櫃輪出海" : "登上油輪繞外海"}</b><em>{walking ? "跟著船繞島航行，下船時會開竹蜻蜓飛起來" : "走進島上、飛到船邊以後就能上船"}</em></span>
+            <Icon name="play" />
+          </button>
+        )}
+        {id === "site" && (
+          <button className="sc-game" onClick={openGame}>
+            <span className="sc-game-i" aria-hidden="true"><i /><i /><i /><i /></span>
+            <span><small>小遊戲</small><b>在這塊都更基地蓋一棟樓</b><em>看準時機放下樓層，蓋得越高等級越高</em></span>
+            <Icon name="play" />
+          </button>
+        )}
         <div className="sc-foot">
           <button className="btn sm" onClick={next}>{walking ? (seen.length < SP_IDS.length ? "走去下一處還沒看的" : "走去下一處") : seen.length < SP_IDS.length ? "去下一處還沒看的" : "下一處"}</button>
           <button className="btn ghost sm" onClick={() => openDrawer(s.layer)}>{L.name}的觀測項目</button>
@@ -373,10 +423,17 @@ export function IslandHero() {
           <div className="walk-hud">
             <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" /><span className="wl">回到空中</span><span className="ws">離開</span></button>
             <span className="walk-hud-r">
-              <button className={flying ? "walk-book on" : "walk-book"} onClick={() => {
-                const ok = api.current?.walkFly(!flying);
-                if (flying && ok === false) toast("下面是海，飛回島上才能降落。", 2600);
-              }}><Icon name={flying ? "prev" : "up"} />{flying ? "降落" : "起飛"}</button>
+              {onTram && <button className="walk-book on" onClick={() => { if (api.current?.walkTram(false) === false) toast("這裡不好下車，等一下再按。", 2200); }}><Icon name="prev" />{rideKind === "tram" ? "下車" : "下船"}</button>}
+              {!riding && !onTram && (
+                <button className={flying ? "walk-book on" : "walk-book"} onClick={() => {
+                  const ok = api.current?.walkFly(!flying);
+                  if (flying && ok === false) toast("下面是海：飛到島上、棧橋或外海小島上空才能降落。", 2800);
+                }}><Icon name={flying ? "prev" : "up"} />{flying ? "降落" : "起飛"}</button>
+              )}
+              {!onTram && <button className={riding ? "walk-book on" : "walk-book"} onClick={() => {
+                const ok = api.current?.walkRide(!riding);
+                if (!riding && ok) toast("飛去熱氣球，到了就會搭上去。", 2200);
+              }}><Icon name="balloon" /><span className="wl">{riding ? "跳下熱氣球" : "搭熱氣球"}</span><span className="ws">{riding ? "跳下" : "氣球"}</span></button>}
               <button className="walk-book" onClick={() => { setPeople(!people); setListOpen(false); }}><Icon name="talk" /><span className="wl">找人聊天</span><span className="ws">聊天</span></button>
               <button className="walk-book" onClick={() => { setListOpen(!listOpen); setPeople(false); }}><Icon name="book" /><span className="wl">勘查章 </span>{seen.length}/{SP_IDS.length}</button>
             </span>
@@ -391,17 +448,21 @@ export function IslandHero() {
               ))}
             </div>
           )}
-          <p key={flying ? "f" : "w"} className="walk-hint">{flying
-            ? (touch ? "搖桿飛行・右邊 ↑↓ 升降・飛近船、飛機、風機可以進去看看" : "WASD 飛行・空白鍵上升・Shift 下降・飛近船、飛機、風機可以進去看看")
-            : (touch ? "左下搖桿走路・拖曳畫面轉視角・點地面走過去" : "WASD 或方向鍵走路・拖曳畫面轉視角・點地面走過去・E 互動・Esc 離開")}</p>
-          {flying && (
+          <p key={onTram ? "t" : riding ? "r" : flying ? "f" : "w"} className="walk-hint">{onTram
+            ? (rideKind === "tram" ? "搭輕軌中・拖曳畫面左右看・按「下車」就在軌道旁下車" : `搭${rideKind === "ship" ? "貨櫃輪" : "油輪"}中・拖曳畫面左右看・按「下船」會開竹蜻蜓飛起來`)
+            : riding
+            ? (touch ? "熱氣球繞著島飄・搖桿上下調高度、左右調方向・拖曳畫面看四周" : "熱氣球繞著島飄・W/S 調高度・A/D 調方向・拖曳畫面看四周")
+            : flying
+            ? (touch ? "搖桿飛行・右邊 ↑↓ 升降・飛近船、飛機、風機可以進去看看・小島和棧橋也能降落" : "WASD 飛行・空白鍵上升・Shift 下降・飛近船、飛機、風機可以進去看看・小島和棧橋也能降落")
+            : (touch ? "左下搖桿走路（推到底是快走）・拖曳畫面轉視角・點地面走過去" : "WASD 或方向鍵走路・按住 Shift 快走・拖曳畫面轉視角・點地面走過去・E 互動・Esc 離開")}</p>
+          {(flying || riding) && (
             <div className="walk-lift">
               {[[1, "上升"], [-1, "下降"]].map(([v, t]) => (
                 <button key={t} aria-label={t as string} onPointerDown={() => api.current?.walkLift(v as number)} onPointerUp={() => api.current?.walkLift(0)} onPointerLeave={() => api.current?.walkLift(0)} onPointerCancel={() => api.current?.walkLift(0)}>{v === 1 ? "↑" : "↓"}</button>
               ))}
             </div>
           )}
-          {near.kind && !talk && !card && (
+          {near.kind && !talk && !card && !riding && !onTram && (
             <button id="walkAct" className="walk-act" onClick={() => {
               if (near.kind === "npc" && near.id) setTalk({ id: near.id, qi: null });
               else if (near.kind === "spot" && near.id) showSpot(near.id);
@@ -437,23 +498,35 @@ export function IslandHero() {
       {/* 勘查手冊：島上所有可以點開的地方 */}
       <div className={listOpen ? "spot-list on" : "spot-list"} id="spotList">
         <div className="sl-head">
-          <b><Icon name="book" />勘查手冊</b><span>{seen.length} / {SP_IDS.length} 處看過了</span>
+          <b><Icon name="book" />勘查手冊</b>
+          <span className="sl-count"><em>{seen.length}</em> / {SP_IDS.length} 枚印章</span>
           <button className="sl-close" aria-label="關閉" onClick={() => setListOpen(false)}><Icon name="close" /></button>
         </div>
-        <div className="sl-bar"><i style={{ width: (seen.length / SP_IDS.length) * 100 + "%" }} /></div>
-        {DATA.layers.map((l) => (
-          <div key={l.id} className="sl-group" style={{ "--c": l.color } as React.CSSProperties}>
-            <small>{l.name}</small>
-            <div>
-              {SP_IDS.filter((id) => SP[id].layer === l.id).map((id) => (
-                <button key={id} className={seen.includes(id) ? "chip seen" : "chip"} onClick={() => { setListOpen(false); api.current?.spot(id); }}>
-                  {seen.includes(id) && <Icon name="check" />}{SP[id].t}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-        <p className="sl-tip">點名稱，鏡頭會帶你過去；也可以直接點島上的建物、船和站點。</p>
+        <div className="sl-bar" aria-hidden="true"><i style={{ width: (seen.length / SP_IDS.length) * 100 + "%" }} /></div>
+        {DATA.layers.map((l) => {
+          const ids = SP_IDS.filter((id) => SP[id].layer === l.id), got = ids.filter((id) => seen.includes(id)).length;
+          return (
+            <section key={l.id} className={`sl-page sl-${l.id}`} style={{ "--c": l.color } as React.CSSProperties}>
+              <h4><span>{l.name}</span><small>{got === ids.length ? "這一頁蓋滿了" : `${got} / ${ids.length}`}</small></h4>
+              <div className="sl-stamps">
+                {ids.map((id) => {
+                  const on = seen.includes(id), n = SP_IDS.indexOf(id) + 1;
+                  return (
+                    <button key={id} className={on ? (id === seen[seen.length - 1] ? "stp on fresh" : "stp on") : "stp"} style={{ "--r": `${stampTilt(id)}deg` } as React.CSSProperties}
+                      aria-label={`${SP[id].t}${on ? "（已蓋章）" : "（還沒去過）"}`} onClick={() => { setListOpen(false); api.current?.spot(id); }}>
+                      <span className="stp-ink">
+                        <Icon name={SP_ICON[id] ?? "pin"} />
+                        <b>{SP[id].t}</b>
+                        <small>No.{String(n).padStart(2, "0")}</small>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+        <p className="sl-tip">點印章，鏡頭會帶你過去；走進島上走到建物旁邊打開卷宗，就會蓋上一枚。</p>
       </div>
 
       {/* 情境推演：一件事發生，四層怎麼連動 */}
