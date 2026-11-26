@@ -1966,7 +1966,8 @@ html.sb-open,html.sb-open body{overflow:hidden}
 /* 3D 島上的標籤，手機上至少 11px */
 @media (max-width:700px){.pin{font-size:.72rem}.lbl{font-size:11px}}
 /* 可以左右滑的那幾排：右邊淡出，看得出還能滑 */
-.wi-chips,.daily-tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.wi-chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+@media (max-width:700px){.daily-tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}}
 @media (max-width:700px){.daily-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-right:24px}.daily-tabs::-webkit-scrollbar{display:none}.daily-tabs button{flex:none}}
 /* 走進島上時，提示訊息移到上方，不要蓋住下面的報告、對話框 */
 html:has(.island-hero.walking) .toast{bottom:auto;top:calc(var(--nav-h,64px) + 66px)}
@@ -1996,3 +1997,86 @@ html:has(.island-hero.walking) .toast{bottom:auto;top:calc(var(--nav-h,64px) + 6
 .speed-lines{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:.75;background:repeating-conic-gradient(from 0deg at 50% 55%,rgba(255,255,255,0) 0deg 4deg,rgba(255,255,255,.5) 4.4deg 5deg,rgba(255,255,255,0) 5.4deg 11deg);-webkit-mask-image:radial-gradient(circle at 50% 55%,transparent 0 26%,#000 62%);mask-image:radial-gradient(circle at 50% 55%,transparent 0 26%,#000 62%);animation:spd .25s linear infinite}
 @keyframes spd{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.08) rotate(2deg)}}
 @media (prefers-reduced-motion:reduce){.speed-lines{animation:none;opacity:.35}}
+/* ---------- 手機故事書修正：頁數圓點不要被放大、讀完章不擋按鈕、引號改成直線 ---------- */
+@media (pointer:coarse){.sb-nav button{width:auto;height:auto}.sb-nav>button{width:42px;height:42px}}
+.sb-dots button{position:relative;flex:none;width:8px!important;height:8px!important;padding:0}
+.sb-dots button.on{width:22px!important}
+.sb-dots button::after{content:"";position:absolute;inset:-14px -3px}
+.sb-nav{max-width:calc(100% - 24px)}
+.sb-dots{flex-wrap:nowrap;overflow:hidden}
+.sb-quote{padding:2px 0 2px 16px;border-left:3px solid var(--sb-c)}
+.sb-quote::before{display:none}
+@media (max-width:759px){
+  .sb-fin{position:static;display:grid;margin:18px 0 0 auto;transform:rotate(-12deg)}
+  .sb-sheet .sb-lastp{padding-bottom:110px}
+  .sb-x{top:12px;right:12px}
+  .sb-mobile{margin-top:28px}
+}
+/* ---------- 完工證明的印章：字不再超出圓框，移到左上角不擋關閉鈕 ---------- */
+.sg-poster .sg-seal{left:14px;right:auto;top:14px;width:88px;height:88px;padding:6px}
+.sg-seal-t{font-size:.72rem!important;white-space:nowrap;line-height:1.2}
+.sg-seal-f{font-size:.98rem!important;white-space:nowrap}
+@media (max-width:640px){
+  .sg-end{top:calc(50% + 30px);max-height:calc(100% - 96px)}
+  .sg-poster .sg-seal{width:76px;height:76px}
+  .sg-seal-t{font-size:.64rem!important}.sg-seal-f{font-size:.86rem!important}
+}
+
+/* ---------- 分享 ---------- */
+.share{position:relative;display:inline-flex}
+.share-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 11px;font-size:.84rem;cursor:pointer;color:var(--ink)}
+.share-btn:hover{border-color:var(--ink)}
+.share-btn .ic{font-size:1rem}
+.share-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:60;display:flex;flex-direction:column;min-width:190px;padding:6px;background:#fffaf1;border:1.5px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);animation:wiin .25s ease both}
+.share-menu button,.share-menu a{display:flex;align-items:center;gap:10px;padding:9px 10px;border:0;border-radius:8px;background:none;font-size:.86rem;color:var(--ink);text-decoration:none;cursor:pointer;text-align:left}
+.share-menu button:hover,.share-menu a:hover{background:#f4ead8}
+.share-line,.share-fb{display:grid;place-items:center;width:24px;height:24px;border-radius:6px;font-size:.56rem;font-weight:800;color:#fff;flex:none}
+.share-line{background:#06c755}.share-fb{background:#1877f2;font-size:.9rem;font-family:Arial,sans-serif}
+.nav-share{order:2;margin-left:auto}
+@media (max-width:1100px){.nav-share .share-t{display:none}.nav-share .share-btn{padding:8px 10px}}
+@media (min-width:1101px){.nav-share{margin-left:8px;order:4}}
+.sg-shared{margin:8px 0 0!important;font-size:.8rem!important;font-weight:700;color:#1f6b52!important}
+.sg-shared[hidden]{display:none}
+/* ---------- 全螢幕（沉浸模式） ---------- */
+.full-btn em{font-style:normal}
+html.immersive .nav,html.immersive .to-top{display:none!important}
+html.immersive .island-hero{--scene-h:100dvh}
+html.immersive body{overflow:hidden}
+@media (min-width:1101px){html.immersive .island-hero{height:100dvh}}
+.walk-hud-l{display:inline-flex;gap:6px;align-items:center}
+.walk-full{padding:7px 9px!important}
+@media (min-width:1101px){.full-btn{display:none}}
+@media (max-width:700px){.full-btn em{display:none}}
+
+/* ---------- 導覽列：目前的市場季節（固定標籤） ---------- */
+.season-now{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;border:1px solid var(--line);border-radius:12px;background:#fff;text-decoration:none;color:var(--ink);flex:none}
+.season-now:hover{border-color:var(--ink)}
+.sn-i{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--ink);color:#fff;font-size:1rem}
+.sn-t{display:flex;flex-direction:column;line-height:1.15}
+.sn-t small{font-size:.62rem;color:var(--ink-3);letter-spacing:.08em}
+.sn-t b{font-size:.88rem}
+@media (max-width:1100px){.season-now{padding:4px 10px 4px 4px}.sn-i{width:28px;height:28px}}
+@media (max-width:420px){.sn-t small{display:none}}
+/* 氣象台：換個季節看看 */
+.season-sim{margin-top:22px}
+.ss-note{margin:0 0 10px;font-size:.84rem;line-height:1.7;color:var(--ink-2)}
+.ss-cur{font-style:normal;margin-left:6px;font-size:.6rem;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:1px 6px;vertical-align:middle}
+
+/* ---------- 島上天氣的小標示 ---------- */
+.wx-chip{position:absolute;left:16px;bottom:132px;z-index:6;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border-radius:999px;background:rgba(255,250,241,.9);border:1px solid var(--line);box-shadow:0 4px 12px rgba(30,22,14,.12);animation:wiin .6s cubic-bezier(.2,1.4,.4,1) both;pointer-events:auto}
+.wx-chip small{display:block;font-size:.6rem;color:var(--ink-3);letter-spacing:.1em;line-height:1.1}
+.wx-chip b{display:block;font-size:.86rem;line-height:1.2}
+.wx-i{position:relative;width:26px;height:26px;flex:none}
+.wx-sunny .wx-i{border-radius:50%;background:#f6b545;box-shadow:0 0 0 4px rgba(246,181,69,.25);animation:wxspin 8s linear infinite}
+.wx-cloudy .wx-i::before,.wx-shower .wx-i::before,.wx-foggy .wx-i::before{content:"";position:absolute;left:1px;top:6px;width:24px;height:12px;border-radius:8px;background:#c9d1da;box-shadow:6px -5px 0 -1px #dde3ea}
+.wx-shower .wx-i::after{content:"";position:absolute;left:5px;top:19px;width:16px;height:7px;background:repeating-linear-gradient(100deg,#5b9bd5 0 2px,transparent 2px 5px);animation:wxrain .5s linear infinite}
+.wx-foggy .wx-i::after{content:"";position:absolute;left:0;top:19px;width:26px;height:6px;background:repeating-linear-gradient(0deg,#c9d1da 0 2px,transparent 2px 4px)}
+@keyframes wxspin{to{transform:rotate(360deg)}}
+@keyframes wxrain{to{background-position:4px 3px}}
+.island-hero.walking .wx-chip{bottom:auto;top:110px;left:12px}
+.touring .wx-chip{display:none}
+@media (max-width:1100px){.wx-chip{bottom:auto;top:calc(var(--scene-h) - 132px);left:10px;padding:4px 10px 4px 6px}.island-hero.walking .wx-chip{top:104px}}
+@media (min-width:1101px){.island-hero:not(.walking) .wx-chip{left:calc(var(--pl, 400px) + 14px)}}
+/* 島上建物名稱標籤：手機上至少 11px；全螢幕按鈕再寬一點 */
+@media (max-width:700px){.pin.small{font-size:11px;padding:3px 7px}}
+@media (pointer:coarse){.full-btn,.walk-full{min-width:40px}}

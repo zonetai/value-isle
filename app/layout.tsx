@@ -6,6 +6,7 @@ import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { SiteProvider } from "@/components/SiteProvider";
 import { OG_IMAGE, SITE_URL } from "@/lib/site";
+import { DATA } from "@/data/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,7 +38,7 @@ const CSP = [
 ].join("; ");
 
 /* 在畫面出來前套上這位訪客上次選的季節（天色跟著變），並拿掉 no-js */
-const BOOT = `document.documentElement.classList.remove("no-js");try{var s=localStorage.getItem("vi-season");document.body.dataset.season=/^(spring|summer|autumn|winter)$/.test(s)?s:"spring"}catch(e){document.body.dataset.season="spring"}`;
+const BOOT = `document.documentElement.classList.remove("no-js");document.body.dataset.season="${DATA.currentSeason}"`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -52,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: `(function(){var l=document.createElement("link");l.rel="stylesheet";l.href=${JSON.stringify(FONTS)};document.head.appendChild(l)})()` }} />
         <noscript><link rel="stylesheet" href={FONTS} /></noscript>
       </head>
-      <body data-season="spring" suppressHydrationWarning>
+      <body data-season={DATA.currentSeason} suppressHydrationWarning>
         <script dangerouslySetInnerHTML={{ __html: BOOT }} />
         <IconSprite />
         <a className="skip-link" href="#main">跳到主要內容</a>

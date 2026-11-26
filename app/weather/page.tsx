@@ -35,7 +35,7 @@ export default function WeatherPage() {
   return (
     <>
       <PageHero mark="cloudsun" title="估價氣象台" extra={<SeasonPicker />}>
-        四個儀表，對應估價師每天在看的四股力量。選一個「市場季節」，指針、天色與判讀會一起換。
+        四個儀表，對應估價師每天在看的四股力量。目前所長判讀市場在「盤整」；也可以換個季節模擬看看，指針、天色與判讀會一起換。
       </PageHero>
       <section className="section" style={{ paddingTop: 36 }}>
         <div className="container">

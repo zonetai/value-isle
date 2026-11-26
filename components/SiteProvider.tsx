@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { DATA } from "@/data/site";
 import { DAILY } from "@/data/daily";
@@ -32,8 +33,10 @@ const KEY = "vi-season";
 const isSeason = (s: unknown): s is Season => typeof s === "string" && s in DATA.seasons;
 
 export function SiteProvider({ children }: { children: React.ReactNode }) {
-  /* 伺服器端一律先畫「復甦」；載入後換成這位訪客上次選的季節 */
-  const [season, setSeasonState] = useState<Season>("spring");
+  /* 全站一律顯示所長判讀的「目前季節」；氣象台頁可以暫時模擬其他季節，換頁就回到目前的季節 */
+  const CUR = DATA.currentSeason as Season;
+  const [season, setSeasonState] = useState<Season>(CUR);
+  const path = usePathname();
   const [drawer, setDrawer] = useState<DrawerState>(null);
   const [toastMsg, setToastMsg] = useState<{ text: string; id: number } | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -48,17 +51,13 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
     (s: Season, silent?: boolean) => {
       setSeasonState(s);
       document.body.dataset.season = s;
-      try { localStorage.setItem(KEY, s); } catch {}
-      if (!silent) toast(`市場季節切換為「${DATA.seasons[s].name}」`);
+      if (!silent) toast(s === CUR ? `回到目前的季節：${DATA.seasons[s].name}` : `模擬「${DATA.seasons[s].name}」季節：指針、天色與判讀都換成這個季節`);
     },
-    [toast],
+    [toast, CUR],
   );
 
-  useEffect(() => {
-    let saved: string | null = null;
-    try { saved = localStorage.getItem(KEY); } catch {}
-    if (isSeason(saved)) { setSeasonState(saved); document.body.dataset.season = saved; }
-  }, []);
+  /* 換頁就回到目前的季節（模擬只在氣象台那一頁有效） */
+  useEffect(() => { setSeasonState(CUR); document.body.dataset.season = CUR; try { localStorage.removeItem(KEY); } catch {} }, [path, CUR]);
 
   const openDrawer = useCallback((layer: string, focus?: string) => setDrawer({ layer, focus }), []);
   const openPanel = useCallback((content: React.ReactNode, color?: string) => setDrawer({ content, color }), []);

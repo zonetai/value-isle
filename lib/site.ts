@@ -30,7 +30,7 @@ export const fmtDate = (d: string) => {
  * 這樣 github.io 的副本不會跟官網搶搜尋排名）
  */
 /** 分享到 LINE、Facebook 時的縮圖（public/og.jpg，1200×630）；網址相對於 metadataBase（zonetai.com/value-isle/） */
-export const OG_IMAGE = { url: "og.jpg", width: 1200, height: 630, alt: "價值島：一塊地的價格，從四層看起" };
+export const OG_IMAGE = { url: "og.jpg?v=20261126", width: 1200, height: 630, alt: "價值島：一塊地的價格，從四層看起" };
 
 export const pageMeta = (title: string | null, description: string, path: string) => {
   const url = SITE_URL + (path === "/" ? "" : path);

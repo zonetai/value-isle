@@ -189,6 +189,22 @@ export function IslandHero() {
   const [rideKind, setRideKind] = useState("tram");
   const [menu, setMenu] = useState(false);
   const [boosting, setBoosting] = useState(false);
+  const [weather, setWeather] = useState<{ id: string; name: string } | null>(null);
+  /* 全螢幕：支援的瀏覽器用真正的全螢幕；iPhone 的 Safari 不支援，就藏起導覽列、讓島佔滿整個螢幕 */
+  const [immersive, setImmersive] = useState(false);
+  const toggleFull = () => {
+    const on = !immersive, html = document.documentElement;
+    html.classList.toggle("immersive", on); setImmersive(on);
+    if (on) { window.scrollTo({ top: 0 }); html.requestFullscreen?.().catch(() => {}); }
+    else if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    setTimeout(() => window.dispatchEvent(new Event("resize")), 60);
+  };
+  useEffect(() => {
+    const f = () => { if (!document.fullscreenElement && document.documentElement.classList.contains("immersive") && immersiveViaFs.current) { document.documentElement.classList.remove("immersive"); setImmersive(false); } immersiveViaFs.current = !!document.fullscreenElement; };
+    document.addEventListener("fullscreenchange", f);
+    return () => { document.removeEventListener("fullscreenchange", f); document.documentElement.classList.remove("immersive"); };
+  }, []);
+  const immersiveViaFs = useRef(false);
   const walkingRef = useRef(false);
   const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -273,13 +289,15 @@ export function IslandHero() {
     document.addEventListener("island:tram", onTramEv);
     const onBump = () => toast("前面太淺了，船開不過去，轉個方向吧。", 2000);
     document.addEventListener("island:bump", onBump);
+    const onWx = (e: Event) => setWeather((e as CustomEvent).detail);
+    document.addEventListener("island:weather", onWx);
     const onBoost = (e: Event) => setBoosting((e as CustomEvent).detail.on);
     document.addEventListener("island:boost", onBoost);
     document.addEventListener("island:walk", onWalk);
     document.addEventListener("island:near", onNear);
     return () => {
       alive = false; api.current?.dispose(); api.current = null; seasonFns.current = [];
-      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:bump", onBump); document.removeEventListener("island:boost", onBoost); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
+      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:bump", onBump); document.removeEventListener("island:weather", onWx); document.removeEventListener("island:boost", onBoost); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
       document.removeEventListener("island:select", onSelect); document.removeEventListener("island:spot", onSpot);
     };
   }, [router, showSpot]);
@@ -448,6 +466,7 @@ export function IslandHero() {
       </div>
 
       <div className="scene-tools">
+        <button className="full-btn" onClick={toggleFull} aria-label={immersive ? "離開全螢幕" : "全螢幕"} title={immersive ? "離開全螢幕" : "全螢幕"}><span><Icon name={immersive ? "shrink" : "expand"} /></span><em>{immersive ? "離開全螢幕" : "全螢幕"}</em></button>
         <button className={walked ? "walk-enter" : "walk-enter hot"} onClick={enterWalk} title="變成島上的估價師，走進城裡跟路人聊天、進每棟樓看看"><span><Icon name="walk" /></span>走進島上{!walked && <em className="we-new">新玩法</em>}</button>
         <button className={tools.labels ? "on" : undefined} onClick={() => tool("labels")}><span><Icon name="tag" /></span>標示</button>
         <button className={tools.currents ? "on" : undefined} onClick={() => tool("currents")}><span><Icon name="current" /></span>海流</button>
@@ -469,7 +488,10 @@ export function IslandHero() {
       {walking && (
         <>
           <div className="walk-hud">
-            <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" /><span className="wl">回到空中</span><span className="ws">離開</span></button>
+            <span className="walk-hud-l">
+              <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" /><span className="wl">回到空中</span><span className="ws">離開</span></button>
+              <button className="walk-book walk-full" onClick={toggleFull} aria-label={immersive ? "離開全螢幕" : "全螢幕"}><Icon name={immersive ? "shrink" : "expand"} /></button>
+            </span>
             <span className="walk-hud-r">
               {onTram && rideKind === "tram" && <button className={boosting ? "walk-book boost on" : "walk-book boost"} onClick={() => api.current?.walkBoost()} aria-label="輕軌加速"><span className="bz" aria-hidden="true">⚡</span>{boosting ? "衝刺中" : "加速"}</button>}
               {onTram && <button className="walk-book on" onClick={() => { if (api.current?.walkTram(false) === false) toast("這裡不好下車，等一下再按。", 2200); }}><Icon name="prev" />{rideKind === "tram" ? "下車" : "下船"}</button>}
@@ -605,6 +627,12 @@ export function IslandHero() {
       )}
 
       {walking && onTram && rideKind === "tram" && boosting && <div className="speed-lines" aria-hidden="true" />}
+      {weather && (
+        <div key={weather.id} className={`wx-chip wx-${weather.id}`} title="島上的天氣每 3 分鐘會變一次（純粹好玩，跟市場季節無關）">
+          <span className="wx-i" aria-hidden="true" />
+          <span><small>島上天氣</small><b>{weather.name}</b></span>
+        </div>
+      )}
 
       {/* 第一次走進島上：三步驟小教學 */}
       {walking && guide >= 0 && (() => {

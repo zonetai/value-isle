@@ -4,13 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { DATA } from "@/data/site";
-import { type Season } from "@/lib/site";
 import { Icon, Logo } from "./Icon";
-import { useSite } from "./SiteProvider";
+import { ShareButton } from "./Share";
 
 export function Nav() {
   const path = usePathname();
-  const { season, setSeason } = useSite();
   const [open, setOpen] = useState(false);
   const links = useRef<HTMLDivElement>(null);
   const nav = useRef<HTMLElement>(null), prog = useRef<HTMLElement>(null), toTop = useRef<HTMLButtonElement>(null);
@@ -51,6 +49,7 @@ export function Nav() {
           <Logo className="logo" />
           <span><b>價值島</b><small>中泰不動產智庫・市場觀測站</small></span>
         </Link>
+        <ShareButton className="nav-share" />
         <button
           className="nav-toggle"
           aria-label="選單"
@@ -66,13 +65,10 @@ export function Nav() {
             </Link>
           ))}
         </div>
-        <div className="season" title="切換市場季節：天色、潮位與判讀都會跟著變">
-          {(Object.entries(DATA.seasons) as [Season, (typeof DATA.seasons)[Season]][]).map(([k, v]) => (
-            <button key={k} data-season={k} aria-label={v.name} className={k === season ? "on" : undefined} onClick={() => setSeason(k)}>
-              <span><Icon name={v.icon} /></span>{v.name}
-            </button>
-          ))}
-        </div>
+        <Link className="season-now" href="/weather" title="所長依四層架構判讀的目前市場季節；點了看判斷依據">
+          <span className="sn-i"><Icon name={DATA.seasons[DATA.currentSeason].icon} /></span>
+          <span className="sn-t"><small>目前市場</small><b>{DATA.seasons[DATA.currentSeason].name}期</b></span>
+        </Link>
       </div>
     </nav>
     <button className="to-top" ref={toTop} aria-label="回到頁首" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}><Icon name="up" /></button>

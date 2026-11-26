@@ -75,6 +75,8 @@ export const DATA = {
   ],
 
   /* ---- 季節（市場循環）解讀 ---- */
+  /* 目前的市場季節（所長依四層架構判讀；換季只要改這裡） */
+  currentSeason: "autumn" as const,
   seasons: {
     spring:{ name:"復甦", icon:"sprout", note:"季節設定「復甦」：量先回、價未動，估價師最常被問「現在可以出手了嗎」。",
       verdict:"量先回、價未動。前兩層壓力減輕，但潮位還沒明顯上升。比較法案例要用最近一季，期日修正不宜過度樂觀。",

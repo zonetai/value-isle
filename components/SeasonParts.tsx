@@ -12,14 +12,18 @@ const SEASONS = Object.entries(DATA.seasons) as [Season, (typeof DATA.seasons)[S
 /** 氣象台頁首的季節選擇器 */
 export function SeasonPicker() {
   const { season, setSeason } = useSite();
+  const cur = DATA.currentSeason;
   return (
-    <div className="season-picker" id="seasonPicker" style={{ marginTop: 24 }}>
-      {SEASONS.map(([k, v]) => (
-        <button key={k} data-season={k} className={k === season ? "on" : undefined} onClick={() => setSeason(k)}>
-          <b><Icon name={v.icon} />{v.name}</b>
-          <small>{v.verdict.split("。")[0]}。</small>
-        </button>
-      ))}
+    <div className="season-sim">
+      <p className="ss-note"><b>目前市場：{DATA.seasons[cur].name}期</b>（所長依四層架構判讀）。下面可以換個季節看看，模擬四層在不同季節會怎麼變；離開這一頁就會回到目前的季節。</p>
+      <div className="season-picker" id="seasonPicker">
+        {SEASONS.map(([k, v]) => (
+          <button key={k} data-season={k} className={k === season ? "on" : undefined} onClick={() => setSeason(k)}>
+            <b><Icon name={v.icon} />{v.name}{k === cur && <em className="ss-cur">目前</em>}</b>
+            <small>{v.verdict.split("。")[0]}。</small>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
