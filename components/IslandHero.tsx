@@ -186,6 +186,7 @@ export function IslandHero() {
   useEffect(() => { try { const r = JSON.parse(store.get(READ_KEY) || "[]"); if (Array.isArray(r)) setReadSt(r); } catch {} }, []);
   const markRead = (sid: string) => setReadSt((r) => { if (r.includes(sid)) return r; const n2 = [...r, sid]; store.set(READ_KEY, JSON.stringify(n2)); return n2; });
   const [rideKind, setRideKind] = useState("tram");
+  const [menu, setMenu] = useState(false);
   const walkingRef = useRef(false);
   const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -268,11 +269,13 @@ export function IslandHero() {
     document.addEventListener("island:ride", onRide);
     const onTramEv = (e: Event) => { const d = (e as CustomEvent).detail; setOnTram(d.on); if (d.kind) setRideKind(d.kind); setTalk(null); setCard(null); };
     document.addEventListener("island:tram", onTramEv);
+    const onBump = () => toast("前面太淺了，船開不過去，轉個方向吧。", 2000);
+    document.addEventListener("island:bump", onBump);
     document.addEventListener("island:walk", onWalk);
     document.addEventListener("island:near", onNear);
     return () => {
       alive = false; api.current?.dispose(); api.current = null; seasonFns.current = [];
-      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
+      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:bump", onBump); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
       document.removeEventListener("island:select", onSelect); document.removeEventListener("island:spot", onSpot);
     };
   }, [router, showSpot]);
@@ -302,7 +305,7 @@ export function IslandHero() {
   useEffect(() => { api.current?.walkTalking?.(talk?.id ?? null); }, [talk]);
 
   /* 走路時打開卷宗、對話、名單：搖桿先收起來，不要蓋住按鈕 */
-  useEffect(() => { root.current?.classList.toggle("walk-panel", walking && (!!card || !!talk || people || listOpen || guide >= 0)); }, [walking, card, talk, people, listOpen, guide]);
+  useEffect(() => { root.current?.classList.toggle("walk-panel", walking && (!!card || !!talk || people || listOpen || guide >= 0 || menu)); }, [walking, card, talk, people, listOpen, guide, menu]);
 
   /* 索引收合：直接改 class（島嶼帶路時也會在同一個元素上加 touring，不能讓 React 覆寫 className） */
   useEffect(() => { root.current?.classList.toggle("idx-mini", mini); }, [mini]);
@@ -387,7 +390,7 @@ export function IslandHero() {
             rideFrom(id);
           }}>
             <span className="sc-tram-i" aria-hidden="true"><Icon name={id === "ship" ? "ship" : "oil"} /></span>
-            <span><small>搭船</small><b>{id === "ship" ? "登上貨櫃輪出海" : "登上油輪繞外海"}</b><em>跟著船繞島航行，下船時會開竹蜻蜓飛起來</em></span>
+            <span><small>搭船</small><b>{id === "ship" ? "登上貨櫃輪，自己掌舵" : "登上油輪，自己掌舵"}</b><em>用鍵盤或搖桿開船繞外海，下船時會開竹蜻蜓飛起來</em></span>
             <Icon name="play" />
           </button>
         )}
@@ -477,11 +480,29 @@ export function IslandHero() {
                   if (flying && ok === false) toast("下面是海：飛到島上、棧橋或外海小島上空才能降落。", 2800);
                 }}><Icon name={flying ? "prev" : "up"} />{flying ? "降落" : "起飛"}</button>
               )}
-              {!onTram && <button className={riding ? "walk-book on" : "walk-book"} onClick={() => {
-                const ok = api.current?.walkRide(!riding);
-                if (!riding && ok) toast("飛去熱氣球，到了就會搭上去。", 2200);
-              }}><Icon name="balloon" /><span className="wl">{riding ? "跳下熱氣球" : "搭熱氣球"}</span><span className="ws">{riding ? "跳下" : "氣球"}</span></button>}
-              {!onTram && !riding && <button className="walk-book" onClick={openGame} aria-label="小遊戲：蓋高樓"><Icon name="building" /><span className="wl">蓋高樓</span></button>}
+              {riding && <button className="walk-book on" onClick={() => api.current?.walkRide(false)}><Icon name="balloon" /><span className="wl">跳下熱氣球</span><span className="ws">跳下</span></button>}
+              {!onTram && !riding && (
+                <span className="walk-menu">
+                  <button className={menu ? "walk-book on" : "walk-book"} aria-expanded={menu} aria-haspopup="menu" onClick={() => { setMenu(!menu); setPeople(false); setListOpen(false); }}>
+                    <Icon name="compass" /><span className="wl">搭乘與玩法</span><span className="ws">玩法</span><i className="wm-caret" aria-hidden="true">▾</i>
+                  </button>
+                  {menu && (
+                    <span className="walk-menu-list" role="menu">
+                      {[
+                        { k: "balloon", i: "balloon", t: "搭熱氣球", d: "繞島飛一圈，從高空俯瞰", go: () => { if (api.current?.walkRide(true)) toast("飛去熱氣球，到了就會搭上去。", 2200); } },
+                        { k: "tram", i: "rail", t: "搭輕軌", d: "沿著環島軌道看街景", go: () => api.current?.walkTram(true, "tram") },
+                        { k: "ship", i: "ship", t: "開貨櫃輪", d: "自己掌舵，繞著外海航行", go: () => api.current?.walkTram(true, "ship") },
+                        { k: "tanker", i: "oil", t: "開油輪", d: "大船比較慢，轉彎要提早", go: () => api.current?.walkTram(true, "tanker") },
+                        { k: "game", i: "building", t: "玩蓋高樓", d: "從透天厝蓋到哈里發塔", go: () => openGame() },
+                      ].map((m) => (
+                        <button key={m.k} role="menuitem" onClick={() => { setMenu(false); m.go(); }}>
+                          <span className="wm-i" aria-hidden="true"><Icon name={m.i} /></span><span><b>{m.t}</b><small>{m.d}</small></span>
+                        </button>
+                      ))}
+                    </span>
+                  )}
+                </span>
+              )}
               <button className="walk-book" onClick={() => { setPeople(!people); setListOpen(false); }}><Icon name="talk" /><span className="wl">找人聊天</span><span className="ws">聊天</span></button>
               <button className="walk-book" onClick={() => { setListOpen(!listOpen); setPeople(false); }}><Icon name="book" /><span className="wl">勘查章 </span>{seen.length}/{SP_IDS.length}</button>
             </span>
@@ -497,7 +518,7 @@ export function IslandHero() {
             </div>
           )}
           <p key={onTram ? "t" : riding ? "r" : flying ? "f" : "w"} className="walk-hint">{onTram
-            ? (rideKind === "tram" ? "搭輕軌中・拖曳畫面左右看・按「下車」就在軌道旁下車" : `搭${rideKind === "ship" ? "貨櫃輪" : "油輪"}中・拖曳畫面左右看・按「下船」會開竹蜻蜓飛起來`)
+            ? (rideKind === "tram" ? "搭輕軌中・拖曳畫面左右看・按「下車」就在軌道旁下車" : touch ? `你在開${rideKind === "ship" ? "貨櫃輪" : "油輪"}・搖桿往上加速、往下減速、左右轉向・按「下船」會飛起來` : `你在開${rideKind === "ship" ? "貨櫃輪" : "油輪"}・W/S 加速減速・A/D 轉向・拖曳畫面看四周・按「下船」會飛起來`)
             : riding
             ? (touch ? "熱氣球繞著島飄・搖桿上下調高度、左右調方向・拖曳畫面看四周" : "熱氣球繞著島飄・W/S 調高度・A/D 調方向・拖曳畫面看四周")
             : flying
