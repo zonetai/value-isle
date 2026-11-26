@@ -74,7 +74,7 @@ export const ART: Record<string, string> = {
 
 /* 封面上的人物（跟島上的豆子人同一種造型，各自帶一樣小道具） */
 export function portrait(id: string): string {
-  const body: Record<string, string> = { agent: C.orange, owner: C.blue, couple: C.teal, sales: C.purple, senior: "#e8673a", banker: C.dark, landlord: C.brown, landowner: "#6aa84f" };
+  const body: Record<string, string> = { developer: "#3f5f7a", agent: C.orange, owner: C.blue, couple: C.teal, sales: C.purple, senior: "#e8673a", banker: C.dark, landlord: C.brown, landowner: "#6aa84f" };
   const b = body[id] || C.orange;
   let extra = "";
   if (id === "agent") extra = r(150, 112, 20, 34, C.dark, 3) + r(154, 116, 12, 24, C.sky, 2) + p("M160 100l-5 12h10z", C.yellow);
@@ -83,6 +83,7 @@ export function portrait(id: string): string {
   if (id === "senior") extra = p("M140 58q20-26 40 0z", C.paper) + p("M134 58h52", "none") + r(178, 104, 24, 30, C.brown, 3) + r(182, 108, 16, 22, C.paper, 2);
   if (id === "banker") extra = p("M160 98l-6 6l6 26l6-26z", C.orange) + p("M146 96l14 10l14-10", "none");
   if (id === "landlord") extra = c(194, 120, 8, "none") + p("M194 128v20M194 140h8M194 146h6", "none");
+  if (id === "developer") extra = p("M140 58q20-26 40 0z", C.yellow) + p("M134 58h52", "none") + r(184, 100, 30, 10, "#d9e7f2", 5) + p("M188 105h22", "none");
   if (id === "landowner") extra = p("M142 56q18-14 36 0v6h-36z", C.yellow) + p("M200 80l-10 70M182 150l8-6l10 4l-4 10z", C.brown);
   const one = (x: number, col: string) => `<g transform="translate(${x} 0)"><rect x="-26" y="88" width="52" height="84" rx="26" fill="${col}"/><circle cx="0" cy="70" r="26" fill="#f5d2b8"/><circle cx="-8" cy="68" r="2.6" fill="${INK}" stroke="none"/><circle cx="8" cy="68" r="2.6" fill="${INK}" stroke="none"/><ellipse cx="-14" cy="78" rx="5" ry="3" fill="${C.pink}" stroke="none"/><ellipse cx="14" cy="78" rx="5" ry="3" fill="${C.pink}" stroke="none"/><path d="M-6 80q6 5 12 0" fill="none"/></g>`;
   const figs = id === "couple" ? one(132, C.teal) + one(190, C.yellow) + p("M156 132q5-8 10 0", "none") : one(160, b);

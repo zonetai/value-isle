@@ -36,6 +36,7 @@ export function SurveyReport({ id, no, name, layer, layerCls, see, adj, stamp, o
               {r.marks.map(([x, y], i) => (
                 <g key={i} className={act === i ? "rp-mk on" : "rp-mk"} transform={`translate(${x} ${y})`} onClick={() => setAct(act === i ? null : i)} role="button" tabIndex={0} aria-label={r.marks[i][2]}
                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setAct(act === i ? null : i); } }}>
+                  <circle r="20" className="rp-mk-hit" />
                   <circle r="11" className="rp-mk-ring" />
                   <circle r="8.5" className="rp-mk-dot" />
                   <text y="3.6" textAnchor="middle">{i + 1}</text>

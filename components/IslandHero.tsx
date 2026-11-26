@@ -29,13 +29,13 @@ type IslandApi = {
   bird: () => void; home: () => void;
   startTour: () => void; stopTour: () => void; tourNext: () => void; tourPrev: () => void;
   walk: (on: boolean) => void; walkNpc: (id: string) => void; walkTalking: (id: string | null) => void;
-  walkFly: (on: boolean) => boolean; walkLift: (v: number) => void; walkRide: (on: boolean) => boolean; walkTram: (on: boolean, kind?: string) => boolean; hold: (on: boolean) => void;
+  walkFly: (on: boolean) => boolean; walkLift: (v: number) => void; walkRide: (on: boolean) => boolean; walkTram: (on: boolean, kind?: string) => boolean; walkBoost: () => boolean; hold: (on: boolean) => void;
   dispose: () => void;
 };
 type SeasonFn = (s: Season, data: (typeof DATA.seasons)[Season]) => void;
 type Scenario = (typeof DATA.scenarios)[number];
 type Card = { mode: "spot" | "sc"; id: string; n: number; stamp?: boolean } | null;
-type Near = { kind: "npc" | "spot" | null; id?: string; label?: string };
+type Near = { kind: "npc" | "spot" | null; id?: string; label?: string; spot?: string };
 const NPC = Object.fromEntries(NPCS.map((n) => [n.id, n]));
 
 const ALL_ITEMS = DATA.layers.flatMap((l) => l.items);
@@ -188,6 +188,7 @@ export function IslandHero() {
   const markRead = (sid: string) => setReadSt((r) => { if (r.includes(sid)) return r; const n2 = [...r, sid]; store.set(READ_KEY, JSON.stringify(n2)); return n2; });
   const [rideKind, setRideKind] = useState("tram");
   const [menu, setMenu] = useState(false);
+  const [boosting, setBoosting] = useState(false);
   const walkingRef = useRef(false);
   const awayT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -272,11 +273,13 @@ export function IslandHero() {
     document.addEventListener("island:tram", onTramEv);
     const onBump = () => toast("前面太淺了，船開不過去，轉個方向吧。", 2000);
     document.addEventListener("island:bump", onBump);
+    const onBoost = (e: Event) => setBoosting((e as CustomEvent).detail.on);
+    document.addEventListener("island:boost", onBoost);
     document.addEventListener("island:walk", onWalk);
     document.addEventListener("island:near", onNear);
     return () => {
       alive = false; api.current?.dispose(); api.current = null; seasonFns.current = [];
-      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:bump", onBump); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
+      document.removeEventListener("island:fly", onFly); document.removeEventListener("island:ride", onRide); document.removeEventListener("island:tram", onTramEv); document.removeEventListener("island:bump", onBump); document.removeEventListener("island:boost", onBoost); document.removeEventListener("island:walk", onWalk); document.removeEventListener("island:near", onNear);
       document.removeEventListener("island:select", onSelect); document.removeEventListener("island:spot", onSpot);
     };
   }, [router, showSpot]);
@@ -468,6 +471,7 @@ export function IslandHero() {
           <div className="walk-hud">
             <button className="btn sm" onClick={() => api.current?.walk(false)}><Icon name="up" /><span className="wl">回到空中</span><span className="ws">離開</span></button>
             <span className="walk-hud-r">
+              {onTram && rideKind === "tram" && <button className={boosting ? "walk-book boost on" : "walk-book boost"} onClick={() => api.current?.walkBoost()} aria-label="輕軌加速"><span className="bz" aria-hidden="true">⚡</span>{boosting ? "衝刺中" : "加速"}</button>}
               {onTram && <button className="walk-book on" onClick={() => { if (api.current?.walkTram(false) === false) toast("這裡不好下車，等一下再按。", 2200); }}><Icon name="prev" />{rideKind === "tram" ? "下車" : "下船"}</button>}
               {!riding && !onTram && (
                 <button className={flying ? "walk-book on" : "walk-book"} onClick={() => {
@@ -479,7 +483,7 @@ export function IslandHero() {
               {!onTram && !riding && (
                 <span className="walk-menu">
                   <button className={menu ? "walk-book on" : "walk-book"} aria-expanded={menu} aria-haspopup="menu" onClick={() => { setMenu(!menu); setPeople(false); setListOpen(false); }}>
-                    <Icon name="compass" /><span className="wl">搭乘與玩法</span><span className="ws">玩法</span><i className="wm-caret" aria-hidden="true">▾</i>
+                    <Icon name="compass" /><span className="wl">探索</span><span className="ws">探索</span><i className="wm-caret" aria-hidden="true">▾</i>
                   </button>
                   {menu && (
                     <span className="walk-menu-list" role="menu">
@@ -530,6 +534,7 @@ export function IslandHero() {
               const isN = near.kind === "npc", np = isN && near.id ? NPC[near.id] : null, sp = !isN && near.id ? SP[near.id] : null;
               const lay = layerOf((np?.layer || sp?.layer || "ind") as string), done = !!(sp && near.id && seen.includes(near.id)), read = !!(np && readSt.includes(np.id));
               return (
+                <>
                 <button id="walkAct" key={near.kind + ":" + near.id} className={isN ? "walk-act npc" : "walk-act spot"} style={{ "--c": lay.hex } as React.CSSProperties} onClick={() => {
                   if (isN && near.id) setTalk({ id: near.id, qi: null });
                   else if (near.id) showSpot(near.id);
@@ -542,6 +547,12 @@ export function IslandHero() {
                   </span>
                   <kbd className="wa-key" aria-hidden="true">{touch ? "點我" : "E"}</kbd>
                 </button>
+                {isN && near.spot && SP[near.spot] && (
+                  <button key={"rp-" + near.spot} className="walk-act2" onClick={() => showSpot(near.spot!)} style={{ "--c": layerOf(SP[near.spot].layer).hex } as React.CSSProperties}>
+                    <Icon name="building" /><span>勘查報告<small>{SP[near.spot].t}</small></span>
+                  </button>
+                )}
+                </>
               );
             })()}
           {talk && NPC[talk.id] && (() => {
@@ -592,6 +603,8 @@ export function IslandHero() {
           </div>
         </div>
       )}
+
+      {walking && onTram && rideKind === "tram" && boosting && <div className="speed-lines" aria-hidden="true" />}
 
       {/* 第一次走進島上：三步驟小教學 */}
       {walking && guide >= 0 && (() => {

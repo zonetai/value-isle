@@ -23,19 +23,21 @@ export function IconSprite() {
 
 /** 價值島標誌：實色底、島嶼與建築剪影、兩道水線（與 app/icon.svg 同一張圖） */
 export function Logo({ className }: { className?: string }) {
+  /* 價值島的標誌：跟中泰 zonetai.com 同一組品牌色（深青 #004e59、青藍 #00758d、深灰 #53575a），
+     外框是斜切角，三棟斜切屋頂的大樓站在島上，下面是浪 */
   return (
     <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" rx="14" fill="#e4572e" />
-      <rect x="3.5" y="3.5" width="57" height="57" rx="11" fill="none" stroke="#fff3e2" strokeOpacity=".28" strokeWidth="1.2" />
-      <circle cx="45" cy="19.5" r="8.5" fill="#f6a35c" />
-      <path d="M17.5 38V27.6a1.6 1.6 0 0 1 1.6-1.6h5.3V38z" fill="#fff3e2" />
-      <path d="M25.6 38V15.6a1.6 1.6 0 0 1 1.6-1.6h6.6a1.6 1.6 0 0 1 1.6 1.6V38z" fill="#fff3e2" />
-      <path d="M36.6 38v-8.8a1.4 1.4 0 0 1 1.4-1.4h4.6a1.4 1.4 0 0 1 1.4 1.4V38z" fill="#fff3e2" />
-      <path d="M28.9 19.2h3.4M28.9 23.4h3.4M28.9 27.6h3.4M28.9 31.8h3.4M20.2 30.4h1.9M39.2 32.4h1.9" stroke="#e4572e" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M8.5 43.5c3.8-4.9 13.1-7.6 23.5-7.6s19.7 2.7 23.5 7.6c-6.5 1.6-15 2.4-23.5 2.4s-17-.8-23.5-2.4z" fill="#fff3e2" />
-      <path d="M8.5 43.5c6.5 1.6 15 2.4 23.5 2.4s17-.8 23.5-2.4" fill="none" stroke="#c9461f" strokeWidth="1.3" strokeOpacity=".55" />
-      <path d="M13 51.2c2.4 0 2.4-1.7 4.8-1.7s2.4 1.7 4.8 1.7 2.4-1.7 4.8-1.7 2.4 1.7 4.8 1.7 2.4-1.7 4.8-1.7 2.4 1.7 4.8 1.7 2.4-1.7 4.8-1.7 2.4 1.7 4.8 1.7" fill="none" stroke="#fff3e2" strokeWidth="2.2" strokeLinecap="round" strokeOpacity=".8" />
-      <path d="M19.5 56.6c2.1 0 2.1-1.4 4.2-1.4s2.1 1.4 4.2 1.4 2.1-1.4 4.2-1.4 2.1 1.4 4.2 1.4 2.1-1.4 4.2-1.4 2.1 1.4 4.2 1.4" fill="none" stroke="#fff3e2" strokeWidth="1.8" strokeLinecap="round" strokeOpacity=".45" />
+      <defs><linearGradient id="vi-logo-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#0b8ea6" /><stop offset=".55" stopColor="#00758d" /><stop offset="1" stopColor="#004e59" /></linearGradient></defs>
+      <path d="M12 1.5H52L62.5 12V52L52 62.5H12L1.5 52V12Z" fill="url(#vi-logo-g)" />
+      <path d="M1.5 46L46 1.5H52L62.5 12V13L13 62.5H12L1.5 52Z" fill="#fff" opacity=".07" />
+      <circle cx="46.5" cy="17.5" r="5.5" fill="none" stroke="#9fe0ea" strokeWidth="2" />
+      <path d="M13.5 44V31.5L20.5 24.5V44Z" fill="#e3f4f7" />
+      <path d="M23 44V19.5L31.5 11V44Z" fill="#fff" />
+      <path d="M34 44V27.5H38.5L44.5 33.5V44Z" fill="#cbe9ef" />
+      <path d="M26.5 22v18M29 19.5v20.5M16.5 33v8M37.5 31v10" stroke="#00758d" strokeWidth="1.4" strokeLinecap="round" opacity=".75" />
+      <path d="M7.5 44H56.5L50.5 50.5H13.5Z" fill="#53575a" />
+      <path d="M7.5 44H56.5" stroke="#e3f4f7" strokeWidth="1.3" />
+      <path d="M13 56h9.5M27.25 56h9.5M41.5 56h9.5" stroke="#9fe0ea" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   );
 }
